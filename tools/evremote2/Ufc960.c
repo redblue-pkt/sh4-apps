@@ -65,7 +65,7 @@ static tButton cButtonUFC960[] =
 	{"GREEN"          , "6E", KEY_GREEN},
 	{"YELLOW"         , "6F", KEY_YELLOW},
 	{"BLUE"           , "70", KEY_BLUE},
-	{"EXIT"           , "55", KEY_HOME},
+	{"EXIT"           , "55", KEY_EXIT},
 	{"TEXT"           , "3C", KEY_TEXT},
 //	{"EPG"            , "4C", KEY_EPG},
 	{"EPG"            , "CC", KEY_EPG},
@@ -105,7 +105,7 @@ static tButton cButtonUFC960[] =
 static tButton cButtonUFC960Frontpanel[] =
 {
 	{"FP_MENU"		, "80", KEY_MENU},
-	{"FP_EXIT"		, "0D", KEY_HOME},
+	{"FP_EXIT"		, "0D", KEY_EXIT},
 /*	{"FP_AUX"		, 0x20, ???},
 	{"FP_TV_R"		, 0x08, ???},
 */

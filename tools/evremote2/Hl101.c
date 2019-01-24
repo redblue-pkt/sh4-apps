@@ -74,7 +74,7 @@ static tButton cButtonsSpiderboxHL101[] =
 	{"OK/LIST"        , "47", KEY_OK},
 	{"MENU"           , "af", KEY_MENU},
 	{"GUIDE"          , "4f", KEY_EPG},
-	{"EXIT"           , "cf", KEY_HOME},
+	{"EXIT"           , "cf", KEY_EXIT},
 	{"FAV"            , "85", KEY_FAVORITES},
 
 	{"RED"            , "3d", KEY_RED},

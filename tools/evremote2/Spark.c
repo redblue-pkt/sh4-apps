@@ -96,7 +96,7 @@ static tButton cButtonsEdisionSpark[] =
 	{"OK/LIST"         , "2f", KEY_OK},
 	{"MENU"            , "65", KEY_MENU},
 	{"GUIDE"           , "8f", KEY_EPG},
-	{"EXIT"            , "4d", KEY_HOME},
+	{"EXIT"            , "4d", KEY_EXIT},
 	{"FAV"             , "87", KEY_FAVORITES},
 	{"RED"             , "7d", KEY_RED},
 	{"GREEN"           , "ff", KEY_GREEN},
@@ -150,7 +150,7 @@ static tButton cButtonsSparkRc08[] =
 	{"LEFT"            , "3D", KEY_LEFT},
 	{"RIGHT"           , "7F", KEY_RIGHT},
 	{"OK"              , "BF", KEY_OK},
-	{"EXIT"            , "2D", KEY_HOME},
+	{"EXIT"            , "2D", KEY_EXIT},
 	{"EPG"             , "25", KEY_EPG},
 	{"VOL+"            , "8D", KEY_VOLUMEUP},
 	{"VOL-"            , "B5", KEY_VOLUMEDOWN},
@@ -214,7 +214,7 @@ static tButton cButtonsSparkRc09[] =
 	{"INFO"            , "1D", KEY_INFO},
 	{"EPG"             , "87", KEY_EPG},
 	{"MENU"            , "65", KEY_MENU},
-	{"EXIT"            , "A7", KEY_HOME},
+	{"EXIT"            , "A7", KEY_EXIT},
 	{"UP"              , "27", KEY_UP},
 	{"DOWN"            , "0F", KEY_DOWN},
 	{"LEFT"            , "6D", KEY_LEFT},
@@ -267,7 +267,7 @@ static tButton cButtonsSparkRc12[] =
 	{"LEFT"            , "1F", KEY_LEFT},
 	{"RIGHT"           , "7F", KEY_RIGHT},
 	{"OK"              , "7D", KEY_OK},
-	{"EXIT"            , "3F", KEY_HOME},
+	{"EXIT"            , "3F", KEY_EXIT},
 	{"REC"             , "9D", KEY_RECORD},
 	{"EPG"             , "5F", KEY_EPG},
 	{"TV/SAT"          , "D5", KEY_AUX},
@@ -331,7 +331,7 @@ static tButton cButtonsSparkDefault[] =
 	{"LEFT"            , "BF", KEY_LEFT},
 	{"RIGHT"           , "FD", KEY_RIGHT},
 	{"OK"              , "05", KEY_OK},
-	{"EXIT"            , "F9", KEY_HOME},
+	{"EXIT"            , "F9", KEY_EXIT},
 	{"EPG"             , "45", KEY_EPG},
 	{"FAV"             , "3D", KEY_FAVORITES},
 	{"SAT"             , "0D", KEY_SAT},
@@ -391,7 +391,7 @@ static tButton cButtonsSognoTriplex[] =
 	{"KEY_RIGHT"       , "5F", KEY_RIGHT},       //# RIGHT
 	{"KEY_DOWN"        , "50", KEY_DOWN},        //# DOWN
 	{"KEY_OK"          , "40", KEY_OK},          //# OK
-	{"KEY_HOME"        , "DF", KEY_HOME},        //# EXIT
+	{"KEY_HOME"        , "DF", KEY_EXIT},        //# EXIT
 	{"KEY_EPG"         , "48", KEY_EPG},         //# EPG
 	{"KEY_FAVORITES"   , "47", KEY_FAVORITES},   //# FAV
 	{"KEY_EPG"         , "44", KEY_EPG},         //# Portal
@@ -446,7 +446,7 @@ static tButton cButtonsUfs910Rc660[] =
 	{"KEY_YELLOW"      , "6F", KEY_YELLOW},
 	{"KEY_BLUE"        , "70", KEY_BLUE},
 	{"KEY_EPG"         , "CC", KEY_EPG},
-	{"KEY_HOME"        , "55", KEY_HOME},
+	{"KEY_HOME"        , "55", KEY_EXIT},
 	{"KEY_MENU"        , "54", KEY_MENU},
 	{"KEY_PAGEUP"      , "1E", KEY_PAGEUP},
 	{"KEY_PAGEDOWN"    , "1F", KEY_PAGEDOWN},
@@ -492,7 +492,7 @@ static tButton cButtonsSamsungAA59[] =
 	{"KEY_RIGHT"       , "B9", KEY_RIGHT},
 	{"KEY_OK"          , "E9", KEY_OK},
 	{"KEY_OK"          , "E5", KEY_OK},         //# RETURN
-	{"KEY_HOME"        , "4B", KEY_HOME},       //# EXIT
+	{"KEY_HOME"        , "4B", KEY_EXIT},       //# EXIT
 	{"KEY_RED"         , "C9", KEY_RED},
 	{"KEY_GREEN"       , "D7", KEY_GREEN},
 	{"KEY_YELLOW"      , "57", KEY_YELLOW},
@@ -546,7 +546,7 @@ static tButton cButtonsUfs913Rc230[] =
 	{"KEY_DOWN"        , "A6", KEY_DOWN},
 	{"KEY_LEFT"        , "A5", KEY_LEFT},
 	{"KEY_RIGHT"       , "A4", KEY_RIGHT},
-	{"KEY_HOME"        , "AA", KEY_HOME},
+	{"KEY_HOME"        , "AA", KEY_EXIT},
 	{"KEY_FAVORITES"   , "2A", KEY_FAVORITES}, //Portal
 	{"KEY_REWIND"      , "DE", KEY_REWIND},
 	{"KEY_FASTFORWARD" , "DF", KEY_FASTFORWARD},
@@ -589,7 +589,7 @@ static tButton cButtonsSparkRc04[] =
 	{"DOWN"           , "AF", KEY_DOWN},
 	{"LEFT"           , "3D", KEY_LEFT},
 	{"RIGHT"          , "7F", KEY_RIGHT},
-	{"EXIT"           , "2D", KEY_HOME},
+	{"EXIT"           , "2D", KEY_EXIT},
 	{"EPG"            , "6F", KEY_EPG},
 	{"FOLDER"         , "0D", KEY_ARCHIVE},
 	{"STOP"           , "8F", KEY_STOP},
@@ -704,7 +704,7 @@ static tButton cButtonsSparkEdv[] =
 	{"LEFT"           , "BF", KEY_LEFT},
 	{"RIGHT"          , "FD", KEY_RIGHT},
 	{"OK"             , "05", KEY_OK},
-	{"EXIT"           , "F9", KEY_HOME},
+	{"EXIT"           , "F9", KEY_EXIT},
 	{"EPG"            , "45", KEY_EPG},
 	{"FAV"            , "3D", KEY_FAVORITES},
 	{"SAT"            , "0D", KEY_SAT},

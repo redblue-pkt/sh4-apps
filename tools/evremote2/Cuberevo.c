@@ -92,7 +92,7 @@ static tButton cButtonCuberevo[] =
 	{"AGAIN"          , "24", KEY_AGAIN},
 	{"PAUSE"          , "25", KEY_PAUSE},
 	{"MENU"           , "26", KEY_MENU},
-	{"EXIT"           , "27", KEY_HOME},
+	{"EXIT"           , "27", KEY_EXIT},
 	{"KEY_F7"         , "28", KEY_F7},
 	{"KEY_BOOMARKS"   , "29", KEY_BOOKMARKS},
 	{"RED"            , "2A", KEY_RED},
@@ -139,7 +139,7 @@ key_table_t front_keymap_7seg[] =
 {
 	{ "STANDBY", 0x0001,   KEY_POWER },  /* front power */
 	{ "MENU"   , 0x0002,   KEY_MENU  },  /* front menu  */
-	{ "EXIT"   , 0x0004,   KEY_HOME  },  /* front exit  */
+	{ "EXIT"   , 0x0004,   KEY_EXIT  },  /* front exit  */
 	{ "OK"     , 0x0010,   KEY_OK    },  /* front ok    */
 	{ "LEFT"   , 0x0020,   KEY_LEFT  },  /* front left  */
 	{ "RIGHT"  , 0x0040,   KEY_RIGHT },  /* front right */

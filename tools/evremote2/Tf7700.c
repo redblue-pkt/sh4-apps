@@ -78,7 +78,7 @@ static tButton cButtonsTopfield7700HDPVR[] =
 	{"OK/LIST"        , "1F", KEY_OK},
 	{"MENU"           , "1A", KEY_MENU},
 	{"GUIDE"          , "1B", KEY_EPG},
-	{"EXIT"           , "1C", KEY_HOME},
+	{"EXIT"           , "1C", KEY_EXIT},
 	{"FAV"            , "09", KEY_FAVORITES},
 
 	{"RED"            , "4D", KEY_RED},

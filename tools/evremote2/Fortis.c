@@ -61,7 +61,7 @@ static tButton cButtonFortis[] =
 	{"GREEN"          , "4A", KEY_GREEN},
 	{"YELLOW"         , "49", KEY_YELLOW},
 	{"BLUE"           , "48", KEY_BLUE},
-	{"EXIT"           , "1C", KEY_HOME},
+	{"EXIT"           , "1C", KEY_EXIT},
 	{"TEXT"           , "0D", KEY_TEXT},
 	{"EPG"            , "08", KEY_EPG},
 	{"REWIND"         , "58", KEY_REWIND},

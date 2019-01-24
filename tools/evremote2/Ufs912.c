@@ -59,7 +59,7 @@ static tButton cButtonUFS912[] =
 	{"GREEN"          , "6E", KEY_GREEN},
 	{"YELLOW"         , "6F", KEY_YELLOW},
 	{"BLUE"           , "70", KEY_BLUE},
-	{"EXIT"           , "55", KEY_HOME},
+	{"EXIT"           , "55", KEY_EXIT},
 	{"TEXT"           , "3C", KEY_TEXT},
 	{"EPG"            , "CC", KEY_EPG},
 	{"REWIND"         , "21", KEY_REWIND},

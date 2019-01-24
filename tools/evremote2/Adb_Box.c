@@ -102,7 +102,7 @@ static tButton cButtonsADB_BOX_RAW[] =
 	{"KEY_GOTO"             , "03", KEY_V},  // N.Button
 	{"KEY_EPG"              , "04", KEY_EPG},
 	{"KEY_PVR"              , "05", KEY_BACK},  // HOME
-	{"KEY_HOME"             , "06", KEY_HOME},  // BACK
+	{"KEY_HOME"             , "06", KEY_EXIT},  // BACK
 	{"KEY_HELP"             , "07", KEY_INFO},
 	{"KEY_OPTION"           , "08", KEY_MENU},   // OPT
 	{"KEY_VOLUMEUP"         , "09", KEY_VOLUMEUP},
@@ -148,7 +148,7 @@ static tButton cButtonsADB_BOX_RAW[] =
 	{"N.Button"             , "43", KEY_V},
 	{"EPG"                  , "44", KEY_EPG},
 	{"HOME"                 , "45", KEY_BACK},  // HOME
-	{"BACK"                 , "46", KEY_HOME},  // BACK
+	{"BACK"                 , "46", KEY_EXIT},  // BACK
 	{"INFO"           	, "47", KEY_INFO},  // THIS IS WRONG, SHOULD BE KEY_INFO
 	{"OPT"            	, "48", KEY_MENU},
 	{"KEY_VOLUMEUP_LONG"    , "49", KEY_VOLUMEUP},
@@ -209,7 +209,7 @@ static tButton cButtonsADB_BOX_XMP[] =
 	{"KEY_PAGEDOWN"         , "20", KEY_PAGEDOWN},
 	{"KEY_DOWN"             , "21", KEY_DOWN},
 	{"KEY_MUTE"	        , "22", KEY_MUTE},
-	{"KEY_HOME"	        , "23", KEY_HOME},  // BACK
+	{"KEY_HOME"	        , "23", KEY_EXIT},  // BACK
 	{"KEY_TEXT"	        , "24", KEY_TEXT},
 	{"KEY_MENU"             , "25", KEY_MENU},  // AUDIO/SETUP
 	{"KEY_RED"	        , "26", KEY_RED},
@@ -255,7 +255,7 @@ static tButton cButtonsADB_BOX_XMP[] =
 	{"KEY_PAGEDOWN"         , "60", KEY_PAGEDOWN},
 	{"KEY_DOWN"             , "61", KEY_DOWN},
 	{"KEY_MUTE"	        , "62", KEY_MUTE},
-	{"KEY_HOME"	        , "63", KEY_HOME},  // BACK
+	{"KEY_HOME"	        , "63", KEY_EXIT},  // BACK
 	{"KEY_TEXT"	        , "64", KEY_TEXT},
 	{"KEY_MENU"             , "65", KEY_MENU},  // AUDIO/SETUP
 	{"KEY_RED"	        , "66", KEY_RED},

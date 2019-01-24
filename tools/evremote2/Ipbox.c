@@ -85,7 +85,7 @@ static tButton cButtonsSpideroxIpbox[] =
 	{"OK"             , "ef", KEY_OK},
 	{"MENU"           , "67", KEY_MENU},
 	{"EPG"            , "79", KEY_EPG},
-	{"EXIT"           , "df", KEY_HOME},
+	{"EXIT"           , "df", KEY_EXIT},
 	{"PAGEUP"         , "39", KEY_PAGEUP},
 	{"PAGEDOWN"       , "b9", KEY_PAGEDOWN},
 	{"CHANNELUP"      , "f7", KEY_CHANNELUP},
