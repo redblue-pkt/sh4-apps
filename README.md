@@ -1,4 +1,4 @@
-apps
-====
+SH4 Apps
+========
 
-Tools for Audionieks Duckbox Development Toolchain
+SH4 Tools for Open Vision
