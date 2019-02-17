@@ -71,7 +71,7 @@ static tButton cButtonUFS912[] =
 	{"STANDBY"        , "0C", KEY_POWER},
 	{"MUTE"           , "0D", KEY_MUTE},
 	{"CHANNELUP"      , "1E", KEY_CHANNELUP},
-	{"CHANNELDOWN"    , "1F", CHANNELDOWN},
+	{"CHANNELDOWN"    , "1F", KEY_CHANNELDOWN},
 	{"VOLUMEUP"       , "10", KEY_VOLUMEUP},
 	{"VOLUMEDOWN"     , "11", KEY_VOLUMEDOWN},
 	{"HELP"           , "81", KEY_HELP},
