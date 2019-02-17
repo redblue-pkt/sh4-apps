@@ -54,16 +54,16 @@ static tButton cButtonsSpideroxIpbox[] =
 	{"VIDEO"          , "f9", KEY_VIDEO},
 
 
-	{"0BUTTON"        , "8f", KEY_0},
-	{"1BUTTON"        , "3f", KEY_1},
-	{"2BUTTON"        , "bf", KEY_2},
-	{"3BUTTON"        , "7f", KEY_3},
-	{"4BUTTON"        , "1f", KEY_4},
-	{"5BUTTON"        , "9f", KEY_5},
-	{"6BUTTON"        , "5f", KEY_6},
-	{"7BUTTON"        , "2f", KEY_7},
-	{"8BUTTON"        , "af", KEY_8},
-	{"9BUTTON"        , "6f", KEY_9},
+	{"0"              , "8f", KEY_0},
+	{"1"              , "3f", KEY_1},
+	{"2"              , "bf", KEY_2},
+	{"3"              , "7f", KEY_3},
+	{"4"              , "1f", KEY_4},
+	{"5"              , "9f", KEY_5},
+	{"6"              , "5f", KEY_6},
+	{"7"              , "2f", KEY_7},
+	{"8"              , "af", KEY_8},
+	{"9"              , "6f", KEY_9},
 
 
 	{"INFO"           , "47", KEY_INFO},
