@@ -47,7 +47,7 @@ static tLongKeyPressSupport cLongKeyPressSupport =
 
 static tButton cButtonsTopfield7700HDPVR[] =
 {
-	{"STANDBY"        , "0A", KEY_POWER}, // This is the real power key, but sometimes we only get 0x0C FP
+	{"POWER"          , "0A", KEY_POWER}, // This is the real power key, but sometimes we only get 0x0C FP
 	{"MUTE"           , "0C", KEY_MUTE},
 
 	{"V.FORMAT"       , "42", KEY_ZOOM},

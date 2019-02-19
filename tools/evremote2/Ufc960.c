@@ -75,7 +75,7 @@ static tButton cButtonUFC960[] =
 	{"PAUSE"          , "39", KEY_PAUSE},
 	{"RECORD"         , "37", KEY_RECORD},
 	{"STOP"           , "31", KEY_STOP},
-	{"STANDBY"        , "0C", KEY_POWER},
+	{"POWER"          , "0C", KEY_POWER},
 	{"MUTE"           , "0D", KEY_MUTE},
 	{"CHANNELUP"      , "1E", KEY_CHANNELUP},
 	{"CHANNELDOWN"    , "1F", KEY_CHANNELDOWN},

@@ -65,7 +65,7 @@ static tButton cButtonCuberevo[] =
 	{"RECORD"         , "07", KEY_RECORD},
 	{"FAVORITES"      , "08", KEY_FAVORITES},
 	{"MEDIA"          , "09", KEY_MEDIA},   //fixme
-	{"STANDBY"        , "0A", KEY_POWER},
+	{"POWER"          , "0A", KEY_POWER},
 	{"KEY_F5"         , "0B", KEY_F5},
 	{"MUTE"           , "0C", KEY_MUTE},
 	{"ARCHIVE"        , "0D", KEY_ARCHIVE}, //fixme

@@ -47,7 +47,7 @@ static tLongKeyPressSupport cLongKeyPressSupport =
 /* Edision argus-vip2 RCU */
 static tButton cButtonsEdisionVip2[] =
 {
-	{"STANDBY"        , "f7", KEY_POWER},
+	{"POWER"          , "f7", KEY_POWER},
 	{"MUTE"           , "77", KEY_MUTE},
 	{"V.FORMAT"       , "e7", KEY_V},
 	{"AUX"            , "37", KEY_AUX},

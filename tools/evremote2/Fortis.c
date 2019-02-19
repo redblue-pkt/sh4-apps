@@ -70,7 +70,7 @@ static tButton cButtonFortis[] =
 	{"PAUSE"          , "07", KEY_PAUSE},
 	{"RECORD"         , "56", KEY_RECORD},
 	{"STOP"           , "54", KEY_STOP},
-	{"STANDBY"        , "0A", KEY_POWER},
+	{"POWER"          , "0A", KEY_POWER},
 	{"MUTE"           , "0C", KEY_MUTE},
 	{"CHANNELUP"      , "5E", KEY_CHANNELUP},
 	{"CHANNELDOWN"    , "5F", KEY_CHANNELDOWN},

@@ -47,7 +47,7 @@ static tButton cButtonsHomecast5101[] =
 	{"BLUE"           , "DF", KEY_BLUE},
 	{"EXIT"           , "6D", KEY_EXIT},
 	{"EPG"            , "9F", KEY_EPG},
-	{"STANDBY"        , "A7", KEY_POWER},
+	{"POWER"          , "A7", KEY_POWER},
 	{"MUTE"           , "8F", KEY_MUTE},
 	{"CHANNELUP"      , "0F", KEY_CHANNELUP},
 	{"CHANNELDOWN"    , "CF", KEY_CHANNELDOWN},
