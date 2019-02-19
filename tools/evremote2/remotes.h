@@ -9,7 +9,6 @@
 extern RemoteControl_t Ufs910_1W_RC;
 extern RemoteControl_t Ufs910_14W_RC;
 extern RemoteControl_t Tf7700_RC;
-extern RemoteControl_t Hl101_RC;
 extern RemoteControl_t Vip2_RC;
 extern RemoteControl_t UFS922_RC;
 extern RemoteControl_t UFC960_RC;
@@ -27,7 +26,6 @@ extern RemoteControl_t LircdName_RC;
 extern BoxRoutines_t Ufs910_1W_BR;
 extern BoxRoutines_t Ufs910_14W_BR;
 extern BoxRoutines_t Tf7700_BR;
-extern BoxRoutines_t Hl101_BR;
 extern BoxRoutines_t Vip2_BR;
 extern BoxRoutines_t UFS922_BR;
 extern BoxRoutines_t UFC960_BR;

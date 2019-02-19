@@ -454,10 +454,6 @@ int getModel()
 		{
 			vBoxType = Tf7700;
 		}
-		else if (!strncasecmp(vName, "hl101", 5))
-		{
-			vBoxType = Hl101;
-		}
 		else if (!strncasecmp(vName, "vip1-v2", 7))
 		{
 			vBoxType = Vip2;
