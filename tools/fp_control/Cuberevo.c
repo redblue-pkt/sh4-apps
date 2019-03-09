@@ -91,7 +91,7 @@ tArgs vCArgs[] =
 	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
 	{ "-t", "  --settext            ", "Args: text        Set text to frontpanel" },
-	{ "-l", "  --setLed             ", "Args: LED# int    LED#: int=brightness (0..31)" },
+	{ "-l", "  --setLed             ", "Args: LED# int    LED#: int=on,off,blink (0,1,2,3)" },
 	{ "-i", "  --setIcon            ", "Args: icon# 1|0   Set an icon on or off" },
 	{ "-b", "  --setBrightness      ", "Arg : 0..7        Set display brightness" },
 	{ "-led", "--setBrightness      ", "Arg : 0..255      Set LED brightness" },
@@ -197,11 +197,20 @@ static time_t getMicomTime(char* TimeString)
 	the_tm.tm_min  = min;
 	the_tm.tm_sec  = sec;
 	the_tm.tm_isdst = -1; // struct tm in local time, convert to UTC
+//	printf("Converted time: %02d:%02d:%02d %02d-%02d-20%02d (seconds ignored)\n", the_tm.tm_hour, the_tm.tm_min, the_tm.tm_sec, the_tm.tm_mday,
+//		the_tm.tm_mon + 1, the_tm.tm_year - 100);
 	convertedTime = mktime(&the_tm); // twice local due to mktime...
 	tz_time_local_tm = localtime(&convertedTime);
 	hour = tz_time_local_tm->tm_hour;
+	if (hour == 0)
+	{
+		hour = 24;
+	}
 	tz_time_utc_tm = gmtime(&convertedTime);
+//	printf("Converted time2: %02d:%02d:%02d %02d-%02d-20%02d (seconds ignored)\n", tz_time_utc_tm->tm_hour, tz_time_utc_tm->tm_min, tz_time_utc_tm->tm_sec, tz_time_utc_tm->tm_mday,
+//		tz_time_utc_tm->tm_mon + 1, tz_time_utc_tm->tm_year - 100);
 	convertedTime += ((hour - tz_time_utc_tm->tm_hour) * 3600); 
+//	printf("Addition: %d\n",  ((hour - tz_time_utc_tm->tm_hour) * 3600));
 	return convertedTime;
 }
 
@@ -288,8 +297,8 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 	time_t curTimeFP;
 	struct tm *ts_gmt;
 	int gmt_offset;
-//	int proc_fs;
-//	FILE *proc_fs_file;
+	int proc_fs;
+	FILE *proc_fs_file;
 
 	time(&curTime); // get system time in UTC
 	ts_gmt = gmtime(&curTime);
@@ -313,7 +322,6 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 	printf("Front panel time set to: %02d:%02d:%02d %02d-%02d-%04d (local)\n", ts_gmt->tm_hour, ts_gmt->tm_min, ts_gmt->tm_sec,
 		ts_gmt->tm_mday, ts_gmt->tm_mon + 1, ts_gmt->tm_year + 1900);
 
-#if 0 // No proc_fs yet
 	// write UTC offset to /proc/stb/fp/rtc_offset
 	proc_fs_file = fopen(cRTC_OFFSET_FILE, "w");
 	if (proc_fs_file == NULL)
@@ -329,7 +337,6 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 	}
 	fclose(proc_fs_file);
 	printf("Note: /proc/stb/fp/rtc_offset set to: %+d seconds.\n", gmt_offset);
-#endif
 	return 0; // ?? -> segmentation fault
 }
 
@@ -373,7 +380,8 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	{
 		/* shut down immedately */
 		printf("No timers set or 1st timer more than 300 days ahead,\nor all timer(s) in the past.\n");
-		wakeupTime = LONG_MAX;
+//		wakeupTime = 946684800u; // 00:00:00 01-01-2000 -> timer icon off
+		vData.u.wakeup_time.time[0] = '\0';
 	}
 	else // wake up time valid and in the coming 300 days
 	{
@@ -422,7 +430,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	setMicomTime(wakeupTime, vData.u.wakeup_time.time, 0); // ignore seconds
 	fflush(stdout);
 	fflush(stderr);
-	sleep(1);
+	sleep(2);
 	if (ioctl(context->fd, VFDSTANDBY, &vData) < 0)
 	{
 		perror("Shut down");
@@ -455,7 +463,7 @@ static int setWakeupTime(Context_t *context, time_t *theGMTTime)
 
 	if (ioctl(context->fd, VFDSETWAKEUPTIME_CUB, &vData) < 0)
 	{
-		perror("Set wake up time time");
+		perror("Set wake up time");
 		return -1;
 	}
 	return 0;
@@ -903,23 +911,24 @@ static int setLedBrightness(Context_t *context, int brightness)
 }
 
 #if defined MODEL_SPECIFIC
-static int modelSpecific(Context_t *context, char len, char *data)
+static int modelSpecific(Context_t *context, char len, unsigned char *data)
 {
 	//-ms command, not tested
 	int i, res;
-	char testdata[18];
+	unsigned char testdata[18];
 
-	testdata[0] = len; // set length
+	memset(testdata, 0, sizeof(testdata));
+	testdata[0] = 5; // set length (always 5)
 	
-	printf("nuvoton ioctl: VFDTEST (0x%08x) CMD=", VFDTEST);
-	for (i = 0; i < len; i++)
+	printf("micom ioctl: VFDTEST (0x%08x) CMD=", VFDTEST);
+	for (i = 1; i <= len; i++)
 	{
-		testdata[i + 1] = data[i];
-		printf("0x%02x ", data[i] & 0xff);
+		testdata[i] = data[i - 1] & 0xff;
+		printf("0x%02x ", testdata[i]);
 	}
-	printf("EOP\n");
+	printf("\n");
 
-	memset(data, 0, 9);
+	memset(data, 0, 18);
 
 //	setMode(context->fd); //set mode 1
 
