@@ -1,4 +1,4 @@
-﻿Patch taken from: 
+Patch taken from: 
 https://github.com/Taapat/vuplus-fulan-openpli-oe-core/blob/master/meta-openpli/recipes-multimedia/ffmpeg/ffmpeg/ffmpeg-fix-mpegts.patch
 Fix VIDEO_GET_PTS error in libeplayer3 intruduced in:
 http://git.videolan.org/gitweb.cgi/ffmpeg.git/?p=ffmpeg.git;a=commitdiff;h=14f7a3d55a43c1082ee1186a1990a431c641052d
