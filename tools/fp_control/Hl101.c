@@ -140,7 +140,7 @@ static int Hl101_getTime(Context_t *context, time_t *theGMTTime)
 	{
 //		fprintf(stderr, "Success reading time from fp\n");
 		/* current front controller time */
-		*theGMTTime = (time_t) getAotomTime(fp_time);
+		*theGMTTime = (time_t) Hl101_getAotomTime(fp_time);
 	}
 	else
 	{
