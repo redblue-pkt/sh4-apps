@@ -222,6 +222,7 @@ GST_STATIC_PAD_TEMPLATE ( \
 
 // FIRST GENERATION
 static GstStaticPadTemplate sink_factory_stm_stx7100 = SINK_FACTORY_STM_BASE_EXTENDED;
+static GstStaticPadTemplate sink_factory_stm_stxh205 = SINK_FACTORY_STM_BASE_EXTENDED;
 static GstStaticPadTemplate sink_factory_stm_stx7101 = SINK_FACTORY_STM_BASE_EXTENDED;
 static GstStaticPadTemplate sink_factory_stm_stx7109 = SINK_FACTORY_STM_BASE_EXTENDED;
 
@@ -266,11 +267,10 @@ static gint64               gst_dvbaudiosink_get_decoder_time (GstDVBAudioSink *
 #define PES_MAX_HEADER_SIZE 64
 
 typedef enum {  HW_UNKNOWN, 
-				DM7025, DM800, DM8000, DM500HD, DM800SE, DM7020HD, 
-				STX7100, STX7101, STX7109, STX7105, STX7111, STX7106, STX7108 
+				STX7100, STXH205, STX7101, STX7109, STX7105, STX7111, STX7106, STX7108 
 } hardware_type_t;
 
-typedef enum { PF_UNKNOWN, DM, HAVANA } platform_type_t;
+typedef enum { PF_UNKNOWN, HAVANA } platform_type_t;
 
 static hardware_type_t hwtype = HW_UNKNOWN;
 static platform_type_t pftype = PF_UNKNOWN;
@@ -336,7 +336,7 @@ gst_dvbaudiosink_base_init (gpointer klass)
 
 	//gst_debug_set_active(TRUE);
 
-	int fd = open("/proc/stb/info/model", O_RDONLY);
+	int fd = open("/etc/model", O_RDONLY);
 	if ( fd > 0 )
 	{
 		gchar string[9] = { 0, };
@@ -344,48 +344,6 @@ gst_dvbaudiosink_base_init (gpointer klass)
 		if ( rd >= 5 )
 		{
 			string[rd] = 0;
-			if ( !strncasecmp(string, "DM7025", 6) ) {
-				pftype = DM;
-				hwtype = DM7025;
-				GST_INFO ("model is DM7025 set ati xilleon caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_ati_xilleon));
-			}
-			else if ( !strncasecmp(string, "DM8000", 6) ) {
-				pftype = DM;
-				hwtype = DM8000;
-				GST_INFO ("model is DM8000 set broadcom dts caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_broadcom_dts));
-			}
-			else if ( !strncasecmp(string, "DM800SE", 7) ) {
-				pftype = DM;
-				hwtype = DM800SE;
-				GST_INFO ("model is DM800SE set broadcom dts caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_broadcom_dts));
-			}
-			else if ( !strncasecmp(string, "DM7020HD", 8) ) {
-				pftype = DM;
-				hwtype = DM7020HD;
-				GST_INFO ("model is DM7020HD set broadcom dts caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_broadcom_dts));
-			}
-			else if ( !strncasecmp(string, "DM800", 5) ) {
-				pftype = DM;
-				hwtype = DM800;
-				GST_INFO ("model is DM800 set broadcom caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_broadcom));
-			}
-			else if ( !strncasecmp(string, "DM500HD", 7) ) {
-				pftype = DM;
-				hwtype = DM500HD;
-				GST_INFO ("model is DM500HD set broadcom dts caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_broadcom_dts));
-			}
 		}
 		close(fd);
 	}
@@ -418,6 +376,13 @@ gst_dvbaudiosink_base_init (gpointer klass)
 			GST_INFO ("setting STX7100 caps");
 			gst_element_class_add_pad_template (element_class,
 				gst_static_pad_template_get (&sink_factory_stm_stx7100));
+		}
+		else if(!strncasecmp(processor, "STXH205", 7)) {
+			pftype = HAVANA;
+			hwtype = STXH205;
+			GST_INFO ("setting STXH205 caps");
+			gst_element_class_add_pad_template (element_class,
+				gst_static_pad_template_get (&sink_factory_stm_stxh205));
 		}
 		else if(!strncasecmp(processor, "STX7101", 7)) {
 			pftype = HAVANA;
@@ -1166,20 +1131,6 @@ gst_dvbaudiosink_event (GstBaseSink * sink, GstEvent * event)
 		gst_event_parse_new_segment_full (event, &update, &rate, &applied_rate,	&fmt, &cur, &stop, &time);
 		GST_DEBUG_OBJECT (self, "GST_EVENT_NEWSEGMENT rate=%f applied_rate=%f\n", rate, applied_rate);
 
-		if (pftype == DM) //TODO: What is the purpose of this code?
-		{
-			int video_fd = open("/dev/dvb/adapter0/video0", O_RDWR);
-			if (fmt == GST_FORMAT_TIME) {
-				if ( rate > 1 )
-					skip = (int) rate;
-				else if ( rate < 1 )
-					repeat = 1.0/rate;
-				ret = ioctl(video_fd, VIDEO_SLOWMOTION, repeat);
-				ret = ioctl(video_fd, VIDEO_FAST_FORWARD, skip);
-				//gst_segment_set_newsegment_full (&dec->segment, update, rate, applied_rate, dformat, cur, stop, time);
-			}
-			close(video_fd);
-		}
 		break;
 	}
 
@@ -1379,21 +1330,6 @@ buildPesHeader(unsigned char *data, int size, unsigned long long int timestamp, 
 		pes_header[13] = 0x01 | ((pts << 1) & 0xFE);
 
 		pes_header_size = 14;
-
-		if (hwtype == DM7025) {  // DM7025 needs DTS in PES header
-			int64_t dts = pts; // what to use as DTS-PTS offset?
-			pes_header[7] = 0xC0;
-			pes_header[8] = 0x0A;
-			pes_header[9] |= 0x10;
-
-			pes_header[14] = 0x11 | ((dts >> 29) & 0x0E);
-			pes_header[15] = dts >> 22;
-			pes_header[16] = 0x01 | ((dts >> 14) & 0xFE);
-			pes_header[17] = dts >> 7;
-			pes_header[18] = 0x01 | ((dts << 1) & 0xFE);
-
-			pes_header_size = 19;
-		}
 	}
 
 	pes_header[4] = (size + pes_header_size - 6) >> 8;
@@ -1768,20 +1704,6 @@ gst_dvbaudiosink_stop (GstBaseSink * basesink)
 	GST_DEBUG_OBJECT (self, "stop");
 
 	if (self->fd >= 0) {
-		if (pftype == DM) //TODO: What is the purpose of this code?
-		{
-			int video_fd = open("/dev/dvb/adapter0/video0", O_RDWR);
-
-			ioctl (self->fd, AUDIO_STOP);
-			ioctl (self->fd, AUDIO_SELECT_SOURCE, AUDIO_SOURCE_DEMUX);
-
-			//TODO: This seems to me like a hack?!
-			if ( video_fd > 0 ) {
-				ioctl (video_fd, VIDEO_SLOWMOTION, 0);
-				ioctl (video_fd, VIDEO_FAST_FORWARD, 0);
-				close (video_fd);
-			}
-		}
 		close (self->fd);
 	}
 

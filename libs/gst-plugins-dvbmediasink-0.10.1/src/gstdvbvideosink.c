@@ -252,6 +252,7 @@ GST_STATIC_PAD_TEMPLATE ( \
 //TODO: All but 7100 and 7101 have wmv and vc1 capability. Need to add it
 // FIRST GENERATION
 static GstStaticPadTemplate sink_factory_stm_stx7100 = SINK_FACTORY_STM_BASE;
+static GstStaticPadTemplate sink_factory_stm_stxh205 = SINK_FACTORY_STM_BASE_EXTENDED;
 static GstStaticPadTemplate sink_factory_stm_stx7101 = SINK_FACTORY_STM_BASE;
 static GstStaticPadTemplate sink_factory_stm_stx7109 = SINK_FACTORY_STM_BASE_EXTENDED;
 
@@ -283,11 +284,10 @@ static gint64               gst_dvbvideosink_get_decoder_time (GstDVBVideoSink *
 #define PES_MAX_HEADER_SIZE 64
 
 typedef enum {  HW_UNKNOWN, 
-				DM7025, DM800, DM8000, DM500HD, DM800SE, DM7020HD, 
-				STX7100, STX7101, STX7109, STX7105, STX7111, STX7106, STX7108 
+				STX7100, STXH205, STX7101, STX7109, STX7105, STX7111, STX7106, STX7108 
 } hardware_type_t;
 
-typedef enum { PF_UNKNOWN, DM, HAVANA } platform_type_t;
+typedef enum { PF_UNKNOWN, HAVANA } platform_type_t;
 
 static hardware_type_t hwtype = HW_UNKNOWN;
 static platform_type_t pftype = PF_UNKNOWN;
@@ -357,51 +357,12 @@ gst_dvbvideosink_base_init (gpointer klass)
 	};
 	GstElementClass *element_class = GST_ELEMENT_CLASS (klass);
 
-	int fd = open("/proc/stb/info/model", O_RDONLY);
+	int fd = open("/etc/model", O_RDONLY);
 	if ( fd > 0 )
 	{
 		gchar string[9] = { 0, };
 		ssize_t rd = read(fd, string, 8);
 		if ( rd >= 5 )
-		{
-			if ( !strncasecmp(string, "DM7025", 6) ) {
-				hwtype = DM7025;
-				pftype = DM;
-				GST_INFO ("model is DM7025... set ati xilleon caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_ati_xilleon));
-			} else if ( !strncasecmp(string, "DM500HD", 7) ) {
-				hwtype = DM500HD;
-				pftype = DM;
-				GST_INFO ("model is DM500HD... set bcm7405 caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_bcm7405));
-			} else if ( !strncasecmp(string, "DM800SE", 7) ) {
-				hwtype = DM800SE;
-				pftype = DM;
-				GST_INFO ("model is DM800SE... set bcm7405 caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_bcm7405));
-			} else if ( !strncasecmp(string, "DM7020HD", 8) ) {
-				hwtype = DM7020HD;
-				pftype = DM;
-				GST_INFO ("model is DM7020HD... set bcm7405 caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_bcm7405));
-			} else if ( !strncasecmp(string, "DM8000", 6) ) {
-				hwtype = DM8000;
-				pftype = DM;
-				GST_INFO ("model is DM8000... set bcm7400 caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_bcm7400));
-			} else if ( !strncasecmp(string, "DM800", 5) ) {
-				hwtype = DM800;
-				pftype = DM;
-				GST_INFO ("model is DM800 set bcm7401 caps");
-				gst_element_class_add_pad_template (element_class,
-					gst_static_pad_template_get (&sink_factory_bcm7401));
-			}
-		}
 		close(fd);
 	}
 
@@ -433,6 +394,13 @@ gst_dvbvideosink_base_init (gpointer klass)
 			GST_INFO ("setting STX7100 caps");
 			gst_element_class_add_pad_template (element_class,
 				gst_static_pad_template_get (&sink_factory_stm_stx7100));
+		}
+		else if(!strncasecmp(processor, "STXH205", 7)) {
+			pftype = HAVANA;
+			hwtype = STXH205;
+			GST_INFO ("setting STXH205 caps");
+			gst_element_class_add_pad_template (element_class,
+				gst_static_pad_template_get (&sink_factory_stm_stxh205));
 		}
 		else if(!strncasecmp(processor, "STX7101", 7)) {
 			pftype = HAVANA;
@@ -691,8 +659,6 @@ gst_dvbvideosink_event (GstBaseSink * sink, GstEvent * event)
 		ioctl(self->fd, VIDEO_CLEAR_BUFFER);
 		GST_OBJECT_LOCK(self);
 		self->must_send_header = 1;
-		if (hwtype == DM7025)
-			++self->must_send_header;  // we must send the sequence header twice on dm7025... 
 		while (self->queue)
 			queue_pop(&self->queue);
 		self->no_write &= ~1;
@@ -1329,8 +1295,6 @@ write_error:
 		return GST_FLOW_ERROR;
 	}
 	self->must_send_header = 1;
-	if (hwtype == DM7025)
-		++self->must_send_header;  // we must send the sequence header twice on dm7025...
 }
 
 static gboolean 

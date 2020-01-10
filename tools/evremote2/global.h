@@ -14,23 +14,25 @@
 
 typedef enum
 {
-	Unknown,        //  0
-	Ufs910_1W,      //  1
-	Ufs910_14W,     //  2
-	Ufs922,         //  3
-	Ufc960,         //  4
-	Tf7700,         //  5
-	Vip2,           //  6
-	Fortis,         //  7
-	Hs5101,         //  8
-	Ufs912,         //  9
-	Spark,          // 10
-	Cuberevo,       // 11
-	Adb_Box,        // 12
-	Ipbox,          // 13
-	CNBox,          // 14
-	VitaminHD5000,  // 15
-	LircdName       // 16
+	Unknown,        // 0
+	Ufs910_1W,      // 1
+	Ufs910_14W,     // 2
+	Ufs922,         // 3
+	Ufc960,         // 4
+	Tf7700,         // 5
+	Hl101,          // 6
+	Vip2,           // 7
+	Fortis,         // 8
+	Fortis_4G,      // 9
+	Hs5101,         // 10
+	Ufs912,         // 11
+	Spark,          // 12
+	Cuberevo,       // 13
+	Adb_Box,        // 14
+	Ipbox,          // 15
+	CNBox,          // 16
+	VitaminHD5000,  // 17
+	LircdName       // 18
 } eBoxType;
 
 typedef enum

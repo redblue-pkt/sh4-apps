@@ -285,7 +285,7 @@ int main(int argc, char **argv)
 
 	if (stb_type == UNKNOWN)
 	{
-		FILE *file = fopen("/proc/stb/info/model", "r");
+		FILE *file = fopen("/etc/model", "r");
 		if (file)
 		{
 			char buf[32];

@@ -1458,7 +1458,7 @@ int getModel()
 	printf("%s::%s\n", FILENAME, __FUNCTION__);
 #endif
 
-	vFd = open("/proc/stb/info/model", O_RDONLY);
+	vFd = open("/etc/model", O_RDONLY);
 	vLen = read(vFd, vName, cSize);
 
 	close(vFd);
@@ -1488,9 +1488,9 @@ int getModel()
 		}
 		else if (!strncasecmp(vName, "ufs922", 6))
 			vBoxType = Ufs922;
-		else if (!strncasecmp(vName, "tf7700hdpvr", 11))
+		else if (!strncasecmp(vName, "tf7700", 11))
 			vBoxType = Tf7700;
-		else if (!strncasecmp(vName, "hdbox", 5))
+		else if (!strncasecmp(vName, "fortis_hdbox", 5))
 			vBoxType = HdBox;
 		else
 			vBoxType = Unknown;

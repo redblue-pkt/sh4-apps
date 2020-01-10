@@ -717,7 +717,7 @@ int getModel()
 	int vLen = -1;
 	eBoxType vBoxType = Unknown;
 
-	vFd = open("/proc/stb/info/model", O_RDONLY);
+	vFd = open("/etc/model", O_RDONLY);
 	vLen = read(vFd, vName, cSize);
 	close(vFd);
 
@@ -761,7 +761,7 @@ int getModel()
 		{
 			vBoxType = Ufs912;
 		}
-		else if (!strncasecmp(vName, "tf7700hdpvr", 11))
+		else if (!strncasecmp(vName, "tf7700", 11))
 		{
 			vBoxType = Tf7700;
 		}
@@ -769,15 +769,15 @@ int getModel()
 		{
 			vBoxType = Hl101;
 		}
-		else if (!strncasecmp(vName, "vip1-v2", 7))
+		else if (!strncasecmp(vName, "vip1_v2", 7))
 		{
 			vBoxType = Vip2;
 		}
-		else if (!strncasecmp(vName, "vip2-v1", 7))
+		else if (!strncasecmp(vName, "vip2_v1", 7))
 		{
 			vBoxType = Vip2;
 		}
-		else if ((!strncasecmp(vName, "hdbox", 5)) || (!strncasecmp(vName, "octagon1008", 11)) || (!strncasecmp(vName, "atevio7500", 10)) || (!strncasecmp(vName, "hs7110", 6)) || (!strncasecmp(vName, "hs7420", 6)) || (!strncasecmp(vName, "hs7810a", 7)) || (!strncasecmp(vName, "hs7119", 6)) || (!strncasecmp(vName, "hs7429", 6)) || (!strncasecmp(vName, "hs7819", 6)))
+		else if ((!strncasecmp(vName, "fortis_hdbox", 5)) || (!strncasecmp(vName, "octagon1008", 11)) || (!strncasecmp(vName, "atevio7500", 10)) || (!strncasecmp(vName, "hs7110", 6)) || (!strncasecmp(vName, "hs7420", 6)) || (!strncasecmp(vName, "hs7810a", 7)) || (!strncasecmp(vName, "hs7119", 6)) || (!strncasecmp(vName, "hs7429", 6)) || (!strncasecmp(vName, "hs7819", 6)))
 		{
 			vBoxType = Fortis;
 		}
@@ -797,7 +797,7 @@ int getModel()
 		{
 			vBoxType = Adb_Box;
 		}
-		else if ((!strncasecmp(vName, "cuberevo", 8)) || (!strncasecmp(vName, "cuberevo-mini", 13)) || (!strncasecmp(vName, "cuberevo-mini2", 14)) || (!strncasecmp(vName, "cuberevo-mini-fta", 17)) || (!strncasecmp(vName, "cuberevo-250hd", 14)) || (!strncasecmp(vName, "cuberevo-2000hd", 15)) || (!strncasecmp(vName, "cuberevo-9500hd", 15)) || (!strncasecmp(vName, "cuberevo-3000hd", 14)))
+		else if ((!strncasecmp(vName, "cuberevo", 8)) || (!strncasecmp(vName, "cuberevo_mini", 13)) || (!strncasecmp(vName, "cuberevo_mini2", 14)) || (!strncasecmp(vName, "cuberevo_mini_fta", 17)) || (!strncasecmp(vName, "cuberevo_250hd", 14)) || (!strncasecmp(vName, "cuberevo_2000hd", 15)) || (!strncasecmp(vName, "cuberevo_9500hd", 15)) || (!strncasecmp(vName, "cuberevo_3000hd", 14)))
 		{
 			vBoxType = Cuberevo;
 		}
