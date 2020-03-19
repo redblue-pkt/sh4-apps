@@ -1,0 +1,22 @@
+ACLOCAL_AMFLAGS = -I m4
+
+#bin_PROGRAMS = stapi_init stapi_deinit
+bin_PROGRAMS = stapi_init
+
+stapi_init_SOURCES = stapi_init.c
+#stapi_deinit_SOURCES = stapi_deinit.c
+
+AM_CFLAGS = -Wall
+AM_CFLAGS += -I$(srcdir)/include/apilib
+AM_CFLAGS += -I$(srcdir)/include/stapp
+AM_CFLAGS += -DARCHITECTURE_ST40
+AM_CFLAGS += -DST_H205
+AM_CFLAGS += -DST_OSLINUX
+AM_CFLAGS += -DDISPLAY_SD=D_PAL
+AM_CFLAGS += -DTESTTOOL_UART_ID=1
+AM_CFLAGS += -DDVD_TRANSPORT_STPTI5
+AM_CFLAGS += -DMODULE
+AM_CFLAGS += -DGUI=0
+AM_CFLAGS += -DDVD_FRONTEND_TUNER=NIM_913_6111
+AM_CFLAGS += -DRUN_FROM_FLASH
+AM_CFLAGS += -DDEBUG=1

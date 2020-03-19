@@ -35,7 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* Software version of fp_control, please increase on every change */
-static const char *sw_version = "1.11Audioniek 20190814.1";
+static const char *sw_version = "1.11Audioniek 20200317.1";
 static eWakeupReason reason = 0;
 
 typedef struct
@@ -777,7 +777,7 @@ int getModel()
 		{
 			vBoxType = Vip2;
 		}
-		else if ((!strncasecmp(vName, "fortis_hdbox", 5)) || (!strncasecmp(vName, "octagon1008", 11)) || (!strncasecmp(vName, "atevio7500", 10)) || (!strncasecmp(vName, "hs7110", 6)) || (!strncasecmp(vName, "hs7420", 6)) || (!strncasecmp(vName, "hs7810a", 7)) || (!strncasecmp(vName, "hs7119", 6)) || (!strncasecmp(vName, "hs7429", 6)) || (!strncasecmp(vName, "hs7819", 6)))
+		else if ((!strncasecmp(vName, "fortis_hdbox", 5)) || (!strncasecmp(vName, "octagon1008", 11)) || (!strncasecmp(vName, "atevio7500", 10)) || (!strncasecmp(vName, "hs7110", 6)) || (!strncasecmp(vName, "hs7420", 6)) || (!strncasecmp(vName, "hs7810a", 7)) || (!strncasecmp(vName, "hs7119", 6)) || (!strncasecmp(vName, "hs7429", 6)) || (!strncasecmp(vName, "hs7819", 6)) || (!strncasecmp(vName, "forever_3434hd", 6)) || (!strncasecmp(vName, "forever_nanosmart", 6)) || (!strncasecmp(vName, "fx6010", 6)) || (!strncasecmp(vName, "forever_9898hd", 6)) || (!strncasecmp(vName, "dp7001", 6)) || (!strncasecmp(vName, "forever_2424hd", 6)) || (!strncasecmp(vName, "ep8000", 6)) || (!strncasecmp(vName, "epp8000", 7)) || (!strncasecmp(vName, "gpv8000", 7)))
 		{
 			vBoxType = Fortis;
 		}

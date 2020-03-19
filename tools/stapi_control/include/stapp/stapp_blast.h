@@ -1,0 +1,1062 @@
+/*****************************************************************************/
+/* COPYRIGHT (C) 2009 STMicroelectronics - All Rights Reserved               */
+/* ST makes no warranty express or implied including but not limited to,     */
+/* any warranty of                                                           */
+/*                                                                           */
+/*   (i)  merchantability or fitness for a particular purpose and/or         */
+/*   (ii) requirements, for a particular purpose in relation to the LICENSED */
+/*        MATERIALS, which is provided AS IS, WITH ALL FAULTS. ST does not   */
+/*        represent or warrant that the LICENSED MATERIALS provided here     */
+/*        under is free of infringement of any third party patents,          */
+/*        copyrights, trade secrets or other intellectual property rights.   */
+/*        ALL WARRANTIES, CONDITIONS OR OTHER TERMS IMPLIED BY LAW ARE       */
+/*        EXCLUDED TO THE FULLEST EXTENT PERMITTED BY LAW                    */
+/*                                                                           */
+/*****************************************************************************/
+/**
+ * @file     stapp_blast.h
+ * @brief    This is the infra-red/uhf file header.
+ *           It is used for remote control access and ir/uhf services api.
+ * @author   STMicroelectronics
+ */
+
+#ifndef _STAPP_BLAST_H_
+#define _STAPP_BLAST_H_
+
+/* C++ support */
+/* ----------- */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Constants */
+/* --------- */
+#if defined(cab5197)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(sat5189)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(sat7111)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(adi7108)
+#define BLAST_MAX_NUMBER 1
+#if defined(SDK_BOOTLOADER)
+#define BLAST_PROTOCOL_USER_003
+#else
+#define BLAST_PROTOCOL_USER_003
+#endif
+#endif
+#if defined(hdk5251)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hdk5289)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hdk7108)
+#define BLAST_MAX_NUMBER 1
+#if defined(SDK_BOOTLOADER)
+#define BLAST_PROTOCOL_USER_003
+#else
+#define BLAST_PROTOCOL_USER_001
+#endif
+#endif
+#if defined(hdk7111)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(b2069)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(b2039)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(b2057)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_MULTIPLE_USER001
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(b2064)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(ep8000)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(epp8000)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(gpv8000)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(b2067)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(dp2010)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(dp7000)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(dp7001)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(dp7050)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(fx6010)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(b2075)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_MULTIPLE_USER001
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(b2076)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(mb618)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb628)
+#define BLAST_MAX_NUMBER 2
+#define BLAST_PROTOCOL_XMP_001
+#define BLAST_PROTOCOL_UHF_001
+#endif
+#if defined(mb628e)
+#define BLAST_MAX_NUMBER 2
+#define BLAST_PROTOCOL_USER_001
+#define BLAST_PROTOCOL_UHF_001
+#endif
+#if defined(eud7141)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hdkh225)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb676)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb680)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb704)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb796)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb837)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(mb903)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(b2066)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hmp7105)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_RC5_001
+#endif
+#if defined(sdk7105)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(kourou)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(isdb7102)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(iptv7105)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(b2068)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hdk7167)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(ngb7167)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(hdk7197)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(hdkh251)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_003
+#endif
+#if defined(dtt5267)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(b2049)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom001030)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom001034)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_RC5_001
+#endif
+#if defined(custom001035)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_XMP_001
+#endif
+#if defined(custom001036)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom001039)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_RC5_001
+#endif
+#if defined(custom002005)
+/* No blast support */
+#endif
+#if defined(custom002006)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom002007)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom002008)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom003008)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom003009)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom003011)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom003012)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom003015)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_004
+#endif
+#if defined(custom003018)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_XMP_001
+#endif
+#if defined(custom018001)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+#if defined(custom021001)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_XMP_001
+#endif
+#if defined(custom022001)
+#define BLAST_MAX_NUMBER 1
+#define BLAST_PROTOCOL_USER_001
+#endif
+
+/* Includes */
+/* -------- */
+#if defined(BLAST_MAX_NUMBER)
+#include "stblast.h"
+#endif
+
+/* Key declaration */
+/* --------------- */
+#if defined(BLAST_MAX_NUMBER)
+#if defined(BLAST_PROTOCOL_USER_001)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00000070,
+ BLAST_0_KEY_POWER         = 0x000000F0,
+ BLAST_0_KEY_EXIT          = 0x000000A8,
+ BLAST_0_KEY_CH_PLUS       = 0x00000050,
+ BLAST_0_KEY_CH_MINUS      = 0x000000D0,
+ BLAST_0_KEY_VOL_PLUS      = 0x00000030,
+ BLAST_0_KEY_VOL_MINUS     = 0x000000B0,
+ BLAST_0_KEY_OK            = 0x00000098,
+ BLAST_0_KEY_FAV           = 0x00000004,
+ BLAST_0_KEY_MENU          = 0x00000088,
+ BLAST_0_KEY_TEXT          = 0x00000068,
+ BLAST_0_KEY_0             = 0x00000090,
+ BLAST_0_KEY_1             = 0x00000000,
+ BLAST_0_KEY_2             = 0x00000080,
+ BLAST_0_KEY_3             = 0x00000040,
+ BLAST_0_KEY_4             = 0x000000C0,
+ BLAST_0_KEY_5             = 0x00000020,
+ BLAST_0_KEY_6             = 0x000000A0,
+ BLAST_0_KEY_7             = 0x00000060,
+ BLAST_0_KEY_8             = 0x000000E0,
+ BLAST_0_KEY_9             = 0x00000010,
+ BLAST_0_KEY_INFO          = 0x00000038,
+ BLAST_0_KEY_UP            = 0x000000D8,
+ BLAST_0_KEY_DOWN          = 0x000000B8,
+ BLAST_0_KEY_LEFT          = 0x7FFF0001,
+ BLAST_0_KEY_RIGHT         = 0x7FFF0002,
+ BLAST_0_KEY_PGUP          = 0x7FFF0003,
+ BLAST_0_KEY_PGDOWN        = 0x7FFF0004,
+ BLAST_0_KEY_PLAY          = 0x000000C4,
+ BLAST_0_KEY_STOP          = 0x00000064,
+ BLAST_0_KEY_PAUSE         = 0x00000084,
+ BLAST_0_KEY_RECORD        = 0x000000A4,
+ BLAST_0_KEY_BACKWARD      = 0x00000044,
+ BLAST_0_KEY_FORWARD       = 0x00000024,
+ BLAST_0_KEY_A             = 0x000000F8,
+ BLAST_0_KEY_B             = 0x00000054,
+ BLAST_0_KEY_C             = 0x7FFF0005,
+ BLAST_0_KEY_EPG           = 0x000000C8,
+ BLAST_0_KEY_BACK          = 0x00000048,
+ BLAST_0_KEY_RED           = 0x000000E8,
+ BLAST_0_KEY_GREEN         = 0x00000008,
+ BLAST_0_KEY_YELLOW        = 0x00000028,
+ BLAST_0_KEY_BLUE          = 0x00000078,
+ BLAST_0_KEY_AUDIO         = 0x000000E4,
+ BLAST_0_KEY_HDD           = 0x00000014,
+ BLAST_0_KEY_DVD           = 0x00000094,
+ BLAST_0_KEY_HELP          = 0x7FFF0006,
+ BLAST_0_KEY_LAST          = 0x7FFF0007,
+ BLAST_0_KEY_INPUT         = 0x7FFF0008,
+ BLAST_0_KEY_ENTER         = 0x7FFF0009,
+ BLAST_0_KEY_GUIDE         = 0x7FFF000A,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x7FFF000B,
+ BLAST_0_KEY_PIP_SWAP      = 0x7FFF000C,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF000D,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF000E,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF000F,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0010,
+ BLAST_0_KEY_LIVE          = 0x7FFF0011,
+ BLAST_0_KEY_POWER_B       = 0x7FFF0012,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF0013,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF0014,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF0015,
+ BLAST_0_KEY_REPLAY        = 0x7FFF0016,
+ BLAST_0_KEY_LIST          = 0x7FFF0017,
+ BLAST_0_KEY_SELECT        = 0x7FFF0018,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0019,
+ BLAST_0_KEY_FORMAT        = 0x7FFF001A,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF001B,
+ BLAST_0_KEY_WIDE          = 0x7FFF001C,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF001D,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF001E,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF001F,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF0020,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF0021,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF0022
+};
+#endif
+#if defined(BLAST_PROTOCOL_USER_002)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00000070,
+ BLAST_0_KEY_POWER         = 0x000000F0,
+ BLAST_0_KEY_EXIT          = 0x000000A8,
+ BLAST_0_KEY_CH_PLUS       = 0x00000050,
+ BLAST_0_KEY_CH_MINUS      = 0x000000D0,
+ BLAST_0_KEY_VOL_PLUS      = 0x00000030,
+ BLAST_0_KEY_VOL_MINUS     = 0x000000B0,
+ BLAST_0_KEY_OK            = 0x00000098,
+ BLAST_0_KEY_FAV           = 0x00000004,
+ BLAST_0_KEY_MENU          = 0x00000088,
+ BLAST_0_KEY_TEXT          = 0x00000068,
+ BLAST_0_KEY_0             = 0x00000090,
+ BLAST_0_KEY_1             = 0x00000000,
+ BLAST_0_KEY_2             = 0x00000080,
+ BLAST_0_KEY_3             = 0x00000040,
+ BLAST_0_KEY_4             = 0x000000C0,
+ BLAST_0_KEY_5             = 0x00000020,
+ BLAST_0_KEY_6             = 0x000000A0,
+ BLAST_0_KEY_7             = 0x00000060,
+ BLAST_0_KEY_8             = 0x000000E0,
+ BLAST_0_KEY_9             = 0x00000010,
+ BLAST_0_KEY_INFO          = 0x00000038,
+ BLAST_0_KEY_UP            = 0x000000D8,
+ BLAST_0_KEY_DOWN          = 0x000000B8,
+ BLAST_0_KEY_LEFT          = 0x7FFF0001,
+ BLAST_0_KEY_RIGHT         = 0x7FFF0002,
+ BLAST_0_KEY_PGUP          = 0x7FFF0003,
+ BLAST_0_KEY_PGDOWN        = 0x7FFF0004,
+ BLAST_0_KEY_PLAY          = 0x000000C4,
+ BLAST_0_KEY_STOP          = 0x00000064,
+ BLAST_0_KEY_PAUSE         = 0x00000084,
+ BLAST_0_KEY_RECORD        = 0x000000A4,
+ BLAST_0_KEY_BACKWARD      = 0x00000044,
+ BLAST_0_KEY_FORWARD       = 0x00000024,
+ BLAST_0_KEY_A             = 0x000000F8,
+ BLAST_0_KEY_B             = 0x00000054,
+ BLAST_0_KEY_C             = 0x7FFF0005,
+ BLAST_0_KEY_EPG           = 0x000000C8,
+ BLAST_0_KEY_BACK          = 0x00000048,
+ BLAST_0_KEY_RED           = 0x000000E8,
+ BLAST_0_KEY_GREEN         = 0x00000008,
+ BLAST_0_KEY_YELLOW        = 0x00000028,
+ BLAST_0_KEY_BLUE          = 0x00000078,
+ BLAST_0_KEY_AUDIO         = 0x000000E4,
+ BLAST_0_KEY_HDD           = 0x00000014,
+ BLAST_0_KEY_DVD           = 0x00000094,
+ BLAST_0_KEY_HELP          = 0x7FFF0006,
+ BLAST_0_KEY_LAST          = 0x7FFF0007,
+ BLAST_0_KEY_INPUT         = 0x7FFF0008,
+ BLAST_0_KEY_ENTER         = 0x7FFF0009,
+ BLAST_0_KEY_GUIDE         = 0x7FFF000A,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x7FFF000B,
+ BLAST_0_KEY_PIP_SWAP      = 0x7FFF000C,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF000D,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF000E,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF000F,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0010,
+ BLAST_0_KEY_LIVE          = 0x7FFF0011,
+ BLAST_0_KEY_POWER_B       = 0x7FFF0012,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF0013,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF0014,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF0015,
+ BLAST_0_KEY_REPLAY        = 0x7FFF0016,
+ BLAST_0_KEY_LIST          = 0x7FFF0017,
+ BLAST_0_KEY_SELECT        = 0x7FFF0018,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0019,
+ BLAST_0_KEY_FORMAT        = 0x7FFF001A,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF001B,
+ BLAST_0_KEY_WIDE          = 0x7FFF001C,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF001D,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF001E,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF001F,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF0020,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF0021,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF0022
+};
+#endif
+#if defined(BLAST_PROTOCOL_USER_003)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00FE28D7,
+ BLAST_0_KEY_POWER         = 0x00FE00FF,
+ BLAST_0_KEY_EXIT          = 0x00FE20DF,
+ BLAST_0_KEY_CH_PLUS       = 0x00FE12ED,
+ BLAST_0_KEY_CH_MINUS      = 0x00FE4AB5,
+ BLAST_0_KEY_VOL_PLUS      = 0x00FE22DD,
+ BLAST_0_KEY_VOL_MINUS     = 0x00FE8A75,
+ BLAST_0_KEY_OK            = 0x00FE10EF,
+ BLAST_0_KEY_FAV           = 0x00FE7887,
+ BLAST_0_KEY_MENU          = 0x00FE9867,
+ BLAST_0_KEY_TEXT          = 0x00FEF00F,
+ BLAST_0_KEY_0             = 0x00FE708F,
+ BLAST_0_KEY_1             = 0x00FEC03F,
+ BLAST_0_KEY_2             = 0x00FE40bF,
+ BLAST_0_KEY_3             = 0x00FE807F,
+ BLAST_0_KEY_4             = 0x00FEE01F,
+ BLAST_0_KEY_5             = 0x00FE609F,
+ BLAST_0_KEY_6             = 0x00FEA05F,
+ BLAST_0_KEY_7             = 0x00FED02F,
+ BLAST_0_KEY_8             = 0x00FE50AF,
+ BLAST_0_KEY_9             = 0x00FE906F,
+ BLAST_0_KEY_INFO          = 0x00FE38C7,
+ BLAST_0_KEY_UP            = 0x00FE58A7,
+ BLAST_0_KEY_DOWN          = 0x00FED827,
+ BLAST_0_KEY_LEFT          = 0x00FE8877,
+ BLAST_0_KEY_RIGHT         = 0x00FEB04F,
+ BLAST_0_KEY_PGUP          = 0x7FFF0001,
+ BLAST_0_KEY_PGDOWN        = 0x7FFF0002,
+ BLAST_0_KEY_PLAY          = 0x00FE629D,
+ BLAST_0_KEY_STOP          = 0x00FE02FD,
+ BLAST_0_KEY_PAUSE         = 0x00FEB24D,
+ BLAST_0_KEY_RECORD        = 0x00FE42BD,
+ BLAST_0_KEY_BACKWARD      = 0x00FE32CD,
+ BLAST_0_KEY_FORWARD       = 0x00FE0AF5,
+ BLAST_0_KEY_A             = 0x7FFF0003,
+ BLAST_0_KEY_B             = 0x7FFF0004,
+ BLAST_0_KEY_C             = 0x7FFF0005,
+ BLAST_0_KEY_EPG           = 0x00FEA857,
+ BLAST_0_KEY_BACK          = 0x00FE48B7,
+ BLAST_0_KEY_RED           = 0x7FFF0006,
+ BLAST_0_KEY_GREEN         = 0x00FEA25D,
+ BLAST_0_KEY_YELLOW        = 0x00FE827D,
+ BLAST_0_KEY_BLUE          = 0x7FFF0007,
+ BLAST_0_KEY_AUDIO         = 0x00FE08F7,
+ BLAST_0_KEY_HDD           = 0x00000014,
+ BLAST_0_KEY_DVD           = 0x7FFF0008,
+ BLAST_0_KEY_HELP          = 0x7FFF0009,
+ BLAST_0_KEY_LAST          = 0x7FFF000A,
+ BLAST_0_KEY_INPUT         = 0x00FE7A85,
+ BLAST_0_KEY_ENTER         = 0x7FFF000B,
+ BLAST_0_KEY_GUIDE         = 0x7FFF000C,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x00FE3AC5,
+ BLAST_0_KEY_PIP_SWAP      = 0x00FEBA45,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF000D,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF000E,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF000F,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0010,
+ BLAST_0_KEY_LIVE          = 0x00FE30CF,
+ BLAST_0_KEY_POWER_B       = 0x00FEF808,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF0011,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF0012,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF0013,
+ BLAST_0_KEY_REPLAY        = 0x7FFF0014,
+ BLAST_0_KEY_LIST          = 0x7FFF0015,
+ BLAST_0_KEY_SELECT        = 0x7FFF0016,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0017,
+ BLAST_0_KEY_FORMAT        = 0x7FFF0018,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF0019,
+ BLAST_0_KEY_WIDE          = 0x00FE6897,
+ BLAST_0_KEY_TIMESHIFT     = 0x00FE52AD,
+ BLAST_0_KEY_MOSAIC        = 0x00FEB847,
+ BLAST_0_KEY_SEEK_START    = 0x00FEC837,
+ BLAST_0_KEY_SEEK_END      = 0x00FEF807,
+ BLAST_0_KEY_SUBTITLES     = 0x00FEE817,
+ BLAST_0_KEY_TV_RADIO      = 0x00FE926D
+};
+#endif
+#if defined(BLAST_PROTOCOL_USER_004)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x6170F807,
+ BLAST_0_KEY_POWER         = 0x617048B7,
+ BLAST_0_KEY_EXIT          = 0x617050AF,
+ BLAST_0_KEY_CH_PLUS       = 0x617008F7,
+ BLAST_0_KEY_CH_MINUS      = 0x617058A7,
+ BLAST_0_KEY_VOL_PLUS      = 0x6170B04F,
+ BLAST_0_KEY_VOL_MINUS     = 0x6170708F,
+ BLAST_0_KEY_OK            = 0x6170A857,
+ BLAST_0_KEY_FAV           = 0x61708C73,
+ BLAST_0_KEY_MENU          = 0x61708877,
+ BLAST_0_KEY_TEXT          = 0x6170E41B,
+ BLAST_0_KEY_0             = 0x617000FF,
+ BLAST_0_KEY_1             = 0x6170807F,
+ BLAST_0_KEY_2             = 0x617040BF,
+ BLAST_0_KEY_3             = 0x6170C03F,
+ BLAST_0_KEY_4             = 0x617020DF,
+ BLAST_0_KEY_5             = 0x6170A05F,
+ BLAST_0_KEY_6             = 0x6170609F,
+ BLAST_0_KEY_7             = 0x6170E01F,
+ BLAST_0_KEY_8             = 0x617010EF,
+ BLAST_0_KEY_9             = 0x6170906F,
+ BLAST_0_KEY_INFO          = 0x6170946B,
+ BLAST_0_KEY_UP            = 0x6170D02F,
+ BLAST_0_KEY_DOWN          = 0x617030CF,
+ BLAST_0_KEY_LEFT          = 0x6170D827,
+ BLAST_0_KEY_RIGHT         = 0x617038C7,
+ BLAST_0_KEY_PGUP          = 0xDEAD0001,
+ BLAST_0_KEY_PGDOWN        = 0xDEAD0002,
+ BLAST_0_KEY_PLAY          = 0x6170C43B,
+ BLAST_0_KEY_STOP          = 0x617024DB,
+ BLAST_0_KEY_PAUSE         = 0x617044BB,
+ BLAST_0_KEY_RECORD        = 0x6170847B,
+ BLAST_0_KEY_BACKWARD      = 0x6170B847,
+ BLAST_0_KEY_FORWARD       = 0x6170649B,
+ BLAST_0_KEY_A             = 0xDEAD0003,
+ BLAST_0_KEY_B             = 0xDEAD0004,
+ BLAST_0_KEY_C             = 0xDEAD0005,
+ BLAST_0_KEY_EPG           = 0x6170C837,
+ BLAST_0_KEY_BACK          = 0x617028D7,
+ BLAST_0_KEY_RED           = 0x61706897,
+ BLAST_0_KEY_GREEN         = 0x6170E817,
+ BLAST_0_KEY_YELLOW        = 0x617018E7,
+ BLAST_0_KEY_BLUE          = 0x61709867,
+ BLAST_0_KEY_AUDIO         = 0xDEAD0007,
+ BLAST_0_KEY_HDD           = 0xDEAD0008,
+ BLAST_0_KEY_DVD           = 0xDEAD0009,
+ BLAST_0_KEY_HELP          = 0xDEAD0010,
+ BLAST_0_KEY_LAST          = 0xDEAD0011,
+ BLAST_0_KEY_INPUT         = 0x617014EB,
+ BLAST_0_KEY_ENTER         = 0xDEAD0012,
+ BLAST_0_KEY_GUIDE         = 0xDEAD0013,
+ BLAST_0_KEY_PIP_ON_OFF    = 0xDEAD0014,
+ BLAST_0_KEY_PIP_SWAP      = 0xDEAD0015,
+ BLAST_0_KEY_PIP_MOVE      = 0xDEAD0016,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0xDEAD0017,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0xDEAD0018,
+ BLAST_0_KEY_MY_DVR        = 0xDEAD0019,
+ BLAST_0_KEY_LIVE          = 0xDEAD0020,
+ BLAST_0_KEY_POWER_B       = 0xDEAD0021,
+ BLAST_0_KEY_POWER_ON      = 0xDEAD0022,
+ BLAST_0_KEY_POWER_OFF     = 0xDEAD0023,
+ BLAST_0_KEY_PREV_CH       = 0xDEAD0024,
+ BLAST_0_KEY_REPLAY        = 0xDEAD0025,
+ BLAST_0_KEY_LIST          = 0x61707887,
+ BLAST_0_KEY_SELECT        = 0xDEAD0026,
+ BLAST_0_KEY_ADVANCE       = 0xDEAD0027,
+ BLAST_0_KEY_FORMAT        = 0x6170B44B,
+ BLAST_0_KEY_ACTIVE        = 0xDEAD0029,
+ BLAST_0_KEY_WIDE          = 0xDEAD0030,
+ BLAST_0_KEY_TIMESHIFT     = 0xDEAD0031,
+ BLAST_0_KEY_MOSAIC        = 0xDEAD0032,
+ BLAST_0_KEY_SEEK_START    = 0x6170748B,
+ BLAST_0_KEY_SEEK_END      = 0x6170F40B,
+ BLAST_0_KEY_SUBTITLES     = 0x617034CB,
+ BLAST_0_KEY_TV_RADIO      = 0x6170F00F
+};
+#endif
+#if defined(BLAST_PROTOCOL_XMP_001)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00000C00,
+ BLAST_0_KEY_POWER         = 0x00000F00,
+ BLAST_0_KEY_EXIT          = 0x00002A00,
+ BLAST_0_KEY_CH_PLUS       = 0x00000D00,
+ BLAST_0_KEY_CH_MINUS      = 0x00000E00,
+ BLAST_0_KEY_VOL_PLUS      = 0x00000A00,
+ BLAST_0_KEY_VOL_MINUS     = 0x00000B00,
+ BLAST_0_KEY_OK            = 0x00002500,
+ BLAST_0_KEY_FAV           = 0x00005200,
+ BLAST_0_KEY_MENU          = 0x00002000,
+ BLAST_0_KEY_TEXT          = 0x7FFF0001,
+ BLAST_0_KEY_0             = 0x00000000,
+ BLAST_0_KEY_1             = 0x00000100,
+ BLAST_0_KEY_2             = 0x00000200,
+ BLAST_0_KEY_3             = 0x00000300,
+ BLAST_0_KEY_4             = 0x00000400,
+ BLAST_0_KEY_5             = 0x00000500,
+ BLAST_0_KEY_6             = 0x00000600,
+ BLAST_0_KEY_7             = 0x00000700,
+ BLAST_0_KEY_8             = 0x00000800,
+ BLAST_0_KEY_9             = 0x00000900,
+ BLAST_0_KEY_INFO          = 0x00002600,
+ BLAST_0_KEY_UP            = 0x00002100,
+ BLAST_0_KEY_DOWN          = 0x00002200,
+ BLAST_0_KEY_LEFT          = 0x00002300,
+ BLAST_0_KEY_RIGHT         = 0x00002400,
+ BLAST_0_KEY_PGUP          = 0x00002800,
+ BLAST_0_KEY_PGDOWN        = 0x00002900,
+ BLAST_0_KEY_PLAY          = 0x00003000,
+ BLAST_0_KEY_STOP          = 0x00003100,
+ BLAST_0_KEY_PAUSE         = 0x00003200,
+ BLAST_0_KEY_RECORD        = 0x00003500,
+ BLAST_0_KEY_BACKWARD      = 0x00003300,
+ BLAST_0_KEY_FORWARD       = 0x00003400,
+ BLAST_0_KEY_A             = 0x00006000,
+ BLAST_0_KEY_B             = 0x00006100,
+ BLAST_0_KEY_C             = 0x00006200,
+ BLAST_0_KEY_EPG           = 0x7FFF0002,
+ BLAST_0_KEY_BACK          = 0x7FFF0003,
+ BLAST_0_KEY_RED           = 0x7FFF0004,
+ BLAST_0_KEY_GREEN         = 0x7FFF0005,
+ BLAST_0_KEY_YELLOW        = 0x7FFF0006,
+ BLAST_0_KEY_BLUE          = 0x7FFF0007,
+ BLAST_0_KEY_AUDIO         = 0x7FFF0008,
+ BLAST_0_KEY_HDD           = 0x7FFF0009,
+ BLAST_0_KEY_DVD           = 0x7FFF000A,
+ BLAST_0_KEY_HELP          = 0x00005600,
+ BLAST_0_KEY_LAST          = 0x00005100,
+ BLAST_0_KEY_INPUT         = 0x00005700,
+ BLAST_0_KEY_ENTER         = 0x00005000,
+ BLAST_0_KEY_GUIDE         = 0x00002700,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x00005800,
+ BLAST_0_KEY_PIP_SWAP      = 0x00005900,
+ BLAST_0_KEY_PIP_MOVE      = 0x00005A00,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x00005B00,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x00005C00,
+ BLAST_0_KEY_MY_DVR        = 0x00005400,
+ BLAST_0_KEY_LIVE          = 0x00005500,
+ BLAST_0_KEY_POWER_B       = 0x7FFF000B,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF000C,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF000D,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF000E,
+ BLAST_0_KEY_REPLAY        = 0x7FFF000F,
+ BLAST_0_KEY_LIST          = 0x7FFF0010,
+ BLAST_0_KEY_SELECT        = 0x7FFF0011,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0012,
+ BLAST_0_KEY_FORMAT        = 0x7FFF0013,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF0014,
+ BLAST_0_KEY_WIDE          = 0x7FFF0015,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF0016,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF0017,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF0018,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF0019,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF001A,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF001B
+};
+#endif
+#if defined(BLAST_PROTOCOL_RC5_001)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00001A0D,
+ BLAST_0_KEY_POWER         = 0x00001A0C,
+ BLAST_0_KEY_EXIT          = 0x00000A13,
+ BLAST_0_KEY_CH_PLUS       = 0x00001A20,
+ BLAST_0_KEY_CH_MINUS      = 0x00001A21,
+ BLAST_0_KEY_VOL_PLUS      = 0x00001A10,
+ BLAST_0_KEY_VOL_MINUS     = 0x00001A11,
+ BLAST_0_KEY_OK            = 0x00001A33,
+ BLAST_0_KEY_FAV           = 0x7FFF0001,
+ BLAST_0_KEY_MENU          = 0x00000A12,
+ BLAST_0_KEY_TEXT          = 0x00001A0B,
+ BLAST_0_KEY_0             = 0x00001A00,
+ BLAST_0_KEY_1             = 0x00001A01,
+ BLAST_0_KEY_2             = 0x00001A02,
+ BLAST_0_KEY_3             = 0x00001A03,
+ BLAST_0_KEY_4             = 0x00001A04,
+ BLAST_0_KEY_5             = 0x00001A05,
+ BLAST_0_KEY_6             = 0x00001A06,
+ BLAST_0_KEY_7             = 0x00001A07,
+ BLAST_0_KEY_8             = 0x00001A08,
+ BLAST_0_KEY_9             = 0x00001A09,
+ BLAST_0_KEY_INFO          = 0x00001A14,
+ BLAST_0_KEY_UP            = 0x00000A10,
+ BLAST_0_KEY_DOWN          = 0x00000A11,
+ BLAST_0_KEY_LEFT          = 0x00000A15,
+ BLAST_0_KEY_RIGHT         = 0x00000A16,
+ BLAST_0_KEY_PGUP          = 0x00000A20,
+ BLAST_0_KEY_PGDOWN        = 0x00000A21,
+ BLAST_0_KEY_PLAY          = 0x7FFF0002,
+ BLAST_0_KEY_STOP          = 0x7FFF0003,
+ BLAST_0_KEY_PAUSE         = 0x7FFF0004,
+ BLAST_0_KEY_RECORD        = 0x7FFF0005,
+ BLAST_0_KEY_BACKWARD      = 0x7FFF0006,
+ BLAST_0_KEY_FORWARD       = 0x7FFF0007,
+ BLAST_0_KEY_A             = 0x7FFF0008,
+ BLAST_0_KEY_B             = 0x7FFF0009,
+ BLAST_0_KEY_C             = 0x7FFF000A,
+ BLAST_0_KEY_EPG           = 0x7FFF000B,
+ BLAST_0_KEY_BACK          = 0x00000A14,
+ BLAST_0_KEY_RED           = 0x00001A22,
+ BLAST_0_KEY_GREEN         = 0x00001A23,
+ BLAST_0_KEY_YELLOW        = 0x00001A24,
+ BLAST_0_KEY_BLUE          = 0x00001A25,
+ BLAST_0_KEY_AUDIO         = 0x7FFF000C,
+ BLAST_0_KEY_HDD           = 0x7FFF000D,
+ BLAST_0_KEY_DVD           = 0x7FFF000E,
+ BLAST_0_KEY_HELP          = 0x7FFF000F,
+ BLAST_0_KEY_LAST          = 0x7FFF0010,
+ BLAST_0_KEY_INPUT         = 0x7FFF0011,
+ BLAST_0_KEY_ENTER         = 0x7FFF0012,
+ BLAST_0_KEY_GUIDE         = 0x00001A15,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x7FFF0013,
+ BLAST_0_KEY_PIP_SWAP      = 0x7FFF0014,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF0015,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF0016,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF0017,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0018,
+ BLAST_0_KEY_LIVE          = 0x7FFF0019,
+ BLAST_0_KEY_POWER_B       = 0x7FFF001A,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF001B,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF001C,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF001D,
+ BLAST_0_KEY_REPLAY        = 0x7FFF001E,
+ BLAST_0_KEY_LIST          = 0x7FFF001F,
+ BLAST_0_KEY_SELECT        = 0x7FFF0020,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0021,
+ BLAST_0_KEY_FORMAT        = 0x7FFF0022,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF0023,
+ BLAST_0_KEY_WIDE          = 0x7FFF0024,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF0025,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF0026,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF0027,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF0028,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF0029,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF002A
+};
+/* In RC5, we get long key press, distinguished by 0x0800 bit   */
+/* For example, BLAST_0_KEY_MUTE can be 0x00001A0D OR 0x0000120D  */
+/* To take care of both the key codes, following offset is used */
+#define BLAST_MASK_FOR_LONG_KEY_PRESS_DETECTION 0x0800
+#endif
+#if defined(BLAST_PROTOCOL_RCMM_001)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x00000070,
+ BLAST_0_KEY_POWER         = 0x000000F0,
+ BLAST_0_KEY_EXIT          = 0x000000A8,
+ BLAST_0_KEY_CH_PLUS       = 0x00000050,
+ BLAST_0_KEY_CH_MINUS      = 0x000000D0,
+ BLAST_0_KEY_VOL_PLUS      = 0x00000030,
+ BLAST_0_KEY_VOL_MINUS     = 0x000000B0,
+ BLAST_0_KEY_OK            = 0x00000098,
+ BLAST_0_KEY_FAV           = 0x00000004,
+ BLAST_0_KEY_MENU          = 0x00000088,
+ BLAST_0_KEY_TEXT          = 0x00000068,
+ BLAST_0_KEY_0             = 0x00000090,
+ BLAST_0_KEY_1             = 0x00000000,
+ BLAST_0_KEY_2             = 0x00000080,
+ BLAST_0_KEY_3             = 0x00000040,
+ BLAST_0_KEY_4             = 0x000000C0,
+ BLAST_0_KEY_5             = 0x00000020,
+ BLAST_0_KEY_6             = 0x000000A0,
+ BLAST_0_KEY_7             = 0x00000060,
+ BLAST_0_KEY_8             = 0x000000E0,
+ BLAST_0_KEY_9             = 0x00000010,
+ BLAST_0_KEY_INFO          = 0x00000038,
+ BLAST_0_KEY_UP            = 0x000000D8,
+ BLAST_0_KEY_DOWN          = 0x000000B8,
+ BLAST_0_KEY_LEFT          = 0x7FFF0001,
+ BLAST_0_KEY_RIGHT         = 0x7FFF0002,
+ BLAST_0_KEY_PGUP          = 0x7FFF0003,
+ BLAST_0_KEY_PGDOWN        = 0x7FFF0004,
+ BLAST_0_KEY_PLAY          = 0x000000C4,
+ BLAST_0_KEY_STOP          = 0x00000064,
+ BLAST_0_KEY_PAUSE         = 0x00000084,
+ BLAST_0_KEY_RECORD        = 0x000000A4,
+ BLAST_0_KEY_BACKWARD      = 0x00000044,
+ BLAST_0_KEY_FORWARD       = 0x00000024,
+ BLAST_0_KEY_A             = 0x000000F8,
+ BLAST_0_KEY_B             = 0x00000054,
+ BLAST_0_KEY_C             = 0x7FFF0005,
+ BLAST_0_KEY_EPG           = 0x000000C8,
+ BLAST_0_KEY_BACK          = 0x00000048,
+ BLAST_0_KEY_RED           = 0x000000E8,
+ BLAST_0_KEY_GREEN         = 0x00000008,
+ BLAST_0_KEY_YELLOW        = 0x00000028,
+ BLAST_0_KEY_BLUE          = 0x00000078,
+ BLAST_0_KEY_AUDIO         = 0x000000E4,
+ BLAST_0_KEY_HDD           = 0x00000014,
+ BLAST_0_KEY_DVD           = 0x00000094,
+ BLAST_0_KEY_HELP          = 0x7FFF0006,
+ BLAST_0_KEY_LAST          = 0x7FFF0007,
+ BLAST_0_KEY_INPUT         = 0x7FFF0008,
+ BLAST_0_KEY_ENTER         = 0x7FFF0009,
+ BLAST_0_KEY_GUIDE         = 0x7FFF000A,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x7FFF000B,
+ BLAST_0_KEY_PIP_SWAP      = 0x7FFF000C,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF000D,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF000E,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF000F,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0010,
+ BLAST_0_KEY_LIVE          = 0x7FFF0011,
+ BLAST_0_KEY_POWER_B       = 0x7FFF0012,
+ BLAST_0_KEY_POWER_ON      = 0x7FFF0013,
+ BLAST_0_KEY_POWER_OFF     = 0x7FFF0014,
+ BLAST_0_KEY_PREV_CH       = 0x7FFF0015,
+ BLAST_0_KEY_REPLAY        = 0x7FFF0016,
+ BLAST_0_KEY_LIST          = 0x7FFF0017,
+ BLAST_0_KEY_SELECT        = 0x7FFF0018,
+ BLAST_0_KEY_ADVANCE       = 0x7FFF0019,
+ BLAST_0_KEY_FORMAT        = 0x7FFF001A,
+ BLAST_0_KEY_ACTIVE        = 0x7FFF001B,
+ BLAST_0_KEY_WIDE          = 0x7FFF001C,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF001D,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF001E,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF001F,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF0020,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF0021,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF0022
+};
+#endif
+#if defined(BLAST_PROTOCOL_UHF_001)&&(BLAST_MAX_NUMBER==1)
+enum
+{
+ BLAST_0_KEY_MUTE          = 0x7FFF0001,
+ BLAST_0_KEY_POWER         = 0x7FFF0002,
+ BLAST_0_KEY_EXIT          = 0x00000026,
+ BLAST_0_KEY_CH_PLUS       = 0x0000000D,
+ BLAST_0_KEY_CH_MINUS      = 0x0000000E,
+ BLAST_0_KEY_VOL_PLUS      = 0x0000005B,
+ BLAST_0_KEY_VOL_MINUS     = 0x7FFF0003,
+ BLAST_0_KEY_OK            = 0x7FFF0004,
+ BLAST_0_KEY_FAV           = 0x7FFF0005,
+ BLAST_0_KEY_MENU          = 0x00000020,
+ BLAST_0_KEY_TEXT          = 0x7FFF0006,
+ BLAST_0_KEY_0             = 0x00000011,
+ BLAST_0_KEY_1             = 0x00000001,
+ BLAST_0_KEY_2             = 0x00000002,
+ BLAST_0_KEY_3             = 0x00000003,
+ BLAST_0_KEY_4             = 0x00000004,
+ BLAST_0_KEY_5             = 0x00000005,
+ BLAST_0_KEY_6             = 0x00000006,
+ BLAST_0_KEY_7             = 0x00000007,
+ BLAST_0_KEY_8             = 0x00000008,
+ BLAST_0_KEY_9             = 0x00000009,
+ BLAST_0_KEY_INFO          = 0x0000002E,
+ BLAST_0_KEY_UP            = 0x00000021,
+ BLAST_0_KEY_DOWN          = 0x00000022,
+ BLAST_0_KEY_LEFT          = 0x00000023,
+ BLAST_0_KEY_RIGHT         = 0x00000024,
+ BLAST_0_KEY_PGUP          = 0x7FFF0007,
+ BLAST_0_KEY_PGDOWN        = 0x7FFF0008,
+ BLAST_0_KEY_PLAY          = 0x00000030,
+ BLAST_0_KEY_STOP          = 0x00000031,
+ BLAST_0_KEY_PAUSE         = 0x00000032,
+ BLAST_0_KEY_RECORD        = 0x00000035,
+ BLAST_0_KEY_BACKWARD      = 0x00000033,
+ BLAST_0_KEY_FORWARD       = 0x00000034,
+ BLAST_0_KEY_A             = 0x7FFF0009,
+ BLAST_0_KEY_B             = 0x7FFF000A,
+ BLAST_0_KEY_C             = 0x7FFF000B,
+ BLAST_0_KEY_EPG           = 0x7FFF000C,
+ BLAST_0_KEY_BACK          = 0x00000027,
+ BLAST_0_KEY_RED           = 0x00000041,
+ BLAST_0_KEY_GREEN         = 0x00000043,
+ BLAST_0_KEY_YELLOW        = 0x00000042,
+ BLAST_0_KEY_BLUE          = 0x00000044,
+ BLAST_0_KEY_AUDIO         = 0x7FFF000D,
+ BLAST_0_KEY_HDD           = 0x7FFF000E,
+ BLAST_0_KEY_DVD           = 0x7FFF000F,
+ BLAST_0_KEY_HELP          = 0x7FFF0010,
+ BLAST_0_KEY_LAST          = 0x7FFF0011,
+ BLAST_0_KEY_INPUT         = 0x7FFF0012,
+ BLAST_0_KEY_ENTER         = 0x00000013,
+ BLAST_0_KEY_GUIDE         = 0x00000028,
+ BLAST_0_KEY_PIP_ON_OFF    = 0x7FFF0013,
+ BLAST_0_KEY_PIP_SWAP      = 0x7FFF0014,
+ BLAST_0_KEY_PIP_MOVE      = 0x7FFF0015,
+ BLAST_0_KEY_PIP_CH_PLUS   = 0x7FFF0016,
+ BLAST_0_KEY_PIP_ON_MINUS  = 0x7FFF0017,
+ BLAST_0_KEY_MY_DVR        = 0x7FFF0018,
+ BLAST_0_KEY_LIVE          = 0x7FFF0019,
+ BLAST_0_KEY_POWER_B       = 0x00000010,
+ BLAST_0_KEY_POWER_ON      = 0x00000080,
+ BLAST_0_KEY_POWER_OFF     = 0x00000081,
+ BLAST_0_KEY_PREV_CH       = 0x0000000F,
+ BLAST_0_KEY_REPLAY        = 0x00000036,
+ BLAST_0_KEY_LIST          = 0x0000002A,
+ BLAST_0_KEY_SELECT        = 0x00000025,
+ BLAST_0_KEY_ADVANCE       = 0x00000037,
+ BLAST_0_KEY_FORMAT        = 0x00000073,
+ BLAST_0_KEY_ACTIVE        = 0x00000029,
+ BLAST_0_KEY_WIDE          = 0x7FFF001A,
+ BLAST_0_KEY_TIMESHIFT     = 0x7FFF001B,
+ BLAST_0_KEY_MOSAIC        = 0x7FFF001C,
+ BLAST_0_KEY_SEEK_START    = 0x7FFF001D,
+ BLAST_0_KEY_SEEK_END      = 0x7FFF001E,
+ BLAST_0_KEY_SUBTITLES     = 0x7FFF001F,
+ BLAST_0_KEY_TV_RADIO      = 0x7FFF0020
+};
+#endif
+#if defined(BLAST_PROTOCOL_UHF_001)&&(BLAST_MAX_NUMBER==2)
+enum
+{
+ BLAST_1_KEY_MUTE          = 0x7FFF0001,
+ BLAST_1_KEY_POWER         = 0x7FFF0002,
+ BLAST_1_KEY_EXIT          = 0x00000026,
+ BLAST_1_KEY_CH_PLUS       = 0x0000000D,
+ BLAST_1_KEY_CH_MINUS      = 0x0000000E,
+ BLAST_1_KEY_VOL_PLUS      = 0x0000005B,
+ BLAST_1_KEY_VOL_MINUS     = 0x7FFF0003,
+ BLAST_1_KEY_OK            = 0x7FFF0004,
+ BLAST_1_KEY_FAV           = 0x7FFF0005,
+ BLAST_1_KEY_MENU          = 0x00000020,
+ BLAST_1_KEY_TEXT          = 0x7FFF0006,
+ BLAST_1_KEY_0             = 0x00000011,
+ BLAST_1_KEY_1             = 0x00000001,
+ BLAST_1_KEY_2             = 0x00000002,
+ BLAST_1_KEY_3             = 0x00000003,
+ BLAST_1_KEY_4             = 0x00000004,
+ BLAST_1_KEY_5             = 0x00000005,
+ BLAST_1_KEY_6             = 0x00000006,
+ BLAST_1_KEY_7             = 0x00000007,
+ BLAST_1_KEY_8             = 0x00000008,
+ BLAST_1_KEY_9             = 0x00000009,
+ BLAST_1_KEY_INFO          = 0x0000002E,
+ BLAST_1_KEY_UP            = 0x00000021,
+ BLAST_1_KEY_DOWN          = 0x00000022,
+ BLAST_1_KEY_LEFT          = 0x00000023,
+ BLAST_1_KEY_RIGHT         = 0x00000024,
+ BLAST_1_KEY_PGUP          = 0x7FFF0007,
+ BLAST_1_KEY_PGDOWN        = 0x7FFF0008,
+ BLAST_1_KEY_PLAY          = 0x00000030,
+ BLAST_1_KEY_STOP          = 0x00000031,
+ BLAST_1_KEY_PAUSE         = 0x00000032,
+ BLAST_1_KEY_RECORD        = 0x00000035,
+ BLAST_1_KEY_BACKWARD      = 0x00000033,
+ BLAST_1_KEY_FORWARD       = 0x00000034,
+ BLAST_1_KEY_A             = 0x7FFF0009,
+ BLAST_1_KEY_B             = 0x7FFF000A,
+ BLAST_1_KEY_C             = 0x7FFF000B,
+ BLAST_1_KEY_EPG           = 0x7FFF000C,
+ BLAST_1_KEY_BACK          = 0x00000027,
+ BLAST_1_KEY_RED           = 0x00000041,
+ BLAST_1_KEY_GREEN         = 0x00000043,
+ BLAST_1_KEY_YELLOW        = 0x00000042,
+ BLAST_1_KEY_BLUE          = 0x00000044,
+ BLAST_1_KEY_AUDIO         = 0x7FFF000D,
+ BLAST_1_KEY_HDD           = 0x7FFF000E,
+ BLAST_1_KEY_DVD           = 0x7FFF000F,
+ BLAST_1_KEY_HELP          = 0x7FFF0010,
+ BLAST_1_KEY_LAST          = 0x7FFF0011,
+ BLAST_1_KEY_INPUT         = 0x7FFF0012,
+ BLAST_1_KEY_ENTER         = 0x00000013,
+ BLAST_1_KEY_GUIDE         = 0x00000028,
+ BLAST_1_KEY_PIP_ON_OFF    = 0x7FFF0013,
+ BLAST_1_KEY_PIP_SWAP      = 0x7FFF0014,
+ BLAST_1_KEY_PIP_MOVE      = 0x7FFF0015,
+ BLAST_1_KEY_PIP_CH_PLUS   = 0x7FFF0016,
+ BLAST_1_KEY_PIP_ON_MINUS  = 0x7FFF0017,
+ BLAST_1_KEY_MY_DVR        = 0x7FFF0018,
+ BLAST_1_KEY_LIVE          = 0x7FFF0019,
+ BLAST_1_KEY_POWER_B       = 0x00000010,
+ BLAST_1_KEY_POWER_ON      = 0x00000080,
+ BLAST_1_KEY_POWER_OFF     = 0x00000081,
+ BLAST_1_KEY_PREV_CH       = 0x0000000F,
+ BLAST_1_KEY_REPLAY        = 0x00000036,
+ BLAST_1_KEY_LIST          = 0x0000002A,
+ BLAST_1_KEY_SELECT        = 0x00000025,
+ BLAST_1_KEY_ADVANCE       = 0x00000037,
+ BLAST_1_KEY_FORMAT        = 0x00000073,
+ BLAST_1_KEY_ACTIVE        = 0x00000029,
+ BLAST_1_KEY_WIDE          = 0x7FFF001A,
+ BLAST_1_KEY_TIMESHIFT     = 0x7FFF001B,
+ BLAST_1_KEY_MOSAIC        = 0x7FFF001C,
+ BLAST_1_KEY_SEEK_START    = 0x7FFF001D,
+ BLAST_1_KEY_SEEK_END      = 0x7FFF001E,
+ BLAST_1_KEY_SUBTITLES     = 0x7FFF001F,
+ BLAST_1_KEY_TV_RADIO      = 0x7FFF0020
+};
+#endif
+#endif
+
+/* External declarations */
+/* --------------------- */
+#if defined(BLAST_MAX_NUMBER)
+extern STBLAST_Handle_t BLAST_Handle[BLAST_MAX_NUMBER];
+#endif
+
+/* Prototypes */
+/* ---------- */
+ST_ErrorCode_t BLAST_Init    (void);
+ST_ErrorCode_t BLAST_Term    (void);
+#if defined(BLAST_MAX_NUMBER)
+ST_ErrorCode_t BLAST_PollKey (U32 DeviceId,U32 *Key);
+ST_ErrorCode_t BLAST_GetKey  (U32 DeviceId,U32 *Key,U32 TimeOutInMs);
+#endif
+
+/* C++ support */
+/* ----------- */
+#ifdef __cplusplus
+}
+#endif
+#endif
+
