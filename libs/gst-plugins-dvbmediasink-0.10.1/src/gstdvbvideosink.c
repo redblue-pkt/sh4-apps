@@ -357,7 +357,7 @@ gst_dvbvideosink_base_init (gpointer klass)
 	};
 	GstElementClass *element_class = GST_ELEMENT_CLASS (klass);
 
-	int fd = open("/etc/model", O_RDONLY);
+	int fd = open("/etc/openvision/model", O_RDONLY);
 	if ( fd > 0 )
 	{
 		gchar string[9] = { 0, };

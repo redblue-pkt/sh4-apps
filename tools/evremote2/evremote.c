@@ -413,7 +413,7 @@ int getModel()
 	int vLen = -1;
 	eBoxType vBoxType = Unknown;
 
-	vFd = open("/etc/model", O_RDONLY);
+	vFd = open("/etc/openvision/model", O_RDONLY);
 	vLen = read(vFd, vName, cSize);
 	close(vFd);
 

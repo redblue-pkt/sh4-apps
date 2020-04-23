@@ -350,7 +350,7 @@ static int pNotification(Context_t *context, const int cOn)
 	char   vName[24];
 	int    vLen;
 
-	vFd = open("/etc/model", O_RDONLY);
+	vFd = open("/etc/openvision/model", O_RDONLY);
 	vLen = read(vFd, vName, 23);
 
 	close(vFd);
