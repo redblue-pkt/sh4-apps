@@ -499,6 +499,7 @@ int getModel()
 			vBoxType = Hs5101;
 		}
 		else if ((!strncasecmp(vName, "adb_box", 7))
+		     ||  (!strncasecmp(vName, "adb_2850", 8))
 		     ||  (!strncasecmp(vName, "sagemcom88", 10))
 		     ||  (!strncasecmp(vName, "esi_88", 6))
 		     ||  (!strncasecmp(vName, "esi88", 5))

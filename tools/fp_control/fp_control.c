@@ -793,7 +793,8 @@ int getModel()
 		{
 			vBoxType = Spark;
 		}
-		else if (!strncasecmp(vName, "adb_box", 7))
+		else if ((!strncasecmp(vName, "adb_box", 7))
+		     ||  (!strncasecmp(vName, "adb_2850", 8)))
 		{
 			vBoxType = Adb_Box;
 		}
