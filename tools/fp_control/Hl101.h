@@ -1,15 +1,6 @@
 #ifndef __hl101__
 #define __hl101__
 
-/* this setups the mode temporarily (for one ioctl)
- * to the desired mode. currently the "normal" mode
- * is the compatible vfd mode
- */
-struct set_mode_s
-{
-	int compat; /* 0 = compatibility mode to vfd driver; 1 = nuvoton mode */
-};
-
 struct set_brightness_s
 {
 	int level;
@@ -24,6 +15,16 @@ struct set_icon_s
 struct set_led_s
 {
 	int led_nr;
+	int on;
+};
+
+struct set_light_s
+{
+	int onoff;
+};
+
+struct set_display_time_s
+{
 	int on;
 };
 
@@ -43,17 +44,28 @@ struct set_time_s
 	char time[5];
 };
 
-struct aotom_ioctl_data
+/* this sets up the mode temporarily (for one ioctl)
+ * to the desired mode. Currently the "normal" mode
+ * is the compatible vfd mode
+ */
+struct set_mode_s
+{
+	int compat; /* 0 = compatibility mode to vfd driver; 1 = nuvoton mode */
+};
+
+struct proton_ioctl_data
 {
 	union
 	{
 		struct set_icon_s icon;
 		struct set_led_s led;
 		struct set_brightness_s brightness;
+		struct set_light_s light;
+		struct set_display_time_s display_time;
 		struct set_mode_s mode;
 		struct set_standby_s standby;
 		struct set_time_s time;
 	} u;
 };
-
-#endif
+#endif  // __hl101__
+// vim:ts=4
