@@ -47,26 +47,26 @@ static tLongKeyPressSupport cLongKeyPressSupport =
 
 static tButton cButtonsTopfield7700HDPVR[] =
 {
-	{"POWER"          , "0A", KEY_POWER}, // This is the real power key, but sometimes we only get 0x0C FP
+	{"STANDBY"        , "0A", KEY_POWER}, // This is the real power key, but sometimes we only get 0x0C FP
 	{"MUTE"           , "0C", KEY_MUTE},
 
 	{"V.FORMAT"       , "42", KEY_ZOOM},
 	{"A/R"            , "43", KEY_SCREEN},
 	{"AUX"            , "08", KEY_AUX},
 
-	{"0"              , "10", KEY_0},
-	{"1"              , "11", KEY_1},
-	{"2"              , "12", KEY_2},
-	{"3"              , "13", KEY_3},
-	{"4"              , "14", KEY_4},
-	{"5"              , "15", KEY_5},
-	{"6"              , "16", KEY_6},
-	{"7"              , "17", KEY_7},
-	{"8"              , "18", KEY_8},
-	{"9"              , "19", KEY_9},
+	{"0BUTTON"        , "10", KEY_0},
+	{"1BUTTON"        , "11", KEY_1},
+	{"2BUTTON"        , "12", KEY_2},
+	{"3BUTTON"        , "13", KEY_3},
+	{"4BUTTON"        , "14", KEY_4},
+	{"5BUTTON"        , "15", KEY_5},
+	{"6BUTTON"        , "16", KEY_6},
+	{"7BUTTON"        , "17", KEY_7},
+	{"8BUTTON"        , "18", KEY_8},
+	{"9BUTTON"        , "19", KEY_9},
 
 	{"BACK"           , "1E", KEY_BACK},
-	{"INFO"           , "1D", KEY_HELP},  // THIS IS WRONG, SHOULD BE KEY_INFO
+	{"INFO"           , "1D", KEY_INFO},
 	{"AUDIO"          , "05", KEY_LANGUAGE},
 	{"SUBTITLE"       , "07", KEY_SUBTITLE},
 	{"TEXT"           , "47", KEY_TEXT},
@@ -78,7 +78,7 @@ static tButton cButtonsTopfield7700HDPVR[] =
 	{"OK/LIST"        , "1F", KEY_OK},
 	{"MENU"           , "1A", KEY_MENU},
 	{"GUIDE"          , "1B", KEY_EPG},
-	{"EXIT"           , "1C", KEY_EXIT},
+	{"EXIT"           , "1C", KEY_HOME},
 	{"FAV"            , "09", KEY_FAVORITES},
 
 	{"RED"            , "4D", KEY_RED},

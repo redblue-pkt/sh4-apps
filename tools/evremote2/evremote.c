@@ -101,7 +101,8 @@ int processSimple(Context_r_t *context_r, Context_t *context, int argc, char *ar
 		// activate visual notification
 		if (context_r->br->Notification)
 		{
-			context_r->br->Notification(context, 1);		}
+			context_r->br->Notification(context, 1);
+		}
 		// Check if tuxtxt is running
 		if (checkTuxTxt(vCurrentCode) == false)
 		{
@@ -479,12 +480,13 @@ int getModel()
 			vBoxType = Fortis;
 		}
 		else if ((!strncasecmp(vName, "forever_3434hd", 6))  // Fortis 4G models use LIRC
+		     ||  (!strncasecmp(vName, "forever_nanosmart", 6))
 		     ||  (!strncasecmp(vName, "forever_9898hd", 6))
 		     ||  (!strncasecmp(vName, "dp7001", 6))
 		     ||  (!strncasecmp(vName, "forever_2424hd", 6))
 		     ||  (!strncasecmp(vName, "ep8000", 6))
 		     ||  (!strncasecmp(vName, "epp8000", 7))
-		     ||  (!strncasecmp(vName, "forever_nanosmart", 6))
+		     ||  (!strncasecmp(vName, "fx6010", 6))
 		     ||  (!strncasecmp(vName, "gpv8000", 7)))
 		{
 			vBoxType = Fortis_4G;

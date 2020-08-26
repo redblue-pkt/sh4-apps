@@ -65,20 +65,20 @@ static tButton cButtonCuberevo[] =
 	{"RECORD"         , "07", KEY_RECORD},
 	{"FAVORITES"      , "08", KEY_FAVORITES},
 	{"MEDIA"          , "09", KEY_MEDIA},   //fixme
-	{"POWER"          , "0A", KEY_POWER},
+	{"STANDBY"        , "0A", KEY_POWER},
 	{"KEY_F5"         , "0B", KEY_F5},
 	{"MUTE"           , "0C", KEY_MUTE},
 	{"ARCHIVE"        , "0D", KEY_ARCHIVE}, //fixme
-	{"0"              , "10", KEY_0},
-	{"1"              , "11", KEY_1},
-	{"2"              , "12", KEY_2},
-	{"3"              , "13", KEY_3},
-	{"4"              , "14", KEY_4},
-	{"5"              , "15", KEY_5},
-	{"6"              , "16", KEY_6},
-	{"7"              , "17", KEY_7},
-	{"8"              , "18", KEY_8},
-	{"9"              , "19", KEY_9},
+	{"0BUTTON"        , "10", KEY_0},
+	{"1BUTTON"        , "11", KEY_1},
+	{"2BUTTON"        , "12", KEY_2},
+	{"3BUTTON"        , "13", KEY_3},
+	{"4BUTTON"        , "14", KEY_4},
+	{"5BUTTON"        , "15", KEY_5},
+	{"6BUTTON"        , "16", KEY_6},
+	{"7BUTTON"        , "17", KEY_7},
+	{"8BUTTON"        , "18", KEY_8},
+	{"9BUTTON"        , "19", KEY_9},
 	{"UP"             , "1A", KEY_UP},
 	{"DOWN"           , "1B", KEY_DOWN},
 	{"RIGHT"          , "1C", KEY_RIGHT},
@@ -92,7 +92,7 @@ static tButton cButtonCuberevo[] =
 	{"AGAIN"          , "24", KEY_AGAIN},
 	{"PAUSE"          , "25", KEY_PAUSE},
 	{"MENU"           , "26", KEY_MENU},
-	{"EXIT"           , "27", KEY_EXIT},
+	{"EXIT"           , "27", KEY_HOME},
 	{"KEY_F7"         , "28", KEY_F7},
 	{"KEY_BOOMARKS"   , "29", KEY_BOOKMARKS},
 	{"RED"            , "2A", KEY_RED},
@@ -139,7 +139,7 @@ key_table_t front_keymap_7seg[] =
 {
 	{ "STANDBY", 0x0001,   KEY_POWER },  /* front power */
 	{ "MENU"   , 0x0002,   KEY_MENU  },  /* front menu  */
-	{ "EXIT"   , 0x0004,   KEY_EXIT  },  /* front exit  */
+	{ "EXIT"   , 0x0004,   KEY_HOME  },  /* front exit  */
 	{ "OK"     , 0x0010,   KEY_OK    },  /* front ok    */
 	{ "LEFT"   , 0x0020,   KEY_LEFT  },  /* front left  */
 	{ "RIGHT"  , 0x0040,   KEY_RIGHT },  /* front right */

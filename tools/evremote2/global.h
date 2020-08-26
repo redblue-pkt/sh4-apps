@@ -14,16 +14,16 @@
 
 typedef enum
 {
-	Unknown,        // 0
-	Ufs910_1W,      // 1
-	Ufs910_14W,     // 2
-	Ufs922,         // 3
-	Ufc960,         // 4
-	Tf7700,         // 5
-	Hl101,          // 6
-	Vip2,           // 7
-	Fortis,         // 8
-	Fortis_4G,      // 9
+	Unknown,        //  0
+	Ufs910_1W,      //  1
+	Ufs910_14W,     //  2
+	Ufs922,         //  3
+	Ufc960,         //  4
+	Tf7700,         //  5
+	Hl101,          //  6
+	Vip2,           //  7
+	Fortis,         //  8
+	Fortis_4G,      //  9
 	Hs5101,         // 10
 	Ufs912,         // 11
 	Spark,          // 12

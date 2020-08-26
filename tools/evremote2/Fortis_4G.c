@@ -106,8 +106,8 @@ static tButton cButtonFortis[] =
 	{"",            "",   KEY_NULL}
 };
 
-/* ***************** front panel button assignment **************** */
-/*
+/* ***************** front panel button assignment **************** *
+ *
  * Front panel keys are handled by the front panel driver
  */
 
@@ -298,115 +298,68 @@ static int pRead(Context_t *context)
 
 static int pNotification(Context_t *context, const int cOn)
 {
-#if 0
- #if defined(FOREVER_3434HD) \
-  || defined(FOREVER_NANOSMART) \
-  || defined(FOREVER_9898HD) \
-  || defined(DP7001) \
-  || defined(FOREVER_2424HD) \
-  || defined(EP8000) \
-  || defined(EPP8000) \
-  || defined(GPV8000)
-	struct fortis_4g_ioctl_data vfd_data;
-	int ioctl_fd = -1;
- #endif
-
-	printf("[evremote2 fortis_4g] %s > cOn = %d\n", __func__, cOn);
-
- #if defined(FOREVER_3434HD) \
-  || defined(FOREVER_9898HD) \
-  || defined(EP8000) \
-  || defined(EPP8000) \
-  || defined(GPV8000)
-	vfd_data.u.icon.on = cOn ? 1 : 0;
-	vfd_data.u.icon.icon_nr = ICON_DOT;
-	if (!cOn)
-	{
-		usleep(100000);
-	}
-	ioctl_fd = open("/dev/vfd", O_RDONLY);
-	ioctl(ioctl_fd, VFDICONDISPLAYONOFF, &vfd_data);
-	close(ioctl_fd);
- #elif defined(FOREVER_NANOSMART) \
-  ||   defined(DP7001) \
-  ||   defined(FOREVER_2424HD)
-	vfd_data.u.led.level = cOn ? 1 : 0;
-	vfd_data.u.led.led_nr = LED_GREEN;
-	if (!cOn)
-	{
-		usleep(100000);
-	}
-	ioctl_fd = open("/dev/vfd", O_RDONLY);
-	ioctl(ioctl_fd, VFDSETLED, &vfd_data);
- #else
-	/* noop: is handled from fp itself */
- #endif
-	printf("[evremote2 fortis_4g] %s <\n", __func__);
-#else
-	struct fortis_4g_ioctl_data vfd_data;
-	struct vfd_ioctl_data data;
-	int    ioctl_fd = -1;
-	int    vFd;
-	char   vName[24];
-	int    vLen;
+	int  ioctl_fd = -1;
+	int  vFd;
+	char vName[24];
+	int  vLen;
 
 	vFd = open("/etc/openvision/model", O_RDONLY);
 	vLen = read(vFd, vName, 23);
-
 	close(vFd);
 
 	if (vLen > 0)
 	{
 		vName[vLen - 1] = '\0';
 
-		printf("Notification: receiver=%s\n", vName);
- #if 0
-		if (!strncasecmp(vName, "forever_nanosmart", 6) \
-		||  !strncasecmp(vName, "dp7001", 6) \
+//		printf("Notification: receiver = %s\n", vName);
+#if 1
+		if (!strncasecmp(vName, "forever_nanosmart", 6)
+		||  !strncasecmp(vName, "dp7001", 6)
 		||  !strncasecmp(vName, "forever_2424hd", 6))
-		{
-			vfd_data.u.mode.compat = 1;
-			ioctl(ioctl_fd, VFDSETMODE, &vfd_data);  // switch to novoton mode
-			vfd_data.u.led.level = (cOn ? 1 : 0);
-			if (!cOn)
-			{
-				usleep(100000);
-			}
-			ioctl_fd = open("/dev/vfd", O_RDONLY);
+		{  // LED models, to be tested
+			struct fortis_4g_ioctl_data vfd_data;
+
+//			vfd_data.u.mode.compat = 1;
+//			ioctl(ioctl_fd, VFDSETMODE, &vfd_data);  // switch to nuvoton mode
 			vfd_data.u.led.led_nr = LED_GREEN;
-			ioctl(ioctl_fd, VFDSETLED, &vfd_data);
-			close(ioctl_fd);
-		}
-		else if (!strncasecmp(vName, "forever_3434hd", 6) \
-		||       !strncasecmp(vName, "forever_9898hd", 6) \
-		||       !strncasecmp(vName, "ep8000", 7) \
-		||       !strncasecmp(vName, "epp8000", 7) \
-		||       !strncasecmp(vName, "gpv8000", 7))
-		{
-			vfd_data.u.mode.compat = 1;
-			ioctl(ioctl_fd, VFDSETMODE, &vfd_data);  // switch to nuvoton mode
-			vfd_data.u.icon.on = (cOn ? 1 : 0);
-//			data.data[4] =	(cOn ? 1 : 0);
+			vfd_data.u.led.level = (cOn ? 1 : 0);
+//			data.data[] = LED_GREEN;
+//			data.data[] = (cOn ? 1 : 0);
 			if (!cOn)
 			{
-				usleep(100000);
+				usleep(300000);
 			}
 			ioctl_fd = open("/dev/vfd", O_RDONLY);
-			vfd_data.u.icon.icon_nr = ICON_DOT;
-//			data.data[0] = ICON_DOT;
-			ioctl(ioctl_fd, VFDICONDISPLAYONOFF, &vfd_data);
+			ioctl(ioctl_fd, VFDSETLED, &vfd_data);
 //			ioctl(ioctl_fd, VFDICONDISPLAYONOFF, &data);
 			close(ioctl_fd);
 		}
- #endif
-	}
+		else if (!strncasecmp(vName, "forever_3434hd", 6)
+		||       !strncasecmp(vName, "forever_9898hd", 6)
+		||       !strncasecmp(vName, "ep8000", 6)
+		||       !strncasecmp(vName, "epp8000", 7)
+		||       !strncasecmp(vName, "gpv8000", 7))
 #endif
+		{  // VFD models
+			struct vfd_ioctl_data data;
+
+			data.data[0] = ICON_DOT;
+			data.data[4] = (cOn ? 1 : 0);
+			if (!cOn)
+			{
+				usleep(300000);
+			}
+			ioctl_fd = open("/dev/vfd", O_RDONLY);
+			ioctl(ioctl_fd, VFDICONDISPLAYONOFF, &data);
+			close(ioctl_fd);
+		}
+	}
 	return 0;
 }
 
 RemoteControl_t Fortis_4G_RC =
 {
-	"Fortis LIRC RemoteControl",
+	"Fortis 4G LIRC RemoteControl",
 	Fortis_4G,
 	cButtonFortis,
 	NULL,
