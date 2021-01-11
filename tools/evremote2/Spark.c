@@ -677,7 +677,7 @@ static tButton cButtonsGalaxy[] =
 static tButton cButtonsSparkEdv[] =
 {
 	{ "POWER",       "87", KEY_POWER },
-	{ "V.FORMAT",    "2f", KEY_SWITCHVIDEOMODE },
+	{ "V.FORMAT",    "2F", KEY_SWITCHVIDEOMODE },
 	{ "TV/SAT",      "95", KEY_AUX },  // !
 	{ "TIME",        "65", KEY_PROGRAM },
 	{ "MUTE",        "A5", KEY_MUTE },
