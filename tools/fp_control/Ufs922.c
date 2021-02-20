@@ -545,7 +545,7 @@ static int setLedBrightness(Context_t *context, int brightness)
 
 Model_t UFS922_model =
 {
-	.Name             = "Kathrein UFS922 frontpanel control utility",
+	.Name             = "Kathrein UFS922 front panel control utility",
 	.Type             = Ufs922,
 	.Init             = init,
 	.Clear            = Clear,

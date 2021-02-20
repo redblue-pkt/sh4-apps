@@ -78,7 +78,7 @@ tArgs vKArgs[] =
 //	{ "-sst", "--setSystemTime      ", "Args: None        Set front processor time to system time" },
 	{ "-p", "  --sleep              ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
-	{ "-t", "  --settext            ", "Args: text        Set text to frontpanel" },
+	{ "-t", "  --settext            ", "Args: text        Set text to front panel" },
 	{ "-l", "  --setLed             ", "Args: LED# 1|0    Set an LED on or off" },
 	{ "-led", "--setLedBrightness   ", "Args: int         int=brightness (0..255)" },
 	{ "-i", "  --setIcon            ", "Args: icon# 1|0   Set an icon on or off" },
@@ -609,7 +609,7 @@ static int Exit(Context_t *context)
 
 Model_t UFS912_model =
 {
-	.Name             = "Kathrein UFS912 frontpanel control utility",
+	.Name             = "Kathrein UFS912 front panel control utility",
 	.Type             = Ufs912,
 	.Init             = init,
 	.Clear            = Clear,

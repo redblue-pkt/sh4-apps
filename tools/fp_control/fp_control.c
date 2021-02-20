@@ -70,7 +70,7 @@ tArgs vArgs[] =
 	{ "-st", " --setWakeTime      * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSet the frontcontroller wake up time" },
 	{ "-r", "  --reboot           * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tReboot receiver via fc at given time" },
 	{ "-p", "  --sleep            * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSleep receiver via fc until given time" },
-	{ "-t", "  --settext            ", "Arg : text\n\tSet text to frontpanel." },
+	{ "-t", "  --settext            ", "Arg : text\n\tSet text to front panel." },
 	{ "-l", "  --setLed             ", "Args: led on\n\tSet a led on or off" },
 	{ "-i", "  --setIcon            ", "Args: icon on\n\tSet an icon on or off" },
 	{ "-b", "  --setBrightness      ", "Arg : brightness 0..7\n\tSet display brightness" },
@@ -220,7 +220,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 						/* FIXME/CAUTION: assumes frontprocessor time is local and not UTC */
 						struct tm *gmt = gmtime(&theGMTTime);
 
-						printf("Setting system time to current frontpanel time: %02d:%02d:%02d %02d-%02d-%04d\n",
+						printf("Setting system time to current front panel time: %02d:%02d:%02d %02d-%02d-%04d\n",
 								gmt->tm_hour, gmt->tm_min, gmt->tm_sec, gmt->tm_mday, gmt->tm_mon + 1, gmt->tm_year + 1900);
 						char cmd[50];
 						sprintf(cmd, "date -s %04d.%02d.%02d-%02d:%02d:%02d\n", gmt->tm_year + 1900, gmt->tm_mon + 1, gmt->tm_mday, gmt->tm_hour, gmt->tm_min, gmt->tm_sec);

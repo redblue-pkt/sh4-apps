@@ -100,7 +100,7 @@ void Help(void)
 	printf("Topfield TF77X0HDPVR front panel controller " VERSION "\n\n");
 	printf("usage: tffpctl [options]\n\n");
 
-	printf("--gettime                    returns the current frontpanel time\n");
+	printf("--gettime                    returns the current front panel time\n");
 	printf("--settime <yyyymmddhhmmss>   set the front panel time\n");
 	printf("--syncsystime                sets the system time from the FP time\n");
 	printf("--syncfptime                 sets the FP time from the system time\n");

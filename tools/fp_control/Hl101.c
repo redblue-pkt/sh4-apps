@@ -500,7 +500,7 @@ static int Hl101_Clear(Context_t *context)
 
 Model_t HL101_model =
 {
-	.Name             = "Spiderbox HL101 frontpanel control utility",
+	.Name             = "Spiderbox HL101 front panel control utility",
 	.Type             = Hl101,
 	.Init             = Hl101_init,
 	.Clear            = Hl101_Clear,

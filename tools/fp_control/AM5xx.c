@@ -384,7 +384,7 @@ static int Clear(Context_t *context)
 
 Model_t AM5XX_model =
 {
-	.Name             = "Atemio AM5xx Micom frontpanel control utility",
+	.Name             = "Atemio AM5xx Micom front panel control utility",
 	.Type             = AM5xx,
 	.Init             = init,
 	.Clear            = Clear,

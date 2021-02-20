@@ -64,7 +64,7 @@ tArgs vAArgs[] =
 	{ "", "                         ", "      Arg time date: Reboot at given time/date" },
 	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
-	{ "-t", "  --settext            ", "Args: text        Set text to frontpanel" },
+	{ "-t", "  --settext            ", "Args: text        Set text to front panel" },
 	{ "-l", "  --setLed             ", "Args: LED# int    LED#: int=colour or on/off (0..3)" },
 	{ "-i", "  --setIcon            ", "Args: icon# 1|0   Set an icon on or off" },
 	{ "-b", "  --setBrightness      ", "Arg : 0..7        Set display brightness" },

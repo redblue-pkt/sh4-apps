@@ -131,12 +131,12 @@ int main(int argc, char *argv[])
 	}
 	if (context.r->RemoteControl != NULL)
 	{
-		printf("[wait4button] RemoteControl Map:\n");
+		printf("[wait4button] Remote control map:\n");
 		printKeyMap(context.r->RemoteControl);
 	}
 	if (context.r->Frontpanel != NULL)
 	{
-		printf("[wait4button] Frontpanel Map:\n");
+		printf("[wait4button] Front panel map:\n");
 		printKeyMap(context.r->Frontpanel);
 	}
 	processSimple(&context_r, &context, argc, argv);

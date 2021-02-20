@@ -881,7 +881,7 @@ static int Spark_exit(Context_t *context)
 
 Model_t Spark_model =
 {
-	.Name             = "Edision/Spark frontpanel control utility",
+	.Name             = "Edision/Spark front panel control utility",
 	.Type             = Spark,
 	.Init             = Spark_init,
 	.Clear            = Spark_clear,

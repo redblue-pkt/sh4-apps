@@ -92,7 +92,7 @@ tArgs vCArgs[] =
 	{ "-sst", "--setSystemTime    * ", "Args: None        Set front processor time to system time" },
 	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
-	{ "-t", "  --settext            ", "Args: text        Set text to frontpanel" },
+	{ "-t", "  --settext            ", "Args: text        Set text to front panel" },
 	{ "-l", "  --setLed             ", "Args: LED# int    LED#: int=on,off,blink (0,1,2,3)" },
 	{ "-i", "  --setIcon            ", "Args: icon# 1|0   Set an icon on or off" },
 	{ "-b", "  --setBrightness      ", "Arg : 0..7        Set display brightness" },
@@ -968,7 +968,7 @@ static int Exit(Context_t *context)
 
 Model_t Cuberevo_model =
 {
-	.Name             = "CubeRevo frontpanel control utility",
+	.Name             = "CubeRevo front panel control utility",
 	.Type             = Cuberevo,
 	.Init             = init,
 	.Clear            = Clear,

@@ -516,7 +516,7 @@ static int setLedBrightness(Context_t *context, int brightness)
 
 Model_t UFC960_model =
 {
-	.Name             = "Kathrein UFC960 frontpanel control utility",
+	.Name             = "Kathrein UFC960 front panel control utility",
 	.Type             = Ufc960,
 	.Init             = init,
 	.Clear            = Clear,

@@ -773,7 +773,7 @@ static int Vip2_Exit(Context_t *context)
 
 Model_t VIP2_model =
 {
-	.Name             = "Edision VIP2 frontpanel control utility",
+	.Name             = "Edision VIP2 front panel control utility",
 	.Type             = Vip2,
 	.Init             = Vip2_init,
 	.Clear            = Vip2_Clear,

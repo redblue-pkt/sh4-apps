@@ -614,12 +614,12 @@ int main(int argc, char *argv[])
 
 	if (context.r->RemoteControl != NULL)
 	{
-		printf("[evremote2] RemoteControl Map:\n");
+		printf("[evremote2] Remote control map:\n");
 		printKeyMap(context.r->RemoteControl);
 	}
 	if (context.r->Frontpanel != NULL)
 	{
-		printf("[evremote2] Frontpanel Map:\n");
+		printf("[evremote2] Front panel map:\n");
 		printKeyMap(context.r->Frontpanel);
 	}
 	vButtonExtensionCounter = 0;
@@ -652,7 +652,7 @@ int main(int argc, char *argv[])
 			strncpy(vButtonExtension[vButtonExtensionCounter].KeyName, "\0", 1);
 			strncpy(vButtonExtension[vButtonExtensionCounter].KeyWord, "\0", 1);
 			vButtonExtension[vButtonExtensionCounter].KeyCode = KEY_NULL;
-			printf("[evremote2] RemoteControl Extension Map:\n");
+			printf("[evremote2] Remote control extension map:\n");
 			printKeyMap(vButtonExtension);
 		}
 	}
@@ -672,7 +672,7 @@ int main(int argc, char *argv[])
 	//
 	//	context.r->RemoteControl = malloc((vRemoteControlSize + vRemoteControlExtSize - 1) * sizeof(tButton));
 	//}
-	//printf("[evremote2] RemoteControl Map:\n");
+	//printf("[evremote2] Remote control map:\n");
 	//printKeyMap(context.r->RemoteControl);
 
 	printf("[evremote2] Supports Long KeyPress: %s\n", context.r->supportsLongKeyPress == 0 ? "no" : "yes");

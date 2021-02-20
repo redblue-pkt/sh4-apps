@@ -502,7 +502,7 @@ static int Clear(Context_t *context)
 
 Model_t Hs5101_model =
 {
-	.Name             = "Homecast 5101 frontpanel control utility",
+	.Name             = "Homecast 5101 front panel control utility",
 	.Type             = Hs5101,
 	.Init             = init,
 	.Clear            = Clear,

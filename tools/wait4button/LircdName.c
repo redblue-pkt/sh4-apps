@@ -246,7 +246,7 @@ static int pRead(Context_t *context)
 
 RemoteControl_t LircdName_RC =
 {
-	"LircdName Universal RemoteControl V1.2",
+	"LircdName Universal Remote control V1.2",
 	LircdName,
 	cButtons_LircdName,
 	NULL,

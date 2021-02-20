@@ -411,7 +411,7 @@ static int Clear(Context_t *context)
 
 Model_t Ufs910_1W_model =
 {
-	.Name             = "Kathrein UFS910 1W frontpanel control utility",
+	.Name             = "Kathrein UFS910 1W front panel control utility",
 	.Type             = Ufs910_1W,
 	.Init             = init,
 	.Clear            = Clear,
