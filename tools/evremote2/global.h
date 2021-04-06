@@ -27,8 +27,8 @@ typedef enum
 	Vip2,           //  7
 	Fortis,         //  8
 	Fortis_4G,      //  9
-	Hs5101,         // 10
-	Ufs912,         // 11
+	Ufs912,         // 10
+	Ufs913,         // 11
 	Spark,          // 12
 	Cuberevo,       // 13
 	Adb_Box,        // 14
