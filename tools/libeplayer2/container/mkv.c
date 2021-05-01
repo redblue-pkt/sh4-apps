@@ -1490,8 +1490,8 @@ int getModel()
 			vBoxType = Ufs922;
 		else if (!strncasecmp(vName, "tf7700", 11))
 			vBoxType = Tf7700;
-		else if (!strncasecmp(vName, "fortis_hdbox", 5))
-			vBoxType = HdBox;
+		else if (!strncasecmp(vName, "fortis_hdbox", 6))
+			vBoxType = FS9000;
 		else
 			vBoxType = Unknown;
 	}

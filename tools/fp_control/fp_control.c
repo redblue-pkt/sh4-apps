@@ -775,9 +775,9 @@ int getModel()
 		{
 			vBoxType = Vip2;
 		}
-		else if ((!strncasecmp(vName, "fortis_hdbox", 5))
-		     ||  (!strncasecmp(vName, "octagon1008", 11))
-		     ||  (!strncasecmp(vName, "atevio7500", 10))
+		else if ((!strncasecmp(vName, "fortis_hdbox", 6))
+		     ||  (!strncasecmp(vName, "octagon1008", 6))
+		     ||  (!strncasecmp(vName, "atevio7500", 6))
 		     ||  (!strncasecmp(vName, "hs7110", 6))
 		     ||  (!strncasecmp(vName, "hs7420", 6))
 		     ||  (!strncasecmp(vName, "hs7810a", 7))
