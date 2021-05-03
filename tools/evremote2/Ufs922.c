@@ -113,7 +113,7 @@ static tButton cButtonUFS922Frontpanel[] =
 	{ "FP_WHEEL_LEFT",   "0F", KEY_UP },
 	{ "FP_WHEEL_RIGHT",  "0E", KEY_DOWN },
 	{ "",                "",   KEY_NULL }
-	/* is there no power key on frontpanel? */
+	/* is there no power key on front panel? */
 };
 
 static int pInit(Context_t *context, int argc, char *argv[])

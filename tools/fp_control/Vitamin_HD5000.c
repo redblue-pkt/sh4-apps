@@ -71,7 +71,7 @@ tArgs vVArgs[] =
 	{ "-r", "  --reboot           * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fc at given time" },
 	{ "-s", "  --setTime          * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "      Set the frontprocessor time" },
+	{ "", "                         ", "      Set the front processor time" },
 	{ "-sst", "--setSystemTime    * ", "Args: None        Set front processor time to system time" },
 	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },

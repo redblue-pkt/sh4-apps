@@ -73,15 +73,15 @@ tArgs vEArgs[] =
 	{ "-r", "  --reboot             ", "Args: [time date] (format: HH:MM:SS dd-mm-YYYY)" },
 	{ "", "                         ", "      No arg:     Reboot immediately (= -e current time+5 date today)" },
 	{ "", "                         ", "      Arg time date: Reboot at given time/date (= -e time date)" },
-	{ "-g", "  --getTime            ", "Args: None        Display currently set frontprocessor time" },
-	{ "-gs", " --getTimeAndSet      ", "Args: None        Set system time to current frontprocessor time" },
+	{ "-g", "  --getTime            ", "Args: None        Display currently set front processor time" },
+	{ "-gs", " --getTimeAndSet      ", "Args: None        Set system time to current front processor time" },
 	{ "-gt", " --getWTime           ", "Args: None        Get the current frontcontroller wake up time" },
 	{ "-s", "  --setTime            ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "                  Set the frontprocessor time (date ignored)" },
+	{ "", "                         ", "                  Set the front processor time (date ignored)" },
 	{ "", "                         ", "      WARNING:    front panel date will be 01-01-1970!" },
 	{ "-st", " --setWTime           ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "                  Set the frontprocessor wake up time" },
-	{ "-sst", "--setSystemTime      ", "Args: None        Set frontprocessor time to current system time" },
+	{ "", "                         ", "                  Set the front processor wake up time" },
+	{ "-sst", "--setSystemTime      ", "Args: None        Set front processor time to current system time" },
 //	{ "-p", "  --sleep              ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY\n\t\tReboot receiver via fp at given time" },
 	{ "-t", "  --settext            ", "Arg : text        Show text in front panel display" },
 	{ "-l", "  --setLed             ", "Args: LED# 0|1|2  LED#: off, on or blink" },
@@ -91,7 +91,7 @@ tArgs vEArgs[] =
 //	{ "-tm", " --time_mode          ", "Arg : 0|1         Clock display off|on (DVFD only)" },
 	{ "-L", "  --setLight           ", "Arg : 0|1         Set display off|on" },
 	{ "-c", "  --clear              ", "Args: None        Clear display, all icons and LEDs off" },
-	{ "-v", "  --version            ", "Args: None        Get version info from frontprocessor" },
+	{ "-v", "  --version            ", "Args: None        Get version info from front processor" },
 	{ "-V", "  --verbose            ", "Args: None        Verbose operation" },
 #if defined MODEL_SPECIFIC
 	{ "-ms ", "--set_model_specific ", "Args: long long   Model specific set function" },
@@ -387,12 +387,12 @@ static int Vip2_getTime(Context_t *context, time_t *theGMTTime)
 		/* current frontcontroller time */
 		*theGMTTime = iTime;
 		g_tm = gmtime(&iTime);
-		printf("Frontprocessor time: %02d:%02d:%02d %02d-%02d-%04d\n", g_tm->tm_hour,
+		printf("Front processor time: %02d:%02d:%02d %02d-%02d-%04d\n", g_tm->tm_hour,
 			g_tm->tm_min, g_tm->tm_sec, g_tm->tm_mday, g_tm->tm_mon + 1, g_tm->tm_year + 1900);
 	}
 	else
 	{
-		fprintf(stderr, "Error reading time from frontprocessor\n");
+		fprintf(stderr, "Error reading time from front processor\n");
 		*theGMTTime = 0;
 		return -1;
 	}
@@ -421,7 +421,7 @@ static int Vip2_setTime(Context_t *context, time_t *theGMTTime)
 		perror("Set time");
 		return -1;
 	}
-	fprintf(stderr, "Frontprocessor time set to: %02d:%02d:%02d %02d-%02d-%04d (local)\n", s_tm->tm_hour,
+	fprintf(stderr, "Front processor time set to: %02d:%02d:%02d %02d-%02d-%04d (local)\n", s_tm->tm_hour,
 		s_tm->tm_min, s_tm->tm_sec, s_tm->tm_mday, s_tm->tm_mon + 1, s_tm->tm_year + 1900);
 	return 1;
 }
@@ -486,7 +486,7 @@ static int Vip2_setSTime(Context_t *context, time_t *theGMTTime)
 			perror("Set FP time to system time");
 			return -1;
 		}
-		fprintf(stderr, "Frontprocessor time set to: %02d:%02d:%02d %02d-%02d-%04d\n", sst->tm_hour,
+		fprintf(stderr, "Front processor time set to: %02d:%02d:%02d %02d-%02d-%04d\n", sst->tm_hour,
 			 sst->tm_min, sst->tm_sec, sst->tm_mday, sst->tm_mon + 1, sst->tm_year + 1900);
 
 		// write UTC offset to /proc/stb/fp/rtc_offset
@@ -724,7 +724,7 @@ static int Vip2_getWakeupReason(Context_t *context, eWakeupReason *reason)
 	}
 	else
 	{
-		fprintf(stderr, "Error reading wakeup mode from frontprocessor\n");
+		fprintf(stderr, "Error reading wakeup mode from front processor\n");
 		*reason = 0;  //echo unknown
 	}
 	return 0;

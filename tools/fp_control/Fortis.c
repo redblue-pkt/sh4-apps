@@ -26,6 +26,8 @@
  * 20130930 Audioniek       Fortis specific usage added.
  * 20170103 Audioniek       VFDTEST (-ms command) fixed.
  * 20170127 Audioniek       Get version fixed.
+ * 20210403 Audioniek       -c now uses actual values for display width,
+ *                          led count and icon count.
  *
  ****************************************************************************/
 
@@ -49,7 +51,7 @@
 static int setText(Context_t *context, char *theText);
 static int Clear(Context_t *context);
 static int setIcon(Context_t *context, int which, int on);
-//extern int gmt_offset;
+// extern int gmt_offset;
 
 /* ******************* constants ************************ */
 
@@ -79,15 +81,15 @@ tArgs vFArgs[] =
 	{ "-r", "  --reboot           * ", "Args: None" },
 	{ "", "                         ", "      No arg: Reboot immediately" },
 	{ "", "                         ", "      Arg time date: Reboot at given time/date" },
-	{ "-g", "  --getTime          * ", "Args: None        Display currently set frontprocessor time" },
+	{ "-g", "  --getTime          * ", "Args: None        Display currently set front processor time" },
 	{ "-gs", " --getTimeAndSet    * ", "Args: None" },
-	{ "", "                         ", "      Set system time to current frontprocessor time" },
+	{ "", "                         ", "      Set system time to current front processor time" },
 	{ "", "                         ", "      WARNING: system date will be 01-01-1970!" },
 	{ "-gw", " --getWTime         * ", "Args: None        Get the current frontcontroller wake up time" },
 	{ "-st", " --setWakeTime      * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Set the frontcontroller wake up time" },
 	{ "-s", "  --setTime          * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "      Set the frontprocessor time" },
+	{ "", "                         ", "      Set the front processor time" },
 	{ "-sst", "--setSystemTime    * ", "Args: None        Set front processor time to system time" },
 	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
@@ -98,7 +100,7 @@ tArgs vFArgs[] =
 	{ "-w", "  --getWakeupReason    ", "Args: None        Get the wake up reason" },
 	{ "-L", "  --setLight           ", "Arg : 0|1         Set display on/off" },
 	{ "-c", "  --clear              ", "Args: None        Clear display, all icons and LEDs off" },
-	{ "-v", "  --version            ", "Args: None        Get version info from frontprocessor" },
+	{ "-v", "  --version            ", "Args: None        Get version info from front processor" },
 	{ "-tm", " --time_mode          ", "Arg : 0/1         Set time mode" },
 #if defined MODEL_SPECIFIC
 	{ "-ms", " --model_specific     ", "Args: int1 [int2] [int3] ... [int16]   (note: input in hex)" },
@@ -393,7 +395,7 @@ static int getWTime(Context_t *context, time_t *theGMTTime)
 	}
 	else
 	{
-		fprintf(stderr, "Error reading wake up time from frontprocessor\n");
+		fprintf(stderr, "Error reading wake up time from front processor\n");
 		*theGMTTime = 0;
 		return -1;
 	}
@@ -566,9 +568,7 @@ static int setText(Context_t *context, char *theText)
 	// -t command
 	char vHelp[128];
 
-//	strncpy(vHelp, theText, cMAXCharsFortis);
 	strncpy(vHelp, theText, 64);
-//	vHelp[cMAXCharsFortis] = '\0';
 	vHelp[64] = '\0';
 	write(context->fd, vHelp, strlen(vHelp));
 	return 0;
@@ -594,10 +594,10 @@ static int setLed(Context_t *context, int which, int level)
 		}
 		else
 		{
-			vData.u.led.led_nr = 1 << which; //LED# is bitwise in Fortis
+			vData.u.led.led_nr = 1 << which;  // LED# is bitwise in Fortis
 		}
 	}
-	else // allow more than one led to be set at once
+	else  // allow more than one led to be set at once
 	{
 		vData.u.led.led_nr = which;
 	}
@@ -609,7 +609,7 @@ static int setLed(Context_t *context, int which, int level)
 		perror("SetLED");
 		return -1;
 	}
-	usleep(100000); //allow frontprocessor to keep up
+	usleep(100000);  // allow front processor to keep up
 	return 0;
 }
 
@@ -631,7 +631,7 @@ static int setIcon(Context_t *context, int which, int on)
 
 static int setBrightness(Context_t *context, int brightness)
 {
-	//-b command, OK
+	//-b command
 	struct nuvoton_ioctl_data vData;
 
 	if (brightness < 0 || brightness > 7)
@@ -653,22 +653,93 @@ static int Clear(Context_t *context)
 {
 	// -c command
 	int i;
+	int vFd = -1;
+	int disp_size = 0;
+	int icon_num = 0;
+	int led_num = 0;
+	char vName[129] = { 0 };
+	int vLen = -1;
 
-	setText(context, "            ");  //show no text
-	for (i = 0; i <= 7; i++)
+	vFd = open("/etc/openvision/model", O_RDONLY);
+	vLen = read(vFd, vName, sizeof(vName) - 1);
+	close(vFd);
+
+	vName[vLen - 1] = '\0';
+	if (strcmp(vName, "fortis_hdbox") == 0)
 	{
-		setLed(context, i, 0); //all leds off
+		disp_size = 12;
+		icon_num = 39;
+		led_num = 8;
 	}
-	for (i = 1; i < 40; i++) //all icons off
+	else if (strcmp(vName, "octagon1008") == 0)
 	{
-		setIcon(context, i, 0);
+		disp_size = 8;
+		icon_num = 28;
+		led_num = 2;
+	}
+	else if (strcmp(vName, "atevio7500") == 0)
+	{
+		disp_size = 12;
+		icon_num = 22;
+		led_num = 8;
+	}
+	else if ((strcmp(vName, "hs7420") == 0)
+	||       (strcmp(vName, "hs7429") == 0)
+	||       (strcmp(vName, "forever_nanosmart") == 0)
+	||       (strcmp(vName, "forever_9898hd") == 0)
+	||       (strcmp(vName, "ep8000") == 0)
+	||       (strcmp(vName, "epp8000") == 0)
+	||       (strcmp(vName, "gpv8000") == 0))
+	{
+		disp_size = 8;
+		icon_num = 4;
+		led_num = 1;
+	}
+	else if ((strcmp(vName, "hs7119") == 0)
+	||       (strcmp(vName, "hs7810a") == 0)
+	||       (strcmp(vName, "hs7819") == 0)
+	||       (strcmp(vName, "dp6010") == 0)
+	||       (strcmp(vName, "fx6010") == 0)
+	||       (strcmp(vName, "dp7001") == 0)
+	||       (strcmp(vName, "forever_2424hd") == 0)
+	||       (strcmp(vName, "forever_3434hd") == 0))
+	{
+		disp_size = 4;
+		icon_num = 0;
+		led_num = 2;
+	}
+	else if (strcmp(vName, "hs7110") == 0)
+	{
+		disp_size = 0;
+		icon_num = 0;
+		led_num = 1;
+	}
+	if (disp_size)
+	{
+		memset (vName, 0x20, sizeof(vName));
+		vName[disp_size] = '\0';
+		setText(context, vName);   // show no text
+	}
+	if (led_num)
+	{
+		for (i = 0; i <= led_num; i++)
+		{
+			setLed(context, i, 0);  // all leds off
+		}
+	}
+	if (icon_num)
+	{
+		for (i = 1; i <= icon_num; i++)  // all icons off
+		{
+			setIcon(context, i, 0);
+		}
 	}
 	return 0;
 }
 
 static int setLight(Context_t *context, int on)
 {
-	// -L command, OK
+	// -L command
 	struct nuvoton_ioctl_data vData;
 
 	vData.u.light.onoff = on;
@@ -683,7 +754,7 @@ static int setLight(Context_t *context, int on)
 
 static int getWakeupReason(Context_t *context, eWakeupReason *reason)
 {
-	//-w command, OK
+	// -w command
 	int mode = -1;
 
 	if (ioctl(context->fd, VFDGETWAKEUPMODE, &mode) < 0)
@@ -691,21 +762,21 @@ static int getWakeupReason(Context_t *context, eWakeupReason *reason)
 		perror("Get wakeup reason");
 		return -1;
 	}
-	if (mode != '\0')  /* if we get a fp wake up reason */
+	if (mode != '\0')  // if we get a fp wake up reason
 	{
-		*reason = mode & 0xff; //get LS byte
+		*reason = mode & 0xff;  // get LS byte
 	}
 	else
 	{
-		fprintf(stderr, "Error reading wakeup mode from frontprocessor\n");
-		*reason = 0;  //echo unknown
+		fprintf(stderr, "Error reading wakeup mode from front processor\n");
+		*reason = 0;  // echo unknown
 	}
 	return 0;
 }
 
 static int getVersion(Context_t *context, int *version)
 {
-	//-v command
+	// -v command
 	int fp_version;
 	int resellerID;
 
@@ -714,7 +785,7 @@ static int getVersion(Context_t *context, int *version)
 		perror("Get version info");
 		return -1;
 	}
-	if (fp_version != '\0')  /* if the version info is OK */
+	if (fp_version != '\0')  // if the version info is OK
 	{
 		*version = fp_version;
 	}
@@ -722,7 +793,7 @@ static int getVersion(Context_t *context, int *version)
 	{
 		*version = -1;
 	}
-	if (resellerID != '\0')  /* if the reseller info is OK */
+	if (resellerID != '\0')  // if the reseller info is OK
 	{
 		printf("Reseller ID is %08X\n", resellerID);
 	}
@@ -735,7 +806,7 @@ static int getVersion(Context_t *context, int *version)
 
 static int setTimeMode(Context_t *context, int timemode)
 {
-	// -tm command, OK
+	// -tm command
 	struct nuvoton_ioctl_data vData;
 
 	vData.u.timemode.timemode = timemode;
@@ -751,11 +822,11 @@ static int setTimeMode(Context_t *context, int timemode)
 #if defined MODEL_SPECIFIC
 static int modelSpecific(Context_t *context, char len, unsigned char *data)
 {
-	//-ms command
+	// -ms command
 	int i, res;
 	char testdata[18];
 
-	testdata[0] = len; // set length
+	testdata[0] = len;  //  set length
 	
 	printf("nuvoton ioctl: VFDTEST (0x%08x) SOP CMD=", VFDTEST);
 	for (i = 0; i < len; i++)
@@ -767,7 +838,7 @@ static int modelSpecific(Context_t *context, char len, unsigned char *data)
 
 	memset(data, 0, 18);
 
-//	setMode(context->fd); //set mode 1
+//	setMode(context->fd);  // set mode 1
 
 	res = (ioctl(context->fd, VFDTEST, &testdata) < 0);
 
@@ -780,7 +851,7 @@ static int modelSpecific(Context_t *context, char len, unsigned char *data)
 	{
 		for (i = 0; i < ((testdata[1] == 1) ? 11 : 2); i++)
 		{
-			data[i] = testdata[i]; //return values
+			data[i] = testdata[i];  // return values
 		}
 	}
 	return testdata[0];
@@ -832,3 +903,4 @@ Model_t Fortis_model =
 #endif
 	.Exit             = Exit
 };
+// vim:ts=4

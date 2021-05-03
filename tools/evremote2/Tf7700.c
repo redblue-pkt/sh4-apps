@@ -198,7 +198,7 @@ static int pRead(Context_t *context)
 
 static int pNotification(Context_t *context, const int cOn)
 {
-	// Notification is handled by the frontpanel
+	// Notification is handled by the front panel
 	return 0;
 }
 

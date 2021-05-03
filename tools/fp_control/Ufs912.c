@@ -66,15 +66,15 @@ tArgs vKArgs[] =
 	{ "-r", "  --reboot             ", "Args: None" },
 	{ "", "                         ", "      No arg: Reboot immediately" },
 	{ "", "                         ", "      Arg time date: Reboot at given time/date" },
-	{ "-g", "  --getTime            ", "Args: None        Display currently set frontprocessor time" },
+	{ "-g", "  --getTime            ", "Args: None        Display currently set front processor time" },
 //	{ "-gs", " --getTimeAndSet      ", "Args: None" },
-//	{ "", "                         ", "      Set system time to current frontprocessor time" },
+//	{ "", "                         ", "      Set system time to current front processor time" },
 //	{ "", "                         ", "      WARNING: system date will be 01-01-1970!" },
 //	{ "-gt", " --getWTime           ", "Args: None        Get the current frontcontroller wake up time" },
 //	{ "-st", " --setWakeTime        ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 //	{ "", "                         ", "      Set the frontcontroller wake up time" },
 	{ "-s", "  --setTime            ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "      Set the frontprocessor time" },
+	{ "", "                         ", "      Set the front processor time" },
 //	{ "-sst", "--setSystemTime      ", "Args: None        Set front processor time to system time" },
 	{ "-p", "  --sleep              ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Reboot receiver via fp at given time" },
@@ -86,7 +86,7 @@ tArgs vKArgs[] =
 	{ "-w", "  --getWakeupReason    ", "Args: None        Get the wake up reason" },
 	{ "-L", "  --setLight           ", "Arg : 0|1         Set display on/off" },
 	{ "-c", "  --clear              ", "Args: None        Clear display, all icons and LEDs off" },
-	{ "-v", "  --version            ", "Args: None        Get version info from frontprocessor" },
+	{ "-v", "  --version            ", "Args: None        Get version info from front processor" },
 //	{ "-tm", " --time_mode          ", "Args: 0/1         Set time mode" },
 #if defined MODEL_SPECIFIC
 //	{ "-ms", " --model_specific     ", "Args: int1 [int2] [int3] ... [int16]   (note: input in hex)" },
@@ -244,7 +244,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	struct tm *tsWakeupTime;
 
 //	printf("%s ->\n", __func__);
-	// Get current Frontpanel time
+	// Get current Front panel time
 	getTime(context, &curTimeFp);
 	tsFp = gmtime(&curTimeFp);
 	fprintf(stderr, "Current Fp Time   : %02d:%02d:%02d %02d-%02d-%04d (UTC)\n",
@@ -254,7 +254,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	ts = gmtime(&curTime);
 	fprintf(stderr, "Current Linux Time: %02d:%02d:%02d %02d-%02d-%04d (UTC), offset = %d\n",
 			ts->tm_hour, ts->tm_min, ts->tm_sec, ts->tm_mday, ts->tm_mon + 1, ts->tm_year + 1900, 0);
-	// Set current Linux time as new current Frontpanel time
+	// Set current Linux time as new current Front panel time
 	setTime(context, &curTime);
 	if (theGMTTime == NULL)
 	{

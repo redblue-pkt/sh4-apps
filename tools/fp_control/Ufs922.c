@@ -193,7 +193,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	struct tm *tsFp;
 	struct tm *tsWakeupTime;
 	printf("%s ->\n", __func__);
-	// Get current Frontpanel time
+	// Get current Front panel time
 	getTime(context, &curTimeFp);
 	tsFp = gmtime(&curTimeFp);
 	fprintf(stderr, "Current Fp Time:     %02d:%02d:%02d %02d-%02d-%04d (UTC)\n",
@@ -205,7 +205,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 	fprintf(stderr, "Current Linux Time:  %02d:%02d:%02d %02d-%02d-%04d (UTC)\n",
 			ts->tm_hour, ts->tm_min, ts->tm_sec,
 			ts->tm_mday, ts->tm_mon + 1, ts->tm_year + 1900);
-	// Set current Linux time as new current Frontpanel time
+	// Set current Linux time as new current Front panel time
 	setTime(context, &curTime);
 	if (theGMTTime == NULL)
 	{

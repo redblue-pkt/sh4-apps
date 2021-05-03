@@ -130,7 +130,7 @@ void Help(void)
 	printf("--scrollpause <1 to 255>     sets the pause between the first 8 chars and the following scroll (n*100ms)\n");
 	printf("--scrolldelay <1 to 255>     sets the delay between 2 text shifts (n*100ms)\n");
 
-	printf("--restoresettings            resends several settings to the frontpanel\n");
+	printf("--restoresettings            resends several settings to the front panel\n");
 
 	printf("--help                       this screen\n");
 }
