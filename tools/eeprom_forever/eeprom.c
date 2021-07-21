@@ -495,7 +495,7 @@ int main(int argc, char *argv[])
 		{
 			unsigned char buf[7];
 
-//			rcode |= reeprom_read(fd_i2c, CFG_EEPROM_ADDR, 0, buf, sizeof(buf));
+//			rcode |= eeprom_read(fd_i2c, CFG_EEPROM_ADDR, 0, buf, sizeof(buf));
 			rcode = Read_Ethaddr(buf);
 			if (rcode < 0)
 			{

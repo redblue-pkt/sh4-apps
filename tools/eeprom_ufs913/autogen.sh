@@ -1,6 +1,6 @@
 #!/bin/sh
 
-package="tools-ipbox_eeprom"
+package="tools-eeprom-ufs913"
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
