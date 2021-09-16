@@ -235,7 +235,7 @@ static int pShutdown(Context_t *context)
 
 RemoteControl_t CNBOX_RC =
 {
-	"Crenova Remote2 RemoteControl",
+	"Crenova R2 Remote Control",
 	CNBox,
 	cButtonCnbox,
 	NULL, //	cButtonCnboxFrontpanel,

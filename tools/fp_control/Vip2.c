@@ -64,8 +64,8 @@ tArgs vEArgs[] =
 {
 	{ "-e", "  --setTimer           ", "Args: [time date] (format: HH:MM:SS dd-mm-YYYY)" },
 	{ "", "                         ", "      No arg:     Set the most recent timer from e2 or neutrino" },
-	{ "", "                         ", "                  to the frontcontroller and shutdown" },
-	{ "", "                         ", "      Arg time date: Set frontcontroller wake-up time to" },
+	{ "", "                         ", "                  to the front controller and shutdown" },
+	{ "", "                         ", "      Arg time date: Set front controller wake-up time to" },
 	{ "", "                         ", "                  time, shutdown, and wake up at given time" },
 	{ "-d", "  --shutdown           ", "Args: [time date] (format: HH:MM:SS dd-mm-YYYY)" },
 	{ "", "                         ", "      No arg:     Shut down immediately" },
@@ -75,7 +75,7 @@ tArgs vEArgs[] =
 	{ "", "                         ", "      Arg time date: Reboot at given time/date (= -e time date)" },
 	{ "-g", "  --getTime            ", "Args: None        Display currently set front processor time" },
 	{ "-gs", " --getTimeAndSet      ", "Args: None        Set system time to current front processor time" },
-	{ "-gt", " --getWTime           ", "Args: None        Get the current frontcontroller wake up time" },
+	{ "-gt", " --getWTime           ", "Args: None        Get the current front controller wake up time" },
 	{ "-s", "  --setTime            ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "                  Set the front processor time (date ignored)" },
 	{ "", "                         ", "      WARNING:    front panel date will be 01-01-1970!" },
@@ -384,7 +384,7 @@ static int Vip2_getTime(Context_t *context, time_t *theGMTTime)
 	/* if we get the fp time */
 	if (iTime != '\0')
 	{
-		/* current frontcontroller time */
+		/* current front controller time */
 		*theGMTTime = iTime;
 		g_tm = gmtime(&iTime);
 		printf("Front processor time: %02d:%02d:%02d %02d-%02d-%04d\n", g_tm->tm_hour,

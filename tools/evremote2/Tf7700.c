@@ -204,7 +204,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t Tf7700_RC =
 {
-	"Tf7700 RemoteControl",
+	"TF7700 Remote Control",
 	Tf7700,
 	cButtonsTopfield7700HDPVR,
 	cButtonsTopfield7700HDPVRFrontpanel,

@@ -226,7 +226,7 @@ static int pShutdown(Context_t *context)
 
 RemoteControl_t Fortis_RC =
 {
-	"Fortis RemoteControl",
+	"Fortis Remote Control",
 	Fortis,
 	cButtonFortis,
 	cButtonFortisFrontpanel,

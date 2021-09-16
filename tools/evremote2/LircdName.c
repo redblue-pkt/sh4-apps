@@ -421,7 +421,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t LircdName_RC =
 {
-	"LircdName Universal Remote control V1.2",
+	"LircdName Universal Remote Control V1.2",
 	LircdName,
 	cButtons_LircdName,
 	NULL,

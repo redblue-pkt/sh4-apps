@@ -143,7 +143,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t Hs5101_RC =
 {
-	"Homecast5101 RemoteControl",
+	"Homecast5101 Remote Control",
 	Hs5101,
 	cButtonsHomecast5101,
 	NULL,

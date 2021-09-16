@@ -349,7 +349,7 @@ static int pShutdown(Context_t *context)
 
 RemoteControl_t Cuberevo_RC =
 {
-	"Cuberevo RemoteControl",
+	"Cuberevo Remote Control",
 	Cuberevo,
 	cButtonCuberevo,
 	NULL,

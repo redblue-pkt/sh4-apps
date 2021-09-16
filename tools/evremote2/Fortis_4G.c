@@ -359,7 +359,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t Fortis_4G_RC =
 {
-	"Fortis 4G LIRC RemoteControl",
+	"Fortis 4G LIRC Remote Control",
 	Fortis_4G,
 	cButtonFortis,
 	NULL,

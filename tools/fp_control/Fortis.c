@@ -72,8 +72,8 @@ tArgs vFArgs[] =
 {
 	{ "-e", "  --setTimer         * ", "Args: [time date]  Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      No arg: Set the most recent timer from e2 or neutrino" },
-	{ "", "                         ", "      to the frontcontroller and shutdown" },
-	{ "", "                         ", "      Arg time date: Set frontcontroller wake up time to" },
+	{ "", "                         ", "      to the front controller and shutdown" },
+	{ "", "                         ", "      Arg time date: Set front controller wake up time to" },
 	{ "", "                         ", "      time, shutdown, and wake up at given time" },
 	{ "-d", "  --shutdown         * ", "Args: None or [time date]  Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      No arg: Shut down immediately" },
@@ -85,9 +85,9 @@ tArgs vFArgs[] =
 	{ "-gs", " --getTimeAndSet    * ", "Args: None" },
 	{ "", "                         ", "      Set system time to current front processor time" },
 	{ "", "                         ", "      WARNING: system date will be 01-01-1970!" },
-	{ "-gw", " --getWTime         * ", "Args: None        Get the current frontcontroller wake up time" },
+	{ "-gw", " --getWTime         * ", "Args: None        Get the current front controller wake up time" },
 	{ "-st", " --setWakeTime      * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-	{ "", "                         ", "      Set the frontcontroller wake up time" },
+	{ "", "                         ", "      Set the front controller wake up time" },
 	{ "-s", "  --setTime          * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Set the front processor time" },
 	{ "-sst", "--setSystemTime    * ", "Args: None        Set front processor time to system time" },
@@ -145,8 +145,8 @@ unsigned long calcGetNuvotonTime(char *nuvotonTimeString)
 }
 
 /* Calculate the time value which we can pass to
- * the nuvoton fp. it is a mjd time (mjd=modified
- * julian date). mjd is relative to gmt so theTime
+ * the nuvoton fp. It is an MJD time (MJD=Modified
+ * Julian Date). mjd is relative to gmt so theTime
  * must be in GMT/UTC.
  */
 void calcSetNuvotonTime(time_t theTime, char *destString)
@@ -155,7 +155,11 @@ void calcSetNuvotonTime(time_t theTime, char *destString)
 	int mjd;
 
 	now_tm = gmtime(&theTime);
+	printf("Time to set: %02d:%02d:%02d %02d-%02d-%04d (local)\n", now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec,
+		now_tm->tm_mday, now_tm->tm_mon + 1, now_tm->tm_year + 1900);
+	
 	mjd = (int)modJulianDate(now_tm);
+	printf("Converted to: MJD = %d %02d-%02d-%02d (local)\n", mjd, now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec);
 	destString[0] = (mjd >> 8);
 	destString[1] = (mjd & 0xff);
 	destString[2] = now_tm->tm_hour;
@@ -186,8 +190,8 @@ static int usage(Context_t *context, char *prg_name, char *cmd_name)
 {
 	int i;
 
-	fprintf(stderr, "Usage:\n\n");
-	fprintf(stderr, "%s argument [optarg1] [optarg2]\n", prg_name);
+	printf("Usage:\n\n");
+	printf("%s argument [optarg1] [optarg2]\n", prg_name);
 	for (i = 0; ; i++)
 	{
 		if (vFArgs[i].arg == NULL)
@@ -199,13 +203,12 @@ static int usage(Context_t *context, char *prg_name, char *cmd_name)
 			fprintf(stderr, "%s   %s   %s\n", vFArgs[i].arg, vFArgs[i].arg_long, vFArgs[i].arg_description);
 		}
 	}
-	fprintf(stderr, "Options marked * should be the only calling argument.\n");
+	printf("Options marked * should be the only calling argument.\n");
 	return 0;
 }
 
 static int setTime(Context_t *context, time_t *theGMTTime)
-{
-	// -s command
+{  // -s command
 	struct nuvoton_ioctl_data vData;
 
 	calcSetNuvotonTime(*theGMTTime, vData.u.time.time);
@@ -218,8 +221,7 @@ static int setTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int getTime(Context_t *context, time_t *theGMTTime)
-{
-	// -g command
+{  // -g command
 	char fp_time[8];
 
 	if (ioctl(context->fd, VFDGETTIME, &fp_time) < 0)
@@ -241,8 +243,7 @@ static int getTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int setSTime(Context_t *context, time_t *theGMTTime)
-{
-	// -sst command
+{  // -sst command
 	time_t curTime;
 	char fp_time[8];
 	time_t curTimeFP;
@@ -290,8 +291,7 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int setTimer(Context_t *context, time_t *theGMTTime)
-{
-	// -e command, OK
+{  // -e command, OK
 	time_t curTime;
 	time_t curTimeFP = 0;
 	time_t wakeupTime;
@@ -376,8 +376,7 @@ static int setTimer(Context_t *context, time_t *theGMTTime)
 }
 
 static int getWTime(Context_t *context, time_t *theGMTTime)
-{
-	//-gw command: VFDGETWAKEUPTIME not supported by older nuvotons
+{  //-gw command: VFDGETWAKEUPTIME not supported by older nuvotons
 	char fp_time[5];
 	time_t iTime;
 
@@ -403,8 +402,7 @@ static int getWTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int setWTime(Context_t *context, time_t *theGMTTime)
-{
-	//-st command
+{  //-st command
 	struct nuvoton_ioctl_data vData;
 	struct tm *swtm;
 	int gmt_offset;
@@ -445,8 +443,7 @@ static int setWTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int shutdown(Context_t *context, time_t *shutdownTimeGMT)
-{
-	// -d command to check
+{  // -d command to check
 	time_t curTime;
 
 	/* shutdown immediately */
@@ -468,8 +465,7 @@ static int shutdown(Context_t *context, time_t *shutdownTimeGMT)
 }
 
 static int reboot(Context_t *context, time_t *rebootTimeGMT)
-{
-	//-r command to check
+{  //-r command to check
 	time_t curTime;
 	struct nuvoton_ioctl_data vData;
 
@@ -490,8 +486,7 @@ static int reboot(Context_t *context, time_t *rebootTimeGMT)
 }
 
 static int Sleep(Context_t *context, time_t *wakeUpGMT)
-{
-	// -p command
+{  // -p command
 	time_t curTime;
 	int gmt_offset;
 	struct tm *ts;
@@ -564,8 +559,7 @@ static int Sleep(Context_t *context, time_t *wakeUpGMT)
 }
 
 static int setText(Context_t *context, char *theText)
-{
-	// -t command
+{  // -t command
 	char vHelp[128];
 
 	strncpy(vHelp, theText, 64);
@@ -575,8 +569,7 @@ static int setText(Context_t *context, char *theText)
 }
 
 static int setLed(Context_t *context, int which, int level)
-{
-	// -l command
+{  // -l command
 	struct nuvoton_ioctl_data vData;
 
 	if (level < 0 || level > 31)
@@ -614,8 +607,7 @@ static int setLed(Context_t *context, int which, int level)
 }
 
 static int setIcon(Context_t *context, int which, int on)
-{
-	// -i command
+{  // -i command
 	struct nuvoton_ioctl_data vData;
 
 	vData.u.icon.icon_nr = which;
@@ -630,8 +622,7 @@ static int setIcon(Context_t *context, int which, int on)
 }
 
 static int setBrightness(Context_t *context, int brightness)
-{
-	//-b command
+{  //-b command
 	struct nuvoton_ioctl_data vData;
 
 	if (brightness < 0 || brightness > 7)
@@ -650,8 +641,7 @@ static int setBrightness(Context_t *context, int brightness)
 }
 
 static int Clear(Context_t *context)
-{
-	// -c command
+{  // -c command
 	int i;
 	int vFd = -1;
 	int disp_size = 0;
@@ -665,19 +655,19 @@ static int Clear(Context_t *context)
 	close(vFd);
 
 	vName[vLen - 1] = '\0';
-	if (strcmp(vName, "fortis_hdbox") == 0)
+	if ((strcmp(vName, "fortis_hdbox") == 0) || (strcmp(vName, "fs9000") == 0))
 	{
 		disp_size = 12;
 		icon_num = 39;
 		led_num = 8;
 	}
-	else if (strcmp(vName, "octagon1008") == 0)
+	else if ((strcmp(vName, "octagon1008") == 0) || (strcmp(vName, "hs9510") == 0))
 	{
 		disp_size = 8;
 		icon_num = 28;
 		led_num = 2;
 	}
-	else if (strcmp(vName, "atevio7500") == 0)
+	else if ((strcmp(vName, "atevio7500") == 0) || (strcmp(vName, "hs8200") == 0))
 	{
 		disp_size = 12;
 		icon_num = 22;

@@ -50,6 +50,11 @@ typedef struct
 } tUFS922Private;
 
 int wheelmode = 0;  // default is list mode
+int press_count = 0;
+int rotation_count = 0;
+int wheel_press = 0;
+int wheel_rotation = 0;
+int long_press = 0;
 
 /* ***************** our key assignment **************** */
 
@@ -111,27 +116,13 @@ static tButton cButtonUFS922ListFrontpanel[] =
 	{ "FP_AUX",          "20", KEY_AUX },
 	{ "FP_TV_R",         "08", KEY_TV2 },
 
-	{ "FP_WHEEL_PRESS",  "04", KEY_OK },
-	{ "FP_WHEEL_LEFT",   "0F", KEY_UP },
-	{ "FP_WHEEL_RIGHT",  "0E", KEY_DOWN },
-	{ "",                "",   KEY_NULL }
-};
-
-static tButton cButtonUFS922VolumeFrontpanel[] =
-{
-	{ "FP_REC",          "80", KEY_RECORD },
-	{ "FP_STOP",         "0D", KEY_STOP },
-	{ "FP_AUX",          "20", KEY_AUX },
-	{ "FP_TV_R",         "08", KEY_TV2 },
-
-	{ "FP_WHEEL_PRESS",  "04", KEY_OK },
-	{ "FP_WHEEL_LEFT",   "0F", KEY_VOLUMEDOWN },
-	{ "FP_WHEEL_RIGHT",  "0E", KEY_VOLUMEUP },
-	{ "",                "",   KEY_NULL }
+	{ "FP_WHEEL_PRESS",  "04", KEY_OK },  // Suppressed, unless pressed long
+	{ "FP_WHEEL_LEFT",   "0F", KEY_UP },  //	{ "FP_WHEEL_LEFT",   "0F", KEY_VOLUMEDOWN },
+	{ "FP_WHEEL_RIGHT",  "0E", KEY_DOWN },  //	{ "FP_WHEEL_RIGHT",  "0E", KEY_VOLUMEUP },
+	{ "",                "",   KEY_NULL }  // end of table
 };
 
 
-#if 0
 static int ufs922SetRemote(unsigned int code)
 {
 	int vfd_fd = -1;
@@ -154,7 +145,6 @@ static int ufs922SetRemote(unsigned int code)
 	}
 	return 0;
 }
-#endif
 
 static int pInit(Context_t *context, int argc, char *argv[])
 {
@@ -189,12 +179,13 @@ static int pInit(Context_t *context, int argc, char *argv[])
 	{
 		cLongKeyPressSupport.delay = atoi(argv[4]);
 	}
-#if 0
+
 	if (! access("/etc/.rccode", F_OK))
 	{
 		char buf[10];
 		int val;
 		FILE* fd;
+
 		fd = fopen("/etc/.rccode", "r");
 		if (fd != NULL)
 		{
@@ -207,15 +198,18 @@ static int pInit(Context_t *context, int argc, char *argv[])
 					printf("[evremote2 ufs922] Selected RC Code: %d\n", cLongKeyPressSupport.rc_code);
 					ufs922SetRemote(cLongKeyPressSupport.rc_code);
 				}
+				else
+				{
+					cLongKeyPressSupport.rc_code = 1;  // set default RC code
+				}
 			}
 			fclose(fd);
 		}
 	}
 	else
 	{
-		ufs922SetRemote(1);  // default to 1
+		cLongKeyPressSupport.rc_code = 1;  // set default RC code
 	}
-#endif
 	printf("[evremote2 ufs922] Period = %d, delay = %d, rc_code = %d\n", cLongKeyPressSupport.period, cLongKeyPressSupport.delay, cLongKeyPressSupport.rc_code);
 	printf("[evremote2 ufs922] private->disableFeedback = %d\n", private->disableFeedback);
 
@@ -263,9 +257,10 @@ static int pRead(Context_t *context)
 	unsigned char vData[cUFS922CommandLen];
 	eKeyType vKeyType = RemoteControl;
 	int vCurrentCode = -1;
-//	int rc = 1;
+	int rc;
 	int ioctl_fd = -1;
 	struct micom_ioctl_data vfd_data;
+	struct vfd_ioctl_data data;
 
 //	printf("%s >\n", __func__);
 	while (1)
@@ -286,15 +281,53 @@ static int pRead(Context_t *context)
 		}
 		if (vKeyType == RemoteControl)
 		{
-#if 0
+			if (vData[1] == 0x74 || vData[1] == 0x75 || vData[1] == 0x76 || vData[1] == 0x77)  // set RC code received (BACK + 9 + 1..4)
+			{
+				rc = vData[1] - 0x73;
+				printf("[evremote2 ufs922] Change RC code command received (code = %d)\n", rc);
+
+				if (! access("/etc/.rccode", F_OK))
+				{
+					char buf[2];
+					int fd;
+
+					memset(buf, 0, sizeof(buf));
+					buf[0] = (rc | 0x30);
+
+					fd = open("/etc/.rccode", O_WRONLY);
+					if (fd >= 0)
+					{
+						if (write(fd, buf, 1) == 1)
+						{
+							context->r->LongKeyPressSupport->rc_code = rc;
+						}
+						else
+						{
+							context->r->LongKeyPressSupport->rc_code = rc = 1;  // set default RC code
+						}
+						printf("[evremote2 ufs922] RC Code set to: %d\n", rc);
+						data.length = sprintf((char *)data.data, "RC code: %d\n", rc);
+						data.length--;
+						data.data[data.length] = 0;
+						ioctl_fd = open("/dev/vfd", O_RDONLY);
+						ioctl(ioctl_fd, VFDDISPLAYCHARS, &data);
+						close(ioctl_fd);
+					}
+					else
+					{
+						context->r->LongKeyPressSupport->rc_code = 1;  // set default RC code
+					}
+					close(fd);
+				}
+			}
 			/* mask out for rc codes
 			 * possible 0 to 3 for remote controls 1 to 4
 			 * given in /etc for example via console: echo 2 > /etc/.rccode
-			 * will be read and rc_code = 2 is used ( press then back + 2 simultanessly on remote to fit it there)
+			 * will be read and rc_code = 2 is used ( press then back + 2 simultaniously on remote to fit it there)
 			 * default is rc_code = 1 ( like back + 1 on remote )	*/
 			rc = ((vData[4] & 0x30) >> 4) + 1;
-			printf("[evremote2 ufs922] RC code: %d\n", rc);
-			if (rc == ((RemoteControl_t *)context->r)->LongKeyPressSupport->rc_code)
+//			printf("[evremote2 ufs922] RC code of received key: %d\n", rc);
+			if (rc == context->r->LongKeyPressSupport->rc_code)
 			{
 				vCurrentCode = getInternalCodeHex(context->r->RemoteControl, vData[1]);
 			}
@@ -302,44 +335,98 @@ static int pRead(Context_t *context)
 			{
 				break;
 			}
-#else
 			vCurrentCode = getInternalCodeHex(context->r->RemoteControl, vData[1]);
-#endif
 		}
 		else
 		{
-			vCurrentCode = getInternalCodeHex(context->r->Frontpanel, vData[1]);
-#if 0
-			printf("[evremote_ufs922] Frontpanel key, vCurrentCode = 0x%03x\n", vCurrentCode);
-			if (vCurrentCode == KEY_OK)
+			// handle wheel press
+			if (vData[1] == 0x04)  // FP_WHEEL_PRESS
 			{
-				printf("[evremote_ufs922] Toggle wheel mode\n");
-				wheelmode = (wheelmode ? 0 : 1);
-				vfd_data.u.led.led_nr = (wheelmode ? 5 : 2);
-				vfd_data.u.led.on = 0;
-				ioctl_fd = open("/dev/vfd", O_RDONLY);
-				ioctl(ioctl_fd, VFDSETMODE, &vfd_data);
-				ioctl(ioctl_fd, VFDSETLED, &vfd_data);
-				usleep(10000);
-				vfd_data.u.led.led_nr = (wheelmode ? 2 : 5);
-				vfd_data.u.led.on = 1;
-				ioctl_fd = open("/dev/vfd", O_RDONLY);
-				ioctl(ioctl_fd, VFDSETMODE, &vfd_data);
-				ioctl(ioctl_fd, VFDSETLED, &vfd_data);
-				close(ioctl_fd);
-				if (wheelmode)
+				if (long_press == 1)  // if count down finished, wheel is still pressed -> echo key code
 				{
-					printf("[[evremote_ufs922] Wheel in Volume mode\n");
-					context->r->Frontpanel = cButtonUFS922VolumeFrontpanel;
+//					printf("Long wheel press detected\n");
+					long_press = 0;
+					vCurrentCode = getInternalCodeHex(context->r->Frontpanel, vData[1]);
+					goto out;
+				}
+				long_press = 0;
+				wheel_rotation = 0;
+				rotation_count = 0;
+				if (wheel_press == 0)
+				{
+//					printf("[evremote_ufs922] Toggle wheel mode\n");
+					wheelmode = (wheelmode ? 0 : 1);
+					vfd_data.u.led.led_nr = (wheelmode ? 2 : 5);
+					vfd_data.u.led.on = 0;
+					ioctl_fd = open("/dev/vfd", O_RDONLY);
+					ioctl(ioctl_fd, VFDSETLED, &vfd_data);
+					usleep(100000);
+					vfd_data.u.led.led_nr = (wheelmode ? 5 : 2);
+					vfd_data.u.led.on = 1;
+					ioctl(ioctl_fd, VFDSETLED, &vfd_data);
+					close(ioctl_fd);
+//					printf("[[evremote_ufs922] Wheel in %s mode\n", (wheelmode ? "Volume" : "List"));
+					wheel_press = 1;
+					press_count = 5;
+				}
+				if (press_count)  // ignore long wheel presses
+				{
+					press_count--;
 				}
 				else
 				{
-					printf("[evremote_ufs922] Wheel in List mode\n");
-					context->r->Frontpanel = cButtonUFS922ListFrontpanel;
+					if (wheel_press)
+					{
+						long_press = 1;  // flag count down finished -> long press if next key is also FP_WHEEL_PRESS
+					}
+					wheel_press = 0;
 				}
+				break;
 			}
-#endif
+			else  // handle wheel rotation
+			{
+				long_press = 0;
+				wheel_press = 0;
+				press_count = 0;
+				if (vData[1] == 0x0e || vData[1] == 0x0f)  // wheel is rotated
+				{
+					if (wheel_rotation == 0)
+					{
+						vCurrentCode = getInternalCodeHex(context->r->Frontpanel, vData[1]);
+						rotation_count = 1;  // use every 2nd click
+						if (wheelmode)  // if wheel in Volume mode
+						{
+							if (vData[1] == 0x0f)  // FP_WHEEL_LEFT
+							{
+								 vCurrentCode = KEY_VOLUMEDOWN;
+							}
+							else
+							{
+								rotation_count = 3;  // use every 4th click
+								vCurrentCode = KEY_VOLUMEUP;
+							}
+						}
+						wheel_rotation = 1;
+					}
+					if (rotation_count)
+					{
+						rotation_count--;
+						break;  // ignore fast wheel rotations
+					}
+					else
+					{
+						wheel_rotation = 0;
+					}
+				}
+				else  // handle other front panel keys
+				{
+					vCurrentCode = getInternalCodeHex(context->r->Frontpanel, vData[1]);
+				}
+			}			
+			printf("[evremote_ufs922] Frontpanel key, vCurrentCode = 0x%02x\n", vCurrentCode);
 		}
+
+out:
 		if (vCurrentCode != 0)
 		{
 			unsigned int vNextKey = vData[4];
@@ -357,12 +444,14 @@ static int pNotification(Context_t *context, const int cOn)
 	struct micom_ioctl_data vfd_data;
 	tUFS922Private *private = (tUFS922Private *)((RemoteControl_t *)context->r)->private;
 
-//	if (private->disableFeedback == 0)
-//	{
-//		printf("[evremote_ufs922] Notification is %s (%d)\n", (private->disableFeedback != 0 ? "off": "on"), private->disableFeedback);
-//		return 0;
-//	}
-	vfd_data.u.led.led_nr = 6;  // wheel
+#if 0
+	if (private->disableFeedback == 0)
+	{
+		printf("[evremote_ufs922] Notification is %s (%d)\n", (private->disableFeedback != 0 ? "off": "on"), private->disableFeedback);
+		return 0;
+	}
+#endif
+	vfd_data.u.led.led_nr = 6;  // wheel symbols
 	if (cOn)
 	{
 		vfd_data.u.led.on = (private->toggleFeedback ? 0 : 1);
@@ -373,9 +462,7 @@ static int pNotification(Context_t *context, const int cOn)
 		vfd_data.u.led.on = (private->toggleFeedback ? 1 : 0);
 	}
 	ioctl_fd = open("/dev/vfd", O_RDONLY);
-//	vfd_data.u.mode.compat = 1;
-//	ioctl(ioctl_fd, VFDSETMODE, &vfd_data);
-	printf("[evremote_ufs922] Set LED %d to %s\n", vfd_data.u.led.led_nr, (vfd_data.u.led.on == 0 ? "off" : "on"));
+//	printf("[evremote_ufs922] Set LED %d to %s\n", vfd_data.u.led.led_nr, (vfd_data.u.led.on == 0 ? "off" : "on"));
 	ioctl(ioctl_fd, VFDSETLED, &vfd_data);
 	close(ioctl_fd);
 	return 0;
@@ -383,7 +470,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t UFS922_RC =
 {
-	"Kathrein UFS922 Remote control",
+	"Kathrein UFS922 RemoteControl",
 	Ufs922,
 	cButtonUFS922,
 	cButtonUFS922ListFrontpanel,

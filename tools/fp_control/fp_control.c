@@ -35,7 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* Software version of fp_control, please increase on every change */
-static const char *sw_version = "1.12 (Audioniek 20210704.1)";
+static const char *sw_version = "1.13 (Audioniek 20210809.1)";
 static eWakeupReason reason = 0;
 
 typedef struct
@@ -46,29 +46,29 @@ typedef struct
 } tArgs;
 
 time_t *theGMTTime;
-//int gmt_offset;
-char vName[129] = "Unknown";
-int Vdisplay = 0; //
-int Vdisplay_custom = 0;
-char *VtimeFormat = "Unknown";
-int Vwakeup = 5 * 60;  // default wakeup decrement in minutes
+int        disp = 0; //controls screen output through -V option
+char       vName[129] = "Unknown";
+int        Vdisplay = 0; //
+int        Vdisplay_custom = 0;
+char       *VtimeFormat = "Unknown";
+int        Vwakeup = 5 * 60;  // default wakeup decrement in minutes
 const char *wakeupreason[8] = { "Unknown", "Power on", "From deep standby", "Timer", "Power switch", "Unknown", "Unknown", "Unknown" };
-char boxName[129] = { 0 };
+char       boxName[129] = { 0 };
 
 tArgs vArgs[] =
 {
 	{ "-e", "  --setTimer         * ", "Args: None or [time date] in format HH:MM:SS dd-mm-YYYY \
-\n\tSet the most recent timer from e2 or neutrino to the frontcontroller and standby \
-\n\tSet the current frontcontroller wake-up time" 
+\n\tSet the most recent timer from e2 or neutrino to the front controller and standby \
+\n\tSet the current front controller wake-up time" 
 	},
 	{ "-d", "  --shutDown         * ", "Args: [time date] Format: HH:MM:SS dd-mm-YYYY\n\tMimics shutdown command. Shutdown receiver via fc at given time." },
-	{ "-g", "  --getTime          * ", "Args: No arguments\n\tReturn current set frontcontroller time" },
-	{ "-gs", " --getTimeAndSet    * ", "Args: No arguments\n\tSet system time to current frontcontroller time" },
+	{ "-g", "  --getTime          * ", "Args: No arguments\n\tReturn current set front controller time" },
+	{ "-gs", " --getTimeAndSet    * ", "Args: No arguments\n\tSet system time to current front controller time" },
 	{ "-gw", " --getWakeupTime    * ", "Args: No arguments\n\tReturn current wakeup time" },
-	{ "-s", "  --setTime          * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSet the frontcontroller time" },
-	{ "-sst", "--setSystemTime    * ", "Args: No arguments\n\tSet the frontcontroller time equal to system time" },
-//	{ "-gt", " --getWakeTime      * ", "Args: No arguments\n\tGet the frontcontroller wake up time" },
-	{ "-st", " --setWakeTime      * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSet the frontcontroller wake up time" },
+	{ "-s", "  --setTime          * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSet the front controller time" },
+	{ "-sst", "--setSystemTime    * ", "Args: No arguments\n\tSet the front controller time equal to system time" },
+//	{ "-gt", " --getWakeTime      * ", "Args: No arguments\n\tGet the front controller wake up time" },
+	{ "-st", " --setWakeTime      * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSet the front controller wake up time" },
 	{ "-r", "  --reboot           * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tReboot receiver via fc at given time" },
 	{ "-p", "  --sleep            * ", "Args: time date Format: HH:MM:SS dd-mm-YYYY\n\tSleep receiver via fc until given time" },
 	{ "-t", "  --settext            ", "Arg : text\n\tSet text to front panel." },
@@ -109,10 +109,11 @@ int usage(Context_t *context, char *prg, char *cmd)
 			}
 			if ((cmd == NULL) || (strcmp(cmd, vArgs[i].arg) == 0) || (strstr(vArgs[i].arg_long, cmd) != NULL))
 			{
-				fprintf(stderr, "%s   %s   %s\n", vArgs[i].arg, vArgs[i].arg_long, vArgs[i].arg_description);
+				printf("%s   %s   %s\n", vArgs[i].arg, vArgs[i].arg_long, vArgs[i].arg_description);
 			}
 		}
-		fprintf(stderr, "Options marked * should be the only calling argument.\n");
+		printf("Options marked * should be the only calling argument.\n");
+		printf("Time and date arguments must be in local time.\n");
 	}
 	if (((Model_t *)context->m)->Exit)
 	{
@@ -131,26 +132,33 @@ void getTimeFromArg(char *timeStr, char *dateStr, time_t *theTime)
 
 	sscanf(timeStr, "%d:%d:%d", &thetempTime.tm_hour, &thetempTime.tm_min, &thetempTime.tm_sec);
 	sscanf(dateStr, "%d-%d-%d", &thetempTime.tm_mday, &thetempTime.tm_mon, &thetempTime.tm_year);
-	//printf("%s > input: %02d:%02d:%02d %02d-%02d-%02d\n", __func__, thetempTime.tm_hour, thetempTime.tm_min, thetempTime.tm_sec, thetempTime.tm_mday, thetempTime.tm_mon, thetempTime.tm_year);
+//	printf("%s > input: %02d:%02d:%02d %02d-%02d-%02d\n", __func__, thetempTime.tm_hour, thetempTime.tm_min, thetempTime.tm_sec, thetempTime.tm_mday, thetempTime.tm_mon, thetempTime.tm_year);
 	thetempTime.tm_mon  -= 1;
  	thetempTime.tm_year -= 1900;
 
+	/* Reminder: MJD epoch is November 17th, 1858, midnight GMT
+	             Linux time_t epoch is January 1st 1970, midnight GMT
+	             Difference is 40587 days
+	 */
+
 	thetempTime.tm_isdst = -1; /* say mktime that we do not know */
-//	/* FIXME: hmm this is not a gmt or, isn't it? */
+//	/* FIXME: hmm this is not a GMT or, isn't it? */
 //	theTime = mktime(&thetempTime);
 	/* FIXED: indeed, but this one is... */
 	mjd = (int)modJulianDate(&thetempTime);
-	//printf("%s date seconds: %d (time_t)\n", __func__, mjd);
-	mjd *= 86400; // MJD * seconds per day
-	//printf("%s date seconds: %d (time_t)\n", __func__, mjd);
+//	printf("%s Date as MJD: %d\n", __func__, mjd); // (since November 17th, 1858, midnight GMT)
+	mjd -= 40587;  // convert MJD to linux epoch (since January 1st, 1970, midnight GMT)
+//	printf("%s Date as MJD (linux epoch): %d\n", __func__, mjd);
+	mjd *= 86400;  // MJD * seconds per day
+//	printf("%s Date as seconds: %d (time_t)\n", __func__, mjd);
 	mjd += thetempTime.tm_hour * 3600;
-	//printf("%s date + hour seconds: %d (time_t)\n", __func__, mjd);
+//	printf("%s date + hour (seconds): %d (time_t)\n", __func__, mjd);
 	mjd += thetempTime.tm_min * 60;
-	//printf("%s date + hour + min seconds: %d (time_t)\n", __func__, mjd);
+//	printf("%s date + hour + min (seconds): %d (time_t)\n", __func__, mjd);
 	mjd += thetempTime.tm_sec;
-	//printf("%s date + hour + min seconds: %d (time_t)\n", __func__, mjd);
+//	printf("%s date + hour + min + sec (seconds): %d (time_t)\n", __func__, mjd);
 	*theTime = mjd;
-	//printf("%s < output: %d (time_t)\n", __func__, (int)*theTime);
+//	printf("%s < output: %d (time_t)\n", __func__, (int)*theTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +188,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 				{
 					time_t theGMTTime;
 					getTimeFromArg(argv[i + 1], argv[i + 2], &theGMTTime);
-					/* set the frontcontroller timer from args */
+					/* set the front controller timer from args */
 					if (((Model_t *)context->m)->SetTimer)((Model_t *)context->m)->SetTimer(context, &theGMTTime);
 					i += 2;
 				}
@@ -198,13 +206,13 @@ void processCommand(Context_t *context, int argc, char *argv[])
 			{
 				time_t theGMTTime;  //TODO: print time according to receiver mask
 
-				/* get the frontcontroller time */
+				/* get the front controller time */
 				if (((Model_t *)context->m)->GetTime)
 				{
 					if (((Model_t *)context->m)->GetTime(context, &theGMTTime) == 0)
 					{
 						struct tm *gmt = gmtime(&theGMTTime);
-						printf("Current front processor time: %02d:%02d:%02d %02d-%02d-%04d\n",
+						printf("Current front processor time: %02d:%02d:%02d %02d-%02d-%04d (local)\n",
 							   gmt->tm_hour, gmt->tm_min, gmt->tm_sec, gmt->tm_mday, gmt->tm_mon + 1, gmt->tm_year + 1900);
 					}
 				}
@@ -213,7 +221,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 			{
 				time_t theGMTTime;
 
-				/* get the frontcontroller time */
+				/* get the front controller time */
 				if (((Model_t *)context->m)->GetTime)
 				{
 					if (((Model_t *)context->m)->GetTime(context, &theGMTTime) == 0)
@@ -221,7 +229,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 						/* FIXME/CAUTION: assumes front processor time is local and not UTC */
 						struct tm *gmt = gmtime(&theGMTTime);
 
-						printf("Setting system time to current front panel time: %02d:%02d:%02d %02d-%02d-%04d\n",
+						printf("Setting system time to current front panel time: %02d:%02d:%02d %02d-%02d-%04d (local)\n",
 								gmt->tm_hour, gmt->tm_min, gmt->tm_sec, gmt->tm_mday, gmt->tm_mon + 1, gmt->tm_year + 1900);
 						char cmd[50];
 						sprintf(cmd, "date -s %04d.%02d.%02d-%02d:%02d:%02d\n", gmt->tm_year + 1900, gmt->tm_mon + 1, gmt->tm_mday, gmt->tm_hour, gmt->tm_min, gmt->tm_sec);
@@ -233,14 +241,14 @@ void processCommand(Context_t *context, int argc, char *argv[])
 			{
 				time_t theGMTTime;
 
-				/* get the frontcontroller wakeup time */
+				/* get the front controller wakeup time */
 				if (((Model_t*)context->m)->GetWTime)
 				{
 					if (((Model_t*)context->m)->GetWTime(context, &theGMTTime) == 0)
 					{
 						struct tm *gmt = gmtime(&theGMTTime);
 
-						fprintf(stderr, "Wakeup Time: %02d:%02d:%02d %02d-%02d-%04d\n",
+						printf("Wakeup Time: %02d:%02d:%02d %02d-%02d-%04d (local)\n",
 							gmt->tm_hour, gmt->tm_min, gmt->tm_sec, gmt->tm_mday, gmt->tm_mon+1, gmt->tm_year+1900);
 					}
 				}
@@ -252,7 +260,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 				if (argc == 4)
 				{
 					getTimeFromArg(argv[i + 1], argv[i + 2], &theGMTTime);
-					/* set the frontcontroller time */
+					/* set the front controller time */
 					if (((Model_t *)context->m)->SetTime)
 					{
 						((Model_t *)context->m)->SetTime(context, &theGMTTime);
@@ -268,7 +276,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 			{
 				time_t theGMTTime;
 
-				/* set the frontcontroller time to system time */
+				/* set the front controller time to system time */
 				if (((Model_t *)context->m)->SetSTime)
 				{
 					((Model_t *)context->m)->SetSTime(context, &theGMTTime);
@@ -281,7 +289,7 @@ void processCommand(Context_t *context, int argc, char *argv[])
 				if (argc == 4)
 				{
 					getTimeFromArg(argv[i + 1], argv[i + 2], &theLocalTime);
-					/* set the frontcontroller wake up time */
+					/* set the front controller wake up time */
 					if (((Model_t *)context->m)->SetWTime)
 					{
 						((Model_t *)context->m)->SetWTime(context, &theLocalTime);

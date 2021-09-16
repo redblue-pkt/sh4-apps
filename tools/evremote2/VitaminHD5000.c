@@ -203,7 +203,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t VitaminHD5000_RC =
 {
-	"Vitamin HD5000 RemoteControl",
+	"Vitamin HD5000 Remote Control",
 	VitaminHD5000,
 	cButtonVitaminHD5000,
 	cButtonVitaminHD5000Frontpanel,

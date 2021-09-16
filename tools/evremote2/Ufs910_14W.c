@@ -201,7 +201,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t Ufs910_14W_RC =
 {
-	"Kathrein UFS910 (14W) RemoteControl",
+	"Kathrein UFS910 (14W) Remote Control",
 	Ufs910_14W,
 	cButtonsKathrein,
 	NULL,

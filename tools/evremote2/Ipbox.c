@@ -190,7 +190,7 @@ static int pNotification(Context_t *context, const int cOn)
 
 RemoteControl_t Ipbox_RC =
 {
-	"Ipbox RemoteControl",
+	"IPBox Remote Control",
 	Ipbox,
 	cButtonsSpideroxIpbox,
 	NULL,
