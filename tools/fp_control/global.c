@@ -57,6 +57,7 @@ static Model_t *AvailableModels[] =
 	&Cuberevo_model,
 	&AM5XX_model,
 	&Vitamin_model,
+	&Opt9600_model,
 	NULL
 };
 
@@ -93,9 +94,9 @@ static time_t read_e2_timers(time_t curTime)
 	char line[1000];
 	time_t recordTime = LONG_MAX;
 	FILE *fd = fopen(E2TIMERSXML, "r");
-	printf("Getting 1st Enigma2 timer");
 	if (fd > 0)
 	{
+		printf("Getting 1st Enigma2 timer");
 		while (fgets(line, 999, fd) != NULL)
 		{
 			line[999] = '\0';
@@ -120,7 +121,7 @@ static time_t read_e2_timers(time_t curTime)
 		printf(" - Done\n");
 		fclose(fd);
 	}
-	else
+	else if (disp)
 	{
 		printf(" - Error reading %s\n", E2TIMERSXML);
 	}
@@ -133,9 +134,9 @@ static time_t read_neutrino_timers(time_t curTime)
 	char line[1000];
 	time_t recordTime = LONG_MAX;
 	FILE *fd = fopen(NEUTRINO_TIMERS, "r");
-	printf("Getting 1st neutrino timer");
 	if (fd > 0)
 	{
+		printf("Getting 1st neutrino timer");
 		while (fgets(line, 999, fd) != NULL)
 		{
 			line[999] = '\0';
@@ -154,8 +155,10 @@ static time_t read_neutrino_timers(time_t curTime)
 		printf(" - Done\n");
 		fclose(fd);
 	}
-	else
+	else if (disp)
+	{
 		printf(" - Error reading %s\n", NEUTRINO_TIMERS);
+	}
 	if (recordTime != LONG_MAX)
 	{
 		int wakeupDecrement = Vwakeup;
@@ -430,11 +433,13 @@ int searchModel(Context_t *context, eBoxType type)
 {
 	int i;
 	for (i = 0; AvailableModels[i] != NULL; i++)
+	{
 		if (AvailableModels[i]->Type == type)
 		{
 			context->m = AvailableModels[i];
 			return 0;
 		}
+	}
 	return -1;
 }
 

@@ -1,6 +1,7 @@
 /*
- * AM5xx.c
+ * Opt9600.c
  *
+ * (c) 2021 Audioniek, based on code by:
  * (c) 2009 dagobert@teamducktales
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,7 +34,7 @@
 #include <linux/input.h>
 
 #include "global.h"
-#include "AM5xx.h"
+#include "Opt9600.h"
 
 static int setText(Context_t *context, char *theText);
 static int Clear(Context_t *context);
@@ -43,7 +44,7 @@ static int Clear(Context_t *context);
 #define cVFD_DEVICE "/dev/vfd"
 #define cEVENT_DEVICE "/dev/input/event0"
 
-#define cMAXCharsAm520 4
+#define cMAXCharsOpt9600 12
 
 typedef struct
 {
@@ -52,30 +53,31 @@ typedef struct
 	char *arg_description;
 } oArgs;
 
-oArgs vAMArgs[] =
+oArgs vOArgs[] =
 {
 	{ "-e", "  --setTimer         * ", "Args: [time date]  Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      No arg: Set the most recent timer from e2 or neutrino" },
 	{ "", "                         ", "      to the front controller and shutdown" },
 	{ "", "                         ", "      Arg time date: Set front controller wake up time to" },
 	{ "", "                         ", "      time, shutdown, and wake up at given time" },
-//	{ "-d", "  --shutdown         * ", "Args: None or [time date]  Format: HH:MM:SS dd-mm-YYYY" },
-//	{ "", "                         ", "      No arg: Shut down immediately" },
+	{ "-d", "  --shutdown         * ", "Args: None or [time date]  Format: HH:MM:SS dd-mm-YYYY" },
+	{ "", "                         ", "      No arg: Shut down immediately" },
 //	{ "", "                         ", "      Arg time date: Shut down at given time/date" },
 //	{ "-r", "  --reboot           * ", "Args: None" },
 //	{ "", "                         ", "      No arg: Reboot immediately" },
 //	{ "", "                         ", "      Arg time date: Reboot at given time/date" },
 	{ "-g", "  --getTime          * ", "Args: None        Display currently set front processor time" },
-//	{ "-gs", " --getTimeAndSet    * ", "Args: None" },
-//	{ "", "                         ", "      Set system time to current front processor time" },
+	{ "-gs", " --getTimeAndSet    * ", "Args: None" },
+	{ "", "                         ", "      Set system time to current front processor time" },
+	{ "", "                         ", "      WARNING: system date will be 01-01-1970!" },
 	{ "-gw", " --getWTime         * ", "Args: None        Get the current front controller wake up time" },
 	{ "-st", " --setWakeTime      * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Set the front controller wake up time" },
 	{ "-s", "  --setTime          * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
 	{ "", "                         ", "      Set the front processor time" },
 	{ "-sst", "--setSystemTime    * ", "Args: None        Set front processor time to system time" },
-//	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
-//	{ "", "                         ", "      Reboot receiver via fp at given time" },
+	{ "-p", "  --sleep            * ", "Args: time date   Format: HH:MM:SS dd-mm-YYYY" },
+	{ "", "                         ", "      Reboot receiver via fp at given time" },
 	{ "-t", "  --settext            ", "Args: text        Set text to front panel" },
 //	{ "-l", "  --setLed             ", "Args: LED# int    LED#: int=brightness (0..31)" },
 //	{ "-i", "  --setIcon            ", "Args: icon# 1|0   Set an icon on or off" },
@@ -84,8 +86,7 @@ oArgs vAMArgs[] =
 	{ "-L", "  --setLight           ", "Arg : 0|1         Set display on/off" },
 	{ "-c", "  --clear              ", "Args: None        Clear display, all icons and LEDs off" },
 	{ "-v", "  --version            ", "Args: None        Get version info from front processor" },
-//	{ "-tm", " --time_mode          ", "Arg : 0/1         Set time mode, 1 = 24h" },
-	{ "-V", "  --verbose            ", "Args: None        Verbose operation" },
+//	{ "-tm", " --time_mode          ", "Arg : 0/1         Set time mode" },
 #if defined MODEL_SPECIFIC
 	{ "-ms", " --model_specific     ", "Args: int1 [int2] [int3] ... [int12]   (note: input in hex)" },
 	{ "", "                         ", "                  Model specific test function" },
@@ -101,7 +102,7 @@ typedef struct
 
 	time_t wakeupTime;
 	int wakeupDecrement;
-} tAM5xxPrivate;
+} tOpt9600Private;
 
 /* ******************* helper/misc functions ****************** */
 
@@ -109,7 +110,7 @@ typedef struct
  * to the standard time value (seconds
  * since epoch).
  */
-unsigned long getAM5xxTime(char *TimeString)
+unsigned long getOpt9600Time(char *TimeString)
 {
 	unsigned int    mjd     = ((TimeString[0] & 0xFF) * 256) + (TimeString[1] & 0xFF);
 	unsigned long   epoch   = ((mjd - 40587) * 86400);
@@ -117,27 +118,22 @@ unsigned long getAM5xxTime(char *TimeString)
 	unsigned int    min     = TimeString[3] & 0xFF;
 	unsigned int    sec     = TimeString[4] & 0xFF;
 	epoch += (hour * 3600 + min * 60 + sec);
-	if (disp)
-	{
-		printf("epoch = %ld, MJD = %d, time = %02d:%02d:%02d\n", epoch, mjd, hour, min, sec);
-	}
+//	printf("MJD = %d epoch = %ld, time = %02d:%02d:%02d\n", mjd, epoch, hour, min, sec);
 	return epoch;
 }
 
 /* Calculate the time value which we can pass to
- * the Crenova fp. It is an MJD time (MJD=Modified
- * Julian Date). MJD is relative to GMT so theTime
+ * the FP. its a MJD time (MJD = Modified Julian
+ * Date). MJD is relative to GMT so theTime
  * must be in GMT/UTC.
  */
-void setAM5xxTime(time_t theTime, char *destString)
+void setOpt9600Time(time_t theTime, char *destString)
 {
 	struct tm *now_tm;
 
 	now_tm = gmtime(&theTime);
-#if 0
-	printf("Time to set: %02d:%02d:%02d %02d-%02d-%04d\n",
-		   now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec, now_tm->tm_mday, now_tm->tm_mon + 1, now_tm->tm_year + 1900);
-#endif
+//	printf("Time to set: %02d:%02d:%02d %02d-%02d-%04d\n",
+//		   now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec, now_tm->tm_mday, now_tm->tm_mon + 1, now_tm->tm_year + 1900);
 	double mjd = modJulianDate(now_tm);
 	int mjd_int = mjd;
 	destString[0] = (mjd_int >> 8);
@@ -151,7 +147,7 @@ void setAM5xxTime(time_t theTime, char *destString)
 
 static int init(Context_t *context)
 {
-	tAM5xxPrivate *private = malloc(sizeof(tAM5xxPrivate));
+	tOpt9600Private *private = malloc(sizeof(tOpt9600Private));
 	int vFd;
 	vFd = open(cVFD_DEVICE, O_RDWR);
 	if (vFd < 0)
@@ -160,7 +156,7 @@ static int init(Context_t *context)
 		perror("");
 	}
 	((Model_t *)context->m)->private = private;
-	memset(private, 0, sizeof(tAM5xxPrivate));
+	memset(private, 0, sizeof(tOpt9600Private));
 	checkConfig(&private->display, &private->display_custom, &private->timeFormat, &private->wakeupDecrement);
 	return vFd;
 }
@@ -173,13 +169,13 @@ static int usage(Context_t *context, char *prg_name, char *cmd_name)
 	fprintf(stderr, "%s argument [optarg1] [optarg2]\n", prg_name);
 	for (i = 0; ; i++)
 	{
-		if (vAMArgs[i].arg == NULL)
+		if (vOArgs[i].arg == NULL)
 		{
 			break;
 		}
-		if ((cmd_name == NULL) || (strcmp(cmd_name, vAMArgs[i].arg) == 0) || (strstr(vAMArgs[i].arg_long, cmd_name) != NULL))
+		if ((cmd_name == NULL) || (strcmp(cmd_name, vOArgs[i].arg) == 0) || (strstr(vOArgs[i].arg_long, cmd_name) != NULL))
 		{
-			fprintf(stderr, "%s   %s   %s\n", vAMArgs[i].arg, vAMArgs[i].arg_long, vAMArgs[i].arg_description);
+			fprintf(stderr, "%s   %s   %s\n", vOArgs[i].arg, vOArgs[i].arg_long, vOArgs[i].arg_description);
 		}
 	}
 	fprintf(stderr, "Options marked * should be the only calling argument.\n");
@@ -187,10 +183,8 @@ static int usage(Context_t *context, char *prg_name, char *cmd_name)
 }
 
 static int setTime(Context_t *context, time_t *theGMTTime)
-{  // -s command, OK
-	struct cnbox_ioctl_data vData;
-
-//	printf("MJDh: %x, MJDl: %x, h: %d, m: %d, s: %d\n",  
+{
+	struct opt9600_fp_ioctl_data vData;
 	vData.u.time.localTime = *theGMTTime;
 	if (ioctl(context->fd, VFDSETTIME, &vData) < 0)
 	{
@@ -201,9 +195,10 @@ static int setTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int getTime(Context_t *context, time_t *theGMTTime)
-{ // -g command, OK
+{
 	char fp_time[8];
 
+//	fprintf(stderr, "Waiting for current time from FP...\n");
 	/* front controller time */
 	if (ioctl(context->fd, VFDGETTIME, &fp_time) < 0)
 	{
@@ -213,8 +208,9 @@ static int getTime(Context_t *context, time_t *theGMTTime)
 	/* if we get the fp time */
 	if (fp_time[0] != '\0')
 	{
+//		fprintf(stderr, "Successfully read time from FP\n");
 		/* current front controller time */
-		*theGMTTime = (time_t)getAM5xxTime(fp_time);
+		*theGMTTime = (time_t)getOpt9600Time(fp_time);
 	}
 	else
 	{
@@ -225,7 +221,7 @@ static int getTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int setSTime(Context_t *context, time_t *theGMTTime)
-{  // -sst command, OK
+{  // -sst command
 	time_t curTime;
 	char fp_time[8];
 	time_t curTimeFP;
@@ -248,13 +244,13 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 		perror("Gettime");
 		return -1;
 	}
-	curTimeFP = (time_t)getAM5xxTime(fp_time);
+	curTimeFP = (time_t)getOpt9600Time(fp_time);
 	ts_gmt = gmtime(&curTimeFP);
 	printf("Front panel time set to: %02d:%02d:%02d %02d-%02d-%04d (local)\n", ts_gmt->tm_hour, ts_gmt->tm_min, ts_gmt->tm_sec,
 		ts_gmt->tm_mday, ts_gmt->tm_mon + 1, ts_gmt->tm_year + 1900);
 
 	// write UTC offset to /proc/stb/fp/rtc_offset
-	proc_fs_file = fopen(cRTC_OFFSET_FILE, "w");
+	proc_fs_file = fopen(cRTC_OFFSET_FILE, "r");
 	if (proc_fs_file == NULL)
 	{
 		perror("Open rtc_offset");
@@ -273,8 +269,8 @@ static int setSTime(Context_t *context, time_t *theGMTTime)
 }
 
 static int setTimer(Context_t *context, time_t *theWakeTime)
-{ // -e command, OK
-	struct cnbox_ioctl_data vData;
+{ // -e command
+	struct opt9600_fp_ioctl_data vData;
 	time_t curTime;
 	time_t curTimeFP;
 	time_t wakeupTime;
@@ -300,16 +296,17 @@ static int setTimer(Context_t *context, time_t *theWakeTime)
 	{
 		wakeupTime = *theWakeTime;
 	}
+	tsw = gmtime(&wakeupTime);  // wake up time is assumed to be local
+	printf("Wakeup Time: %02d:%02d:%02d %02d-%02d-%04d\n",
+		   tsw->tm_hour, tsw->tm_min, tsw->tm_sec, tsw->tm_mday, tsw->tm_mon + 1, tsw->tm_year + 1900);
 	//check --> wakeupTime is set and larger curTime and no larger than a year in the future (gost)
 //	if ((wakeupTime <= 0) || (curTime > wakeupTime) || (curTime < (wakeupTime - 25920000)))
 	if ((wakeupTime <= 0) || (wakeupTime == LONG_MAX))
 	{
 		/* no timer set */
 		wakeupTime = curTime - 86400;  // set wake up time yesterday
-		tsw = gmtime(&wakeupTime);
-		fprintf(stderr, "No timer set, set FP wake up time to yesterday (%02d:%02d:%02d %02d-%02d-%04d)\n",
-			   tsw->tm_hour, tsw->tm_min, tsw->tm_sec, tsw->tm_mday, tsw->tm_mon + 1, tsw->tm_year + 1900);
-		setAM5xxTime(wakeupTime, vData.u.standby.time);
+		fprintf(stderr, "No timer set, set FP wake up time to one day in the past.\n");
+		setOpt9600Time(wakeupTime, vData.u.standby.time);
 		if (ioctl(context->fd, VFDSTANDBY, &vData) < 0)
 		{
 			perror("standBy");
@@ -320,13 +317,6 @@ static int setTimer(Context_t *context, time_t *theWakeTime)
 	{
 		unsigned long diff;
 		char    fp_time[8];
-
-		if (disp)
-		{
-			tsw = localtime(&wakeupTime);
-			printf("Wake up time: %02d:%02d:%02d %02d-%02d-%04d\n",
-				   tsw->tm_hour, tsw->tm_min, tsw->tm_sec, tsw->tm_mday, tsw->tm_mon + 1, tsw->tm_year + 1900);
-		}
 //		fprintf(stderr, "Waiting for current time from FP...\n");
 		/* front controller time */
 		if (ioctl(context->fd, VFDGETTIME, &fp_time) < 0)
@@ -339,12 +329,13 @@ static int setTimer(Context_t *context, time_t *theWakeTime)
 		/* if we get the fp time */
 		if (fp_time[0] != '\0')
 		{
-			fprintf(stderr, "Successfully read time from FP\n");
+//			fprintf(stderr, "Successfully read time from FP\n");
 			/* current front controller time */
-			curTimeFP = (time_t) getAM5xxTime(fp_time);
+			curTimeFP = (time_t) getOpt9600Time(fp_time);
 			/* set FP-Time if curTime > or < 12h (gost)*/
 			if (((curTimeFP - curTime) > 43200) || ((curTime - curTimeFP) > 43200))
 			{
+				printf("FP clock more than 12 hours off, resetting to system time\n");
 				setTime(context, &curTime);
 				curTimeFP = curTime;
 			}
@@ -358,7 +349,7 @@ static int setTimer(Context_t *context, time_t *theWakeTime)
 			/* noop current time already set */
 		}
 		wakeupTime = curTimeFP + diff;
-		setAM5xxTime(wakeupTime, vData.u.standby.time);
+		setOpt9600Time(wakeupTime, vData.u.standby.time);
 		if (ioctl(context->fd, VFDSTANDBY, &vData) < 0)
 		{
 			perror("standBy");
@@ -369,7 +360,11 @@ static int setTimer(Context_t *context, time_t *theWakeTime)
 }
 
 static int getWTime(Context_t *context, time_t *theGMTTime)
-{  //-gw command: OK
+{  //-gw command:
+#if 0
+	fprintf(stderr, "%s: not implemented\n", __func__);
+	return -1;
+#else
 	char fp_time[5];
 	time_t iTime;
 
@@ -382,7 +377,7 @@ static int getWTime(Context_t *context, time_t *theGMTTime)
 	/* if we get the fp wakeup time */
 	if (fp_time[0] != '\0')
 	{
-		iTime = (time_t)getAM5xxTime(fp_time);
+		iTime = (time_t)getOpt9600Time(fp_time);
 		*theGMTTime = iTime;
 	}
 	else
@@ -393,58 +388,25 @@ static int getWTime(Context_t *context, time_t *theGMTTime)
 	}
 	return 0;
 }
+#endif
 
 static int setWTime(Context_t *context, time_t *theGMTTime)
-{
-	//-st command, OK (assumes specified time to be local)
-	struct cnbox_ioctl_data vData;
-	time_t curTime;
-	struct tm *ts_gmt;
-	char   FP_timeMJD[8];
-	time_t FP_time;
+{  //-st command (assumes specified time to be local)
+	struct opt9600_fp_ioctl_data vData;
 	struct tm *swtm;
-	int    gmt_offset;
+	int gmt_offset;
 	time_t wakeupTime;
-	int    proc_fs;
-	FILE   *proc_fs_file;
+	int proc_fs;
+	FILE *proc_fs_file;
 
-	// determine GMT offset
-	time(&curTime);  // get system time in UTC
-	ts_gmt = gmtime(&curTime);
-	gmt_offset = get_GMT_offset(*ts_gmt);
-
-	// Check if specified time is valid; its maximum is current FP clock time plus 55804708 minutes
-	if (ioctl(context->fd, VFDGETTIME, &FP_timeMJD) < 0)
-	{
-		perror("getTime");
-		return -1;
-	}
-	FP_time = getAM5xxTime(FP_timeMJD); 
-	ts_gmt = gmtime(&FP_time);
-	if (disp)
-	{
-	printf("Front processor time is %02d:%02d:%02d %02d-%02d-%04d (local)\n", ts_gmt->tm_hour,
-			ts_gmt->tm_min, ts_gmt->tm_sec, ts_gmt->tm_mday, ts_gmt->tm_mon + 1, ts_gmt->tm_year + 1900);
-	}
-
-	wakeupTime = *theGMTTime;  // get specified wake up time
-	if (((wakeupTime - FP_time)) / 60 > 16777215)
-	{
-		printf("CAUTION: wake up time too far in the future, setting maximum possible.\n");
-		wakeupTime = FP_time + 16777215 * 60;
-		if (wakeupTime < curTime)  // if overflow
-		{
-			wakeupTime = LONG_MAX -1;
-		}
-	}
+	wakeupTime = *theGMTTime;
 	swtm = gmtime(&wakeupTime);
+	gmt_offset= get_GMT_offset(*swtm);
+	printf("Setting wake up time to %02d:%02d:%02d %02d-%02d-%04d (local, year and seconds ignored)\n", swtm->tm_hour,
+		swtm->tm_min, swtm->tm_sec, swtm->tm_mday, swtm->tm_mon + 1, swtm->tm_year + 1900);
+//	wakeupTime += gmt_offset;
 
-	if (disp)
-	{
-		printf("Setting wake up time to %02d:%02d:%02d %02d-%02d-%04d (local, century and seconds ignored)\n", swtm->tm_hour,
-			swtm->tm_min, swtm->tm_sec, swtm->tm_mday, swtm->tm_mon + 1, swtm->tm_year + 1900);
-	}
-	setAM5xxTime(wakeupTime, vData.u.standby.time);
+	setOpt9600Time(wakeupTime, vData.u.standby.time);
 	if (ioctl(context->fd, VFDSETPOWERONTIME, &vData) < 0)
 	{
 		perror("Set wake up time");
@@ -483,7 +445,7 @@ static int shutdown(Context_t *context, time_t *shutdownTimeGMT)
 		time(&curTime);
 		if (curTime >= *shutdownTimeGMT)
 		{
-			/* set most recent E2 timer and bye bye */
+			/* set most recent e2 timer and bye bye */
 			return (setTimer(context, NULL));
 		}
 		usleep(100000);
@@ -491,10 +453,12 @@ static int shutdown(Context_t *context, time_t *shutdownTimeGMT)
 	return -1;
 }
 
+#if 0
 static int reboot(Context_t *context, time_t *rebootTimeGMT)
 {
 	time_t curTime;
-	struct cnbox_ioctl_data vData;
+	struct opt9600_fp_ioctl_data vData;
+
 	while (1)
 	{
 		time(&curTime);
@@ -502,7 +466,7 @@ static int reboot(Context_t *context, time_t *rebootTimeGMT)
 		{
 			if (ioctl(context->fd, VFDREBOOT, &vData) < 0)
 			{
-				perror("reboot: ");
+				perror("reboot");
 				return -1;
 			}
 		}
@@ -510,6 +474,7 @@ static int reboot(Context_t *context, time_t *rebootTimeGMT)
 	}
 	return 0;
 }
+#endif
 
 static int Sleep(Context_t *context, time_t *wakeUpGMT)
 {
@@ -520,9 +485,9 @@ static int Sleep(Context_t *context, time_t *wakeUpGMT)
 	struct timeval tv;
 	int retval, i, rd;
 	struct tm *ts;
-	char output[cMAXCharsAm520 + 1];
+	char output[cMAXCharsOpt9600 + 1];
 	struct input_event ev[64];
-	tAM5xxPrivate *private = (tAM5xxPrivate *)((Model_t *)context->m)->private;
+	tOpt9600Private *private = (tOpt9600Private *)((Model_t *)context->m)->private;
 	vFd = open(cEVENT_DEVICE, O_RDWR);
 	if (vFd < 0)
 	{
@@ -572,7 +537,7 @@ static int Sleep(Context_t *context, time_t *wakeUpGMT)
 		}
 		if (private->display)
 		{
-			strftime(output, cMAXCharsAm520 + 1, private->timeFormat, ts);
+			strftime(output, cMAXCharsOpt9600 + 1, private->timeFormat, ts);
 			setText(context, output);
 		}
 	}
@@ -581,10 +546,9 @@ static int Sleep(Context_t *context, time_t *wakeUpGMT)
 
 static int setText(Context_t *context, char *theText)
 {
-	char vHelp[cMAXCharsAm520 + 1];
-
-	strncpy(vHelp, theText, cMAXCharsAm520);
-	vHelp[cMAXCharsAm520] = '\0';
+	char vHelp[cMAXCharsOpt9600 + 1];
+	strncpy(vHelp, theText, cMAXCharsOpt9600);
+	vHelp[cMAXCharsOpt9600] = '\0';
 	/* printf("%s, %d\n", vHelp, strlen(vHelp));*/
 	write(context->fd, vHelp, strlen(vHelp));
 	return 0;
@@ -598,7 +562,7 @@ static int setLed(Context_t *context, int which, int on)
 static int setLight(Context_t *context, int on)
 {
 	// -L command, OK
-	struct cnbox_ioctl_data vData;
+	struct opt9600_fp_ioctl_data vData;
 
 	vData.u.light.onoff = on;
 //	setMode(context->fd);
@@ -622,7 +586,7 @@ static int getWakeupReason(Context_t *context, eWakeupReason *reason)
 	}
 	if (mode != '\0')  /* if we get a fp wake up reason */
 	{
-		*reason = (mode & 0xff) + 1;  // get LS byte
+		*reason = mode & 0xff; //get LS byte
 	}
 	else
 	{
@@ -632,78 +596,9 @@ static int getWakeupReason(Context_t *context, eWakeupReason *reason)
 	return 0;
 }
 
-static int Clear(Context_t *context)
-{
-	setText(context, "    ");
-	return 0;
-}
-
-static int getVersion(Context_t *context, int *version)
-{
-	// -v command, OK
-	int fp_version;
-
-	if (ioctl(context->fd, VFDGETVERSION, &fp_version) < 0)  // get version info
-	{
-		perror("Get version info");
-		return -1;
-	}
-	if (fp_version != '\0')  // if the version info is OK
-	{
-		*version = fp_version;
-	}
-	else
-	{
-		*version = -1;
-	}
-	return 0;
-}
-
-#if defined MODEL_SPECIFIC
-static int modelSpecific(Context_t *context, char len, unsigned char *data)
-{
-	// -ms command
-	int i, res;
-	unsigned char testdata[12];
-
-	testdata[0] = len;  //  set length
-	
-	printf("cn_micom ioctl: VFDTEST (0x%08x) CMD=", VFDTEST);
-	for (i = 0; i < len; i++)
-	{
-		testdata[i + 1] = data[i];
-		printf("0x%02x ", data[i] & 0xff);
-	}
-	printf("\n");
-
-	memset(data, 0, 12);
-
-//	setMode(context->fd);  // set mode 1
-
-	res = (ioctl(context->fd, VFDTEST, &testdata) < 0);
-
-	if (res < 0)
-	{
-		perror("Model specific");
-		return -1;
-	}
-	else
-	{
-		if (testdata[1] == 1)
-		{
-			for (i = 0; i < 8; i++)
-			{
-				data[i] = testdata[i];  // return values
-			}
-		}
-	}
-	return testdata[0];
-}
-#endif
-
 static int Exit(Context_t *context)
 {
-	tAM5xxPrivate *private = (tAM5xxPrivate *)((Model_t *)context->m)->private;
+	tOpt9600Private *private = (tOpt9600Private *)((Model_t *)context->m)->private;
 	if (context->fd > 0)
 	{
 		close(context->fd);
@@ -712,10 +607,65 @@ static int Exit(Context_t *context)
 	exit(1);
 }
 
-Model_t AM5XX_model =
+static int Clear(Context_t *context)
 {
-	.Name             = "Atemio AM520HD and AM530HD front panel control utility",
-	.Type             = AM5xx,
+	setText(context, "        ");
+	return 0;
+}
+
+#if defined MODEL_SPECIFIC
+static int modelSpecific(Context_t *context, char len, unsigned char *data)
+{
+	//-ms command
+	int i, res = -1;
+	unsigned char testdata[12];
+
+	testdata[0] = len; // set length
+	
+	printf("mcom ioctl: VFDTEST (0x%08x) CMD=", VFDTEST);
+	for (i = 0; i < len; i++)
+	{
+		testdata[i + 1] = data[i];
+		printf("0x%02x ", data[i] & 0xff);
+	}
+	printf("\n");
+
+	memset(data, 0, sizeof(testdata));
+
+//	setMode(context->fd); // set mode 1
+
+//	res = 0;
+	res = (ioctl(context->fd, VFDTEST, &testdata) < 0);
+
+	if (res < 0)
+	{
+		perror("Model specific");
+		return -1;
+	}
+#if 1
+	else
+	{
+		if (testdata[1] != 0)
+		{
+			printf("Received %d bytes back\n", testdata[1] + 2);
+		}
+		for (i = 0; i < ((testdata[1] != 0) ? testdata[1] + 2 : 2); i++)
+		{
+			data[i] = testdata[i];  // return values
+		}
+	}
+	return testdata[0];
+#else
+	return res;
+#endif
+}
+#endif
+
+
+Model_t Opt9600_model =
+{
+	.Name             = "Opticum HD (TS) 9600 front panel control utility",
+	.Type             = Opt9600,
 	.Init             = init,
 	.Clear            = Clear,
 	.Usage            = usage,
@@ -726,16 +676,16 @@ Model_t AM5XX_model =
 	.SetWTime         = setWTime,
 	.SetSTime         = setSTime,
 	.Shutdown         = shutdown,
-	.Reboot           = reboot,
+	.Reboot           = NULL,  // reboot,
 	.Sleep            = Sleep,
 	.SetText          = setText,
-	.SetLed           = setLed,
+	.SetLed           = setLed,  // setLed,
 	.SetIcon          = NULL,
 	.SetBrightness    = NULL,
 	.GetWakeupReason  = getWakeupReason,
 	.SetLight         = setLight,
 	.SetLedBrightness = NULL,
-	.GetVersion       = getVersion,
+	.GetVersion       = NULL,
 	.SetRF            = NULL,
 	.SetFan           = NULL,
 	.SetDisplayTime   = NULL,
@@ -745,4 +695,4 @@ Model_t AM5XX_model =
 #endif
 	.Exit             = Exit
 };
-// vim:ts=4
+

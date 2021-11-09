@@ -41,7 +41,7 @@
 #define cRTC_OFFSET_FILE "/proc/stb/fp/rtc_offset"
 
 //Comment next line if you do not want the -ms option
-//#define MODEL_SPECIFIC 1
+#define MODEL_SPECIFIC 1
 
 struct vfd_ioctl_data
 {
@@ -68,7 +68,8 @@ typedef enum
 	Cuberevo,
 	Adb_Box,
 	AM5xx,
-	Vitamin_HD5000
+	Vitamin_HD5000,
+	Opt9600
 } eBoxType;
 
 typedef struct Context_s
@@ -127,6 +128,7 @@ extern	Model_t Adb_Box_model;
 extern	Model_t Cuberevo_model;
 extern	Model_t AM5XX_model;
 extern	Model_t Vitamin_model;
+extern	Model_t Opt9600_model;
 
 double modJulianDate(struct tm *theTime);
 int    get_GMT_offset(struct tm theTime);

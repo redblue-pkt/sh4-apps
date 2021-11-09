@@ -1,5 +1,5 @@
 /*
- * Cnbox.c (for Atemio 520HD & 530HD, Opticum HD 9600 series)
+ * Cnbox.c (for Atemio AM 520 HD and AM 530 HD, Opticum HD 9600 series)
  *
  * (c) 2009 teamducktales
  *
@@ -58,10 +58,10 @@ static tButton cButtonCnbox[] =  // order is same as on HD 9600 RC
 {
 	{ "POWER",       "5F", KEY_POWER },
 	{ "MUTE",        "57", KEY_MUTE },
-	{ "HELP",        "11", KEY_HELP },
-	{ "TV_FORMAT",   "07", KEY_ZOOM },
+	{ "HELP",        "11", KEY_HELP },  // Labeled MEDIA on Atemio520
+	{ "TV_FORMAT",   "07", KEY_ZOOM },  // Labeled RES on Atemio520
 	{ "TVRADIO",     "14", KEY_TV2 },
-	{ "MODE",        "1a", KEY_SWITCHVIDEOMODE },
+	{ "MODE",        "1a", KEY_SWITCHVIDEOMODE },  // Labeled PIP on Atemio520
 	{ "1",           "56", KEY_1 },
 	{ "2",           "5A", KEY_2 },
 	{ "3",           "5E", KEY_3 },
@@ -73,10 +73,10 @@ static tButton cButtonCnbox[] =  // order is same as on HD 9600 RC
 	{ "9",           "5C", KEY_9 },
 	{ "MENU",        "4A", KEY_MENU },
 	{ "0",           "1B", KEY_0 },
-	{ "RECALL",      "15", KEY_BACK },
+	{ "RECALL",      "15", KEY_BACK },  // Labeled BACK on Atemio520
 	{ "REWIND",      "1E", KEY_REWIND },
 	{ "STOP",        "10", KEY_STOP },
-	{ "PLAYPAUSE",   "12", KEY_PLAYPAUSE },
+	{ "PLAYPAUSE",   "12", KEY_PLAYPAUSE },  // Labeled PLAY on Atemio520
 	{ "FASTFORWARD", "01", KEY_FASTFORWARD },
 	{ "RECORD",      "1C", KEY_RECORD },
 	{ "UP",          "18", KEY_UP },
@@ -96,33 +96,26 @@ static tButton cButtonCnbox[] =  // order is same as on HD 9600 RC
 	{ "YELLOW",      "08", KEY_YELLOW },
 	{ "BLUE",        "03", KEY_BLUE },
 	{ "FAV",         "00", KEY_FAVORITES },
-	{ "STATUS",      "0C", KEY_AUX },
-	{ "OPTION",      "19", KEY_OPTION },
-	{ "FIND",        "16", KEY_PROGRAM },
-
-#if 0
-	/* The following assignments were there in the original code
-	 * but make no sense. Some seem to have Fortis origins.
-	 */
-	{ "BACK",        "15", KEY_HOME },         // double for RECALL
-	{ "TEXT",        "03", KEY_TEXT },         // double for BLUE
-	{ "PAUSE",       "",   KEY_PAUSE },        // does not exist
-	{ "CHANNELUP",   "20", KEY_CHANNELUP },    // does not exist (AM530?)
-	{ "CHANNELDOWN", "21", KEY_CHANNELDOWN },  // does not exist (AM530?)
-	{ "VOLUMEUP",    "22", KEY_VOLUMEUP },     // does not exist (AM530?)
-	{ "VOLUMEDOWN",  "23", KEY_VOLUMEDOWN },   // does not exist (AM530?)
-	{ "RESOLUTION",  "07", KEY_SCREEN },       // double for TVFORMAT
-	{ "CHECK",       "42", KEY_SELECT },       // double for NEXT
-	{ "UPUP",        "43", KEY_PAGEUP },       // does not exist (AM530?)
-	{ "DOWNDOWN",    "44", KEY_PAGEDOWN },     // does not exist (AM530?)
-	{ "SLEEP",       "24", KEY_PROGRAM },      // does not exist (AM530?)
-#endif
+	{ "STATUS",      "0C", KEY_HELP },  // Labeled HELP on Atemio520
+	{ "OPTION",      "19", KEY_TEXT },  // Labeled TEXT on Atemio520
+	{ "FIND",        "16", KEY_SUBTITLE },  // Labeled SUBTITLE on Atemio520
+// Keys present only on the Atemio 520 remote
+	{ "VOLUMEUP",    "22", KEY_VOLUMEUP },
+	{ "VOLUMEDOWN",  "23", KEY_VOLUMEDOWN },
+	{ "CHANNELUP",   "20", KEY_CHANNELUP },
+	{ "CHANNELDOWN", "21", KEY_CHANNELDOWN },
+	{ "PLUGIN",      "60", KEY_P },
+	{ "PAUSE",       "13", KEY_PAUSE },
+	{ "AUDIO",       "61", KEY_AUDIO },
+	{ "SHOOT",       "62", KEY_S },
+	{ "WWW",         "63", KEY_WWW },
+	{ "SLEEP",       "24", KEY_PROGRAM },
 	{ "",            "",   KEY_NULL }
 };
 
 /* ***************** our fp button assignment **************** */
 
-/* NOTE on front panel keys: These are al handled by the front
+/* NOTE on front panel keys: These are all handled by the front
  * processor and yield exactly the same codes as the
  * corresponding remote control key. The front panel keys can
  * therefore not be distinguished from the remote control ones.
@@ -220,7 +213,7 @@ static int pRead(Context_t *context)
 
 static int pNotification(Context_t *context, const int cOn)
 {
-	/* noop: there no controllable LEDs or icons on this model */
+	/* noop: there are no controllable LEDs or icons on this model */
 	return 0;
 }
 
@@ -235,7 +228,7 @@ static int pShutdown(Context_t *context)
 
 RemoteControl_t CNBOX_RC =
 {
-	"Crenova R2 Remote Control",
+	"CreNova R2 Remote Control",
 	CNBox,
 	cButtonCnbox,
 	NULL, //	cButtonCnboxFrontpanel,
