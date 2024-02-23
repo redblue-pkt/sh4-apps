@@ -650,7 +650,7 @@ static int Clear(Context_t *context)
 	char vName[129] = { 0 };
 	int vLen = -1;
 
-	vFd = open("/etc/openvision/model", O_RDONLY);
+	vFd = open("/proc/stb/info/model", O_RDONLY);
 	vLen = read(vFd, vName, sizeof(vName) - 1);
 	close(vFd);
 

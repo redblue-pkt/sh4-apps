@@ -336,7 +336,7 @@ gst_dvbaudiosink_base_init (gpointer klass)
 
 	//gst_debug_set_active(TRUE);
 
-	int fd = open("/etc/openvision/model", O_RDONLY);
+	int fd = open("/proc/stb/info/model", O_RDONLY);
 	if ( fd > 0 )
 	{
 		gchar string[9] = { 0, };

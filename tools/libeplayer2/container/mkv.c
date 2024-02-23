@@ -1458,7 +1458,7 @@ int getModel()
 	printf("%s::%s\n", FILENAME, __FUNCTION__);
 #endif
 
-	vFd = open("/etc/openvision/model", O_RDONLY);
+	vFd = open("/proc/stb/info/model", O_RDONLY);
 	vLen = read(vFd, vName, cSize);
 
 	close(vFd);
