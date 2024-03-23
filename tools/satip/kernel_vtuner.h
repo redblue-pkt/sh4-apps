@@ -18,9 +18,9 @@
 #define _VTUNER_H_
 
 #include <linux/version.h>
-#include "version.h"
-#include "frontend.h"
-#include "dmx.h"
+#include <linux/dvb/version.h>
+#include <linux/dvb/frontend.h>
+#include <linux/dvb/dmx.h>
 
 #define MSG_SET_FRONTEND		10
 #define MSG_CLOSE_FRONTEND		11
