@@ -116,7 +116,7 @@ static void reset_connection(t_satip_rtsp* rtsp)
   rtsp->cseq = 1;
   rtsp->streamid = -1;
   rtsp->request = RTSP_REQ_NONE;
-  rtsp->timeout = 30;
+  rtsp->timeout = 60;
   rtsp->session[0] = 0;
   
   rtsp->txbuf[0]=0;
