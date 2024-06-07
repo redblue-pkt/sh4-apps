@@ -200,21 +200,55 @@ void sendInputEvent(const int cCode)
 	sendInputEventT(INPUT_RELEASE, cCode);
 }
 
+static void rc_sync(int fd)
+{
+	struct input_event ev;
+
+	gettimeofday(&ev.time, NULL);
+	ev.type = EV_SYN;
+	ev.code = SYN_REPORT;
+	ev.value = 0;
+	write(fd, &ev, sizeof(ev));
+}
+
+static int rc_send(int fd, unsigned int code, unsigned int value)
+{
+	struct input_event ev;
+
+	ev.type = EV_KEY;
+	ev.code = code;
+	ev.value = value;
+	return write(fd, &ev, sizeof(ev));
+}
+
 void sendInputEventT(const unsigned int type, const int cCode)
 {
 	int vFd = -1;
-	struct input_event vInev;
-	int cSize = sizeof(struct input_event);
 
-	gettimeofday(&vInev.time, NULL);
-	vInev.type = 1;
-	vInev.code = cCode;
+	if (getenv("EVREMOTE2_NEW_SEND_INPUT_EVENT") != NULL) {
 
-	vFd = open(eventPath, O_WRONLY);
+		vFd = open(eventPath, O_WRONLY);
 
-	vInev.value = type;
-	write(vFd, &vInev, cSize);
-	close(vFd);
+		if (rc_send(vFd, cCode, type) < 0)
+			fprintf(stderr, "[evremote2] Error send event!\n");
+
+		rc_sync(vFd);
+		close(vFd);
+	} else {
+
+		struct input_event vInev;
+		int cSize = sizeof(struct input_event);
+
+		gettimeofday(&vInev.time, NULL);
+		vInev.type = 1;
+		vInev.code = cCode;
+
+		vFd = open(eventPath, O_WRONLY);
+
+		vInev.value = type;
+		write(vFd, &vInev, cSize);
+		close(vFd);
+	}
 }
 
 void setInputEventRepeatRate(unsigned int delay, unsigned int period)
