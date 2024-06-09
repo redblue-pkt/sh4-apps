@@ -25,7 +25,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include "../dynamite/dynamite_ioctl.h"
+#include "dynamite_ioctl.h"
 
 #include "dynamite_control.h"
 
